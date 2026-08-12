@@ -1,13 +1,14 @@
 {
+    "id": "./",
     "name": "Chest0 Hub",
     "short_name": "Chest0",
-    "description": "L'univers numérique de Chest0 JM.S.",
+    "description": "Le hub officiel de Chest0 JM.S. : livres, contenus, réseaux sociaux, produits et projets.",
+    "lang": "fr",
     "start_url": "./",
     "scope": "./",
     "display": "standalone",
     "background_color": "#09090d",
     "theme_color": "#09090d",
-    "lang": "fr",
     "icons": [
         {
             "src": "assets/icons/chest0-mark.svg",

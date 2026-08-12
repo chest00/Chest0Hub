@@ -1,14 +1,18 @@
 [
     {
+        "id": "chest0-ai-studio",
         "name": "Chest0 AI Studio",
-        "status": "Projet",
-        "description": "Studio personnel consacré aux technologies d'intelligence artificielle.",
-        "url": "#"
+        "status": "En développement",
+        "description": "Studio local dédié aux technologies d'intelligence artificielle et à la synthèse vocale.",
+        "url": "",
+        "enabled": true
     },
     {
+        "id": "chest0-quiz-studio",
         "name": "Chest0 Quiz Studio",
         "status": "Projet",
-        "description": "Création automatisée de quiz destinés aux réseaux sociaux.",
-        "url": "#"
+        "description": "Application dédiée à la création de quiz vidéo pour les réseaux sociaux.",
+        "url": "",
+        "enabled": true
     }
 ]

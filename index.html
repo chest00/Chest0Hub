@@ -11,7 +11,7 @@
 
     <meta
         name="description"
-        content="Chest0 Hub — Livres, contenus, réseaux sociaux et projets de Chest0 JM.S."
+        content="Chest0 Hub — Livres, contenus, réseaux sociaux, produits et projets de Chest0 JM.S."
     >
 
     <meta
@@ -19,7 +19,22 @@
         content="#09090d"
     >
 
-    <title>Chest0 Hub — Chest0 JM.S.</title>
+    <meta
+        property="og:title"
+        content="Chest0 Hub — Chest0 JM.S."
+    >
+
+    <meta
+        property="og:description"
+        content="Découvrez les livres, contenus, réseaux, produits et projets de Chest0 JM.S."
+    >
+
+    <meta
+        property="og:type"
+        content="website"
+    >
+
+    <title>Chest0 Hub — Accueil</title>
 
     <link
         rel="icon"
@@ -38,91 +53,369 @@
     >
 </head>
 
-<body>
+<body data-page="home">
 
-    <header class="hero">
-        <div class="hero-content">
+    <header class="site-header">
 
-            <div class="brand">
+        <nav class="main-navigation">
+
+            <a
+                class="nav-brand"
+                href="index.html"
+            >
                 Chest0
+            </a>
+
+            <div class="nav-links">
+
+                <a href="index.html">
+                    Accueil
+                </a>
+
+                <a href="pages/livres.html">
+                    Livres
+                </a>
+
+                <a href="pages/blog.html">
+                    Blog
+                </a>
+
+                <a href="pages/produits.html">
+                    Produits
+                </a>
+
+                <a href="pages/projets.html">
+                    Projets
+                </a>
+
+                <a href="pages/apropos.html">
+                    À propos
+                </a>
+
+                <a href="pages/contact.html">
+                    Contact
+                </a>
+
             </div>
 
-            <h1 id="site-title">
-                Chest0 Hub
-            </h1>
+        </nav>
 
-            <p
-                id="site-tagline"
-                class="subtitle"
-            >
-                Chargement...
-            </p>
-
-            <p
-                id="site-description"
-                class="description"
-            >
-            </p>
-
-        </div>
     </header>
 
 
-    <main class="container">
+    <main>
 
-        <section class="section">
+        <section class="hero">
 
-            <p class="section-label">
-                Découvrir
-            </p>
+            <div class="hero-content">
 
-            <h2>
-                Mon univers
-            </h2>
+                <img
+                    class="hero-logo"
+                    src="assets/icons/chest0-mark.svg"
+                    alt="Logo Chest0"
+                >
 
-            <div
-                id="primary-links"
-                class="link-grid"
-            >
+                <div class="brand-badge">
+                    Chest0
+                </div>
+
+                <h1>
+                    Chest0 Hub
+                </h1>
+
+                <p class="subtitle">
+                    L'univers de Chest0 JM.S.
+                </p>
+
+                <p class="description">
+                    Auteur et créateur de contenus autour du bien-être,
+                    de l'alimentation, du sport, du développement personnel
+                    et des projets numériques.
+                </p>
+
+                <div class="hero-actions">
+
+                    <a
+                        class="primary-cta"
+                        href="pages/livres.html"
+                    >
+                        Découvrir mes livres
+                    </a>
+
+                    <a
+                        class="secondary-cta"
+                        href="pages/apropos.html"
+                    >
+                        À propos
+                    </a>
+
+                </div>
+
             </div>
 
         </section>
 
 
-        <section class="section">
+        <div class="container">
 
-            <p class="section-label">
-                Créations
-            </p>
+            <section class="section">
 
-            <h2>
-                Mes projets
-            </h2>
+                <p class="section-label">
+                    Découvrir
+                </p>
 
-            <div
-                id="projects-grid"
-                class="projects"
+                <h2>
+                    Mon univers
+                </h2>
+
+                <p class="section-intro">
+                    Accédez rapidement à mes principaux espaces en ligne.
+                </p>
+
+                <div class="link-grid">
+
+                    <a
+                        class="hub-card"
+                        href="pages/livres.html"
+                    >
+                        <span class="card-icon">📚</span>
+
+                        <span class="card-content">
+                            <strong>Mes livres</strong>
+                            <small>
+                                Découvrez mes ouvrages publiés sur Amazon.
+                            </small>
+                        </span>
+                    </a>
+
+
+                    <a
+                        class="hub-card"
+                        href="pages/blog.html"
+                    >
+                        <span class="card-icon">🌿</span>
+
+                        <span class="card-content">
+                            <strong>Mon blog</strong>
+                            <small>
+                                Bien-être, alimentation, sport et développement personnel.
+                            </small>
+                        </span>
+                    </a>
+
+
+                    <a
+                        class="hub-card"
+                        href="pages/produits.html"
+                    >
+                        <span class="card-icon">🛍️</span>
+
+                        <span class="card-content">
+                            <strong>Mes produits</strong>
+                            <small>
+                                Découvrez ma boutique et mes créations numériques.
+                            </small>
+                        </span>
+                    </a>
+
+
+                    <a
+                        class="hub-card"
+                        href="#social"
+                    >
+                        <span class="card-icon">🌐</span>
+
+                        <span class="card-content">
+                            <strong>Mes réseaux</strong>
+                            <small>
+                                TikTok, YouTube, Instagram, Facebook et X.
+                            </small>
+                        </span>
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <section
+                id="social"
+                class="section"
             >
-            </div>
 
-        </section>
+                <p class="section-label">
+                    Réseaux sociaux
+                </p>
+
+                <h2>
+                    Me suivre
+                </h2>
+
+                <div class="social-grid">
+
+                    <a
+                        class="social-card"
+                        href="https://www.tiktok.com/@fitfrenzy_1"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <strong>TikTok</strong>
+                        <span>@fitfrenzy_1</span>
+                    </a>
+
+                    <a
+                        class="social-card"
+                        href="https://www.youtube.com/@relaxerapaiserlesprit7091"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <strong>YouTube</strong>
+                        <span>Relaxer &amp; Apaiser L'Esprit</span>
+                    </a>
+
+                    <a
+                        class="social-card"
+                        href="https://www.instagram.com/chest0_0/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <strong>Instagram</strong>
+                        <span>@chest0_0</span>
+                    </a>
+
+                    <a
+                        class="social-card"
+                        href="https://www.facebook.com/FitFrenzyBienEtre"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <strong>Facebook</strong>
+                        <span>Fit Frenzy</span>
+                    </a>
+
+                    <a
+                        class="social-card"
+                        href="https://www.facebook.com/FitFrenzycreations"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <strong>Facebook</strong>
+                        <span>Created by FitFrenzy</span>
+                    </a>
+
+                    <a
+                        class="social-card"
+                        href="https://twitter.com/chesto232/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <strong>X</strong>
+                        <span>@chesto232</span>
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <section class="section">
+
+                <p class="section-label">
+                    Créations
+                </p>
+
+                <h2>
+                    Mes projets
+                </h2>
+
+                <div class="projects">
+
+                    <article class="project-card">
+
+                        <span class="project-status">
+                            En développement
+                        </span>
+
+                        <h3>
+                            Chest0 AI Studio
+                        </h3>
+
+                        <p>
+                            Studio local dédié aux technologies
+                            d'intelligence artificielle et à la synthèse vocale.
+                        </p>
+
+                    </article>
+
+
+                    <article class="project-card">
+
+                        <span class="project-status">
+                            Projet
+                        </span>
+
+                        <h3>
+                            Chest0 Quiz Studio
+                        </h3>
+
+                        <p>
+                            Application dédiée à la création de quiz vidéo
+                            pour les réseaux sociaux.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+            <section class="section about-section">
+
+                <p class="section-label">
+                    Contact
+                </p>
+
+                <h2>
+                    Une question ?
+                </h2>
+
+                <p class="about-text">
+                    Tu peux me contacter directement par e-mail.
+                </p>
+
+                <a
+                    class="primary-cta"
+                    href="mailto:fitfrenzy00@gmail.com"
+                >
+                    Me contacter
+                </a>
+
+            </section>
+
+        </div>
 
     </main>
 
 
     <footer>
 
-        <p>
-            ©
-            <span id="current-year"></span>
-            <span id="copyright-name">
-                Chest0 JM.S.
-            </span>
-        </p>
+        <div class="footer-content">
 
-        <p class="footer-note">
-            Chest0 Hub
-        </p>
+            <strong>
+                Chest0
+            </strong>
+
+            <p>
+                © <span id="current-year"></span>
+                Chest0 JM.S.
+            </p>
+
+            <a href="#">
+                Retour en haut
+            </a>
+
+        </div>
 
     </footer>
 

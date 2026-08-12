@@ -1,1 +1,50 @@
-[]
+[
+    {
+        "id": "tiktok",
+        "name": "TikTok",
+        "username": "fitfrenzy_1",
+        "url": "https://www.tiktok.com/@fitfrenzy_1",
+        "description": "Retrouvez mes contenus courts sur TikTok.",
+        "enabled": true
+    },
+    {
+        "id": "youtube",
+        "name": "YouTube",
+        "username": "Relaxer & Apaiser L'Esprit",
+        "url": "https://www.youtube.com/@relaxerapaiserlesprit7091",
+        "description": "Découvrez ma chaîne YouTube Relaxer & Apaiser L'Esprit.",
+        "enabled": true
+    },
+    {
+        "id": "instagram",
+        "name": "Instagram",
+        "username": "chest0_0",
+        "url": "https://www.instagram.com/chest0_0/",
+        "description": "Retrouvez Chest0 sur Instagram.",
+        "enabled": true
+    },
+    {
+        "id": "facebook-fitfrenzy",
+        "name": "Facebook",
+        "username": "Fit Frenzy",
+        "url": "https://www.facebook.com/FitFrenzyBienEtre",
+        "description": "Profil Facebook Fit Frenzy.",
+        "enabled": true
+    },
+    {
+        "id": "facebook-creations",
+        "name": "Facebook",
+        "username": "Created by FitFrenzy",
+        "url": "https://www.facebook.com/FitFrenzycreations",
+        "description": "Page Facebook Created by FitFrenzy.",
+        "enabled": true
+    },
+    {
+        "id": "x",
+        "name": "X",
+        "username": "chesto232",
+        "url": "https://twitter.com/chesto232/",
+        "description": "Retrouvez Chest0 sur X.",
+        "enabled": true
+    }
+]

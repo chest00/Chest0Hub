@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "language": "fr",
+    "theme": "dark",
+    "showAvatar": false,
+    "avatarPath": "assets/images/avatar/avatar-chest0.png",
+    "showContact": true,
+    "showBooks": true,
+    "showBlog": true,
+    "showProducts": true,
+    "showSocial": true,
+    "showProjects": true
+}

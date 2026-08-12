@@ -1,34 +1,59 @@
 # Journal des versions — Chest0 Hub
 
-## Version 0.1.0 — Sprint 1
-
-Date : 12/08/2026
+## Version 0.2.0 — Sprint 2
 
 ### Ajouté
 
-- Structure initiale du projet.
-- Page d'accueil responsive.
-- Design sombre premium.
-- Architecture de données JSON.
-- Chargement dynamique des contenus.
-- Structure PWA.
-- Manifest Web App.
-- Service Worker.
-- Cache hors ligne.
-- Désactivation du Service Worker en développement local.
-- Logo vectoriel Chest0.
-- Favicon vectoriel.
-- Documentation de l'architecture.
-- Charte graphique.
-- Script de lancement local.
+- Architecture multi-pages.
+- Page d'accueil enrichie.
+- Page Livres.
+- Page Blog.
+- Page Produits.
+- Page Projets.
+- Page À propos.
+- Page Contact.
+- Navigation générale.
+- Responsive desktop, tablette et smartphone.
+- Page auteur Amazon.
+- Boutique Gumroad.
+- TikTok.
+- YouTube.
+- Instagram.
+- Facebook Fit Frenzy.
+- Facebook Created by FitFrenzy.
+- X.
+- Adresse e-mail publique de contact.
+- Structure pour futur avatar Chest0.
+- Structure pour futures couvertures de livres.
+- Structure pour futures images produits.
+- Données `settings.json`.
+- Données `navigation.json`.
+- Données `blog.json`.
+- Cache PWA adapté à l'architecture multi-pages.
+- Métadonnées SEO de base.
+- Métadonnées Open Graph de base.
 
 ### Architecture
 
-- HTML pour la structure.
-- CSS pour le design.
-- JavaScript pour la logique.
-- JSON pour les contenus.
+Chest0 Hub utilise désormais une structure multi-pages évolutive.
 
-### Objectif
+Les données évolutives sont conservées dans le dossier `data/`.
 
-Permettre les futures évolutions sans refonte complète du projet.
+Les futurs livres, produits et projets pourront être ajoutés sans refonte globale de l'application.
+
+---
+
+## Version 0.1.0 — Sprint 1
+
+### Ajouté
+
+- Fondations Chest0 Hub.
+- HTML.
+- CSS.
+- JavaScript.
+- Première PWA.
+- Logo Chest0.
+- Git.
+- GitHub.
+- GitHub Pages.
+- Publication publique initiale.

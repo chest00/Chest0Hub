@@ -1,1 +1,12 @@
-[]
+[
+    {
+        "id": "gumroad-store",
+        "name": "Boutique Chest0",
+        "platform": "Gumroad",
+        "description": "Retrouvez mes produits numériques consacrés au bien-être et à mes créations.",
+        "url": "https://fitfrenzy00.gumroad.com/",
+        "image": "",
+        "featured": true,
+        "enabled": true
+    }
+]

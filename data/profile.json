@@ -1,8 +1,11 @@
 {
     "brand": "Chest0",
-    "name": "Chest0 JM.S.",
+    "authorName": "Chest0 JM.S.",
     "siteName": "Chest0 Hub",
     "tagline": "L'univers de Chest0 JM.S.",
-    "description": "Livres, bien-être, contenus, réseaux sociaux et projets numériques réunis au même endroit.",
-    "copyright": "Chest0 JM.S."
+    "description": "Auteur et créateur de contenus autour du bien-être, de l'alimentation, du sport, du développement personnel et des projets numériques.",
+    "email": "fitfrenzy00@gmail.com",
+    "copyright": "Chest0 JM.S.",
+    "logo": "assets/icons/chest0-mark.svg",
+    "avatar": "assets/images/avatar/avatar-chest0.png"
 }

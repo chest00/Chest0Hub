@@ -1,19 +1,25 @@
 # Chest0 Hub
 
-Chest0 Hub est le portail numérique de Chest0 JM.S.
+Chest0 Hub est le portail numérique officiel de Chest0 JM.S.
 
 ## Objectif
 
-Centraliser :
+Centraliser dans un espace unique :
 
-- les livres ;
+- les livres Amazon ;
 - le blog ;
-- les réseaux sociaux ;
-- les vidéos ;
-- les produits ;
-- les applications ;
-- les projets ;
+- TikTok ;
+- YouTube ;
+- Instagram ;
+- Facebook ;
+- X ;
+- la boutique Gumroad ;
+- les projets numériques ;
 - les moyens de contact.
+
+## Site public
+
+https://chest00.github.io/Chest0Hub/
 
 ## Technologies
 
@@ -23,42 +29,56 @@ Centraliser :
 - JSON ;
 - Progressive Web App ;
 - Git ;
+- GitHub ;
 - GitHub Pages.
 
-## Dépendances
+## Coût d'hébergement
 
-Aucune dépendance JavaScript obligatoire.
+0 €.
 
-Node.js et npm ne sont pas nécessaires.
+## Architecture
 
-## Coût d'exploitation
+### Pages
 
-Objectif : 0 €.
+- `index.html` : accueil ;
+- `pages/livres.html` : livres ;
+- `pages/blog.html` : blog ;
+- `pages/produits.html` : produits ;
+- `pages/projets.html` : projets ;
+- `pages/apropos.html` : présentation ;
+- `pages/contact.html` : contact.
+
+### Données
+
+Les contenus évolutifs sont stockés dans `data/`.
+
+- `profile.json`
+- `settings.json`
+- `navigation.json`
+- `links.json`
+- `social.json`
+- `books.json`
+- `products.json`
+- `projects.json`
+- `blog.json`
+
+### Ressources
+
+Le dossier `assets/` contient :
+
+- CSS ;
+- JavaScript ;
+- icônes ;
+- images ;
+- futurs avatars ;
+- futures couvertures de livres ;
+- futures images produits.
 
 ## Développement local
 
-Depuis le dossier du projet, lancer :
+### 1. Ouvrir le Terminal dans VS Code
 
-./run_dev.sh
+Puis saisir :
 
-Ensuite, ouvrir Brave ou Safari.
-
-Dans la barre d'adresse du navigateur, saisir :
-
-http://localhost:8080
-
-Cette adresse ne doit pas être saisie dans le Terminal.
-
-## Documentation
-
-Architecture :
-
-docs/ARCHITECTURE.md
-
-Identité graphique :
-
-docs/BRAND.md
-
-## État
-
-Version 0.1.0 — Sprint 1.
+```bash
+cd ~/Applications/Chest0Hub

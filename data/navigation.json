@@ -1,0 +1,30 @@
+[
+    {
+        "label": "Accueil",
+        "url": "index.html"
+    },
+    {
+        "label": "Livres",
+        "url": "pages/livres.html"
+    },
+    {
+        "label": "Blog",
+        "url": "pages/blog.html"
+    },
+    {
+        "label": "Produits",
+        "url": "pages/produits.html"
+    },
+    {
+        "label": "Projets",
+        "url": "pages/projets.html"
+    },
+    {
+        "label": "À propos",
+        "url": "pages/apropos.html"
+    },
+    {
+        "label": "Contact",
+        "url": "pages/contact.html"
+    }
+]

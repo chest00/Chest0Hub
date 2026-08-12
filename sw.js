@@ -1,23 +1,35 @@
 "use strict";
 
 
-const CACHE_VERSION =
-    "chest0-hub-v0.1.0";
+const CACHE_VERSION = "chest0-hub-v0.2.0";
 
 
 const APP_SHELL = [
     "./",
     "./index.html",
+
+    "./pages/livres.html",
+    "./pages/blog.html",
+    "./pages/produits.html",
+    "./pages/projets.html",
+    "./pages/apropos.html",
+    "./pages/contact.html",
+
     "./assets/css/style.css",
     "./assets/js/app.js",
     "./assets/icons/chest0-mark.svg",
+
     "./manifest.webmanifest",
+
     "./data/profile.json",
+    "./data/settings.json",
+    "./data/navigation.json",
     "./data/links.json",
-    "./data/projects.json",
+    "./data/social.json",
     "./data/books.json",
     "./data/products.json",
-    "./data/social.json"
+    "./data/projects.json",
+    "./data/blog.json"
 ];
 
 
@@ -28,10 +40,9 @@ self.addEventListener(
         event.waitUntil(
             caches
                 .open(CACHE_VERSION)
-                .then(
-                    (cache) =>
-                        cache.addAll(APP_SHELL)
-                )
+                .then((cache) => {
+                    return cache.addAll(APP_SHELL);
+                })
         );
 
         self.skipWaiting();
@@ -75,24 +86,31 @@ self.addEventListener(
             return;
         }
 
+
         event.respondWith(
             fetch(event.request)
+
                 .then((networkResponse) => {
 
-                    const copy =
+                    const responseCopy =
                         networkResponse.clone();
+
 
                     caches
                         .open(CACHE_VERSION)
                         .then((cache) => {
+
                             cache.put(
                                 event.request,
-                                copy
+                                responseCopy
                             );
+
                         });
+
 
                     return networkResponse;
                 })
+
                 .catch(async () => {
 
                     const cachedResponse =
@@ -100,21 +118,27 @@ self.addEventListener(
                             event.request
                         );
 
+
                     if (cachedResponse) {
                         return cachedResponse;
                     }
 
+
                     if (
                         event.request.mode === "navigate"
                     ) {
+
                         return caches.match(
                             "./index.html"
                         );
+
                     }
+
 
                     throw new Error(
                         "Ressource indisponible hors ligne."
                     );
+
                 })
         );
     }
