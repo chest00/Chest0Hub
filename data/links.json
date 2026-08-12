@@ -1,0 +1,30 @@
+[
+    {
+        "id": "books",
+        "title": "Mes livres",
+        "description": "Découvrir mes ouvrages sur Amazon",
+        "icon": "📚",
+        "url": "#"
+    },
+    {
+        "id": "blog",
+        "title": "Mon blog",
+        "description": "Articles et contenus autour du bien-être",
+        "icon": "🌐",
+        "url": "#"
+    },
+    {
+        "id": "tiktok",
+        "title": "TikTok",
+        "description": "Mes contenus courts",
+        "icon": "▶",
+        "url": "#"
+    },
+    {
+        "id": "social",
+        "title": "Réseaux sociaux",
+        "description": "Instagram, Facebook et X",
+        "icon": "◎",
+        "url": "#"
+    }
+]
