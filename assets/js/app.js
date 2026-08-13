@@ -11,7 +11,9 @@ function initializeChest0Hub() {
 
     updateCurrentYear();
 
-    enableSmoothInternalNavigation();
+    initializeMobileMenu();
+
+    initializeRevealAnimations();
 
     registerServiceWorker();
 }
@@ -24,10 +26,8 @@ function updateCurrentYear() {
             "#current-year"
         );
 
-
     const currentYear =
         new Date().getFullYear();
-
 
     yearElements.forEach(
         (element) => {
@@ -40,53 +40,204 @@ function updateCurrentYear() {
 }
 
 
-function enableSmoothInternalNavigation() {
+function initializeMobileMenu() {
 
-    const internalLinks =
-        document.querySelectorAll(
-            'a[href^="#"]'
+    const button =
+        document.querySelector(
+            ".mobile-menu-button"
+        );
+
+    const menu =
+        document.querySelector(
+            ".mobile-menu"
+        );
+
+    const overlay =
+        document.querySelector(
+            ".mobile-menu-overlay"
+        );
+
+    const closeButton =
+        document.querySelector(
+            ".mobile-menu-close"
         );
 
 
-    internalLinks.forEach(
-        (link) => {
+    if (
+        !button ||
+        !menu ||
+        !overlay ||
+        !closeButton
+    ) {
+        return;
+    }
+
+
+    const openMenu = () => {
+
+        menu.classList.add(
+            "is-open"
+        );
+
+        overlay.classList.add(
+            "is-open"
+        );
+
+        document.body.classList.add(
+            "menu-open"
+        );
+
+        button.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+        closeButton.focus();
+    };
+
+
+    const closeMenu = () => {
+
+        menu.classList.remove(
+            "is-open"
+        );
+
+        overlay.classList.remove(
+            "is-open"
+        );
+
+        document.body.classList.remove(
+            "menu-open"
+        );
+
+        button.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+    };
+
+
+    button.addEventListener(
+        "click",
+        openMenu
+    );
+
+
+    closeButton.addEventListener(
+        "click",
+        closeMenu
+    );
+
+
+    overlay.addEventListener(
+        "click",
+        closeMenu
+    );
+
+
+    menu
+        .querySelectorAll("a")
+        .forEach((link) => {
 
             link.addEventListener(
                 "click",
-                (event) => {
+                closeMenu
+            );
 
-                    const targetId =
-                        link.getAttribute("href");
+        });
 
 
-                    if (
-                        !targetId ||
-                        targetId === "#"
-                    ) {
-                        return;
+    document.addEventListener(
+        "keydown",
+        (event) => {
+
+            if (
+                event.key === "Escape" &&
+                menu.classList.contains(
+                    "is-open"
+                )
+            ) {
+
+                closeMenu();
+
+                button.focus();
+
+            }
+
+        }
+    );
+}
+
+
+function initializeRevealAnimations() {
+
+    const elements =
+        document.querySelectorAll(
+            ".reveal"
+        );
+
+
+    if (!elements.length) {
+        return;
+    }
+
+
+    if (
+        !("IntersectionObserver" in window)
+    ) {
+
+        elements.forEach(
+            (element) => {
+
+                element.classList.add(
+                    "is-visible"
+                );
+
+            }
+        );
+
+        return;
+    }
+
+
+    const observer =
+        new IntersectionObserver(
+            (entries) => {
+
+                entries.forEach(
+                    (entry) => {
+
+                        if (
+                            entry.isIntersecting
+                        ) {
+
+                            entry.target
+                                .classList
+                                .add(
+                                    "is-visible"
+                                );
+
+                            observer.unobserve(
+                                entry.target
+                            );
+
+                        }
+
                     }
+                );
+
+            },
+            {
+                threshold: 0.12
+            }
+        );
 
 
-                    const target =
-                        document.querySelector(
-                            targetId
-                        );
+    elements.forEach(
+        (element) => {
 
-
-                    if (!target) {
-                        return;
-                    }
-
-
-                    event.preventDefault();
-
-
-                    target.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
-
-                }
+            observer.observe(
+                element
             );
 
         }
@@ -108,14 +259,6 @@ function registerServiceWorker() {
         location.hostname === "127.0.0.1";
 
 
-    /*
-     * Pendant le développement local,
-     * le Service Worker n'est pas enregistré.
-     *
-     * Cela évite que le navigateur conserve
-     * d'anciennes versions de nos fichiers.
-     */
-
     if (isLocalDevelopment) {
         return;
     }
@@ -132,12 +275,6 @@ function registerServiceWorker() {
                     .register(
                         getServiceWorkerPath()
                     );
-
-
-                console.log(
-                    "Chest0 Hub : PWA active."
-                );
-
 
             } catch (error) {
 
@@ -161,10 +298,7 @@ function getServiceWorkerPath() {
         );
 
 
-    if (insidePagesFolder) {
-        return "../sw.js";
-    }
-
-
-    return "./sw.js";
+    return insidePagesFolder
+        ? "../sw.js"
+        : "./sw.js";
 }

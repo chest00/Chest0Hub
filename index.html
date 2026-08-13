@@ -34,6 +34,41 @@
         content="website"
     >
 
+    <meta
+    property="og:url"
+    content="https://chest00.github.io/Chest0Hub/"
+>
+
+<meta
+    property="og:site_name"
+    content="Chest0 Hub"
+>
+
+<meta
+    property="og:locale"
+    content="fr_FR"
+>
+
+<meta
+    name="twitter:card"
+    content="summary"
+>
+
+<meta
+    name="twitter:title"
+    content="Chest0 Hub — Chest0 JM.S."
+>
+
+<meta
+    name="twitter:description"
+    content="Livres, contenus, réseaux sociaux, produits et projets de Chest0 JM.S."
+>
+
+<link
+    rel="canonical"
+    href="https://chest00.github.io/Chest0Hub/"
+>
+
     <title>Chest0 Hub — Accueil</title>
 
     <link
@@ -57,55 +92,91 @@
 
     <header class="site-header">
 
-        <nav class="main-navigation">
+    <nav class="main-navigation">
 
-            <a
-                class="nav-brand"
-                href="index.html"
+        <a
+            class="nav-brand"
+            href="index.html"
+        >
+            Chest0
+        </a>
+
+        <div class="nav-links desktop-navigation">
+
+            <a href="index.html">Accueil</a>
+            <a href="pages/livres.html">Livres</a>
+            <a href="pages/blog.html">Blog</a>
+            <a href="pages/produits.html">Produits</a>
+            <a href="pages/projets.html">Projets</a>
+            <a href="pages/apropos.html">À propos</a>
+            <a href="pages/contact.html">Contact</a>
+
+        </div>
+
+        <button
+            class="mobile-menu-button"
+            type="button"
+            aria-label="Ouvrir le menu"
+            aria-expanded="false"
+        >
+            <img
+                src="assets/icons/menu.svg"
+                alt=""
             >
-                Chest0
-            </a>
+        </button>
 
-            <div class="nav-links">
+    </nav>
 
-                <a href="index.html">
-                    Accueil
-                </a>
+</header>
 
-                <a href="pages/livres.html">
-                    Livres
-                </a>
+<div
+    class="mobile-menu-overlay"
+    aria-hidden="true"
+>
+</div>
 
-                <a href="pages/blog.html">
-                    Blog
-                </a>
+<aside
+    class="mobile-menu"
+    aria-label="Navigation mobile"
+>
 
-                <a href="pages/produits.html">
-                    Produits
-                </a>
+    <div class="mobile-menu-header">
 
-                <a href="pages/projets.html">
-                    Projets
-                </a>
+        <strong>
+            Chest0
+        </strong>
 
-                <a href="pages/apropos.html">
-                    À propos
-                </a>
+        <button
+            class="mobile-menu-close"
+            type="button"
+            aria-label="Fermer le menu"
+        >
+            <img
+                src="assets/icons/close.svg"
+                alt=""
+            >
+        </button>
 
-                <a href="pages/contact.html">
-                    Contact
-                </a>
+    </div>
 
-            </div>
+    <nav class="mobile-menu-links">
 
-        </nav>
+        <a href="index.html">Accueil</a>
+        <a href="pages/livres.html">Livres</a>
+        <a href="pages/blog.html">Blog</a>
+        <a href="pages/produits.html">Produits</a>
+        <a href="pages/projets.html">Projets</a>
+        <a href="pages/apropos.html">À propos</a>
+        <a href="pages/contact.html">Contact</a>
 
-    </header>
+    </nav>
+
+</aside>
 
 
     <main>
 
-        <section class="hero">
+        <section class="hero reveal">
 
             <div class="hero-content">
 
@@ -158,7 +229,7 @@
 
         <div class="container">
 
-            <section class="section">
+            <section class="section reveal">
 
                 <p class="section-label">
                     Découvrir
@@ -178,7 +249,12 @@
                         class="hub-card"
                         href="pages/livres.html"
                     >
-                        <span class="card-icon">📚</span>
+                        <span class="card-icon">
+                            <img
+                                src="assets/icons/amazon.svg"
+                                alt=""
+                            >
+                        </span>
 
                         <span class="card-content">
                             <strong>Mes livres</strong>
@@ -193,7 +269,12 @@
                         class="hub-card"
                         href="pages/blog.html"
                     >
-                        <span class="card-icon">🌿</span>
+                        <span class="card-icon">
+                            <img
+                                src="assets/icons/blog.svg"
+                                alt=""
+                            >
+                        </span>
 
                         <span class="card-content">
                             <strong>Mon blog</strong>
@@ -208,7 +289,12 @@
                         class="hub-card"
                         href="pages/produits.html"
                     >
-                        <span class="card-icon">🛍️</span>
+                        <span class="card-icon">
+                            <img
+                                src="assets/icons/gumroad.svg"
+                                alt=""
+                            >
+                        </span>
 
                         <span class="card-content">
                             <strong>Mes produits</strong>
@@ -223,7 +309,12 @@
                         class="hub-card"
                         href="#social"
                     >
-                        <span class="card-icon">🌐</span>
+                        <span class="card-icon">
+                            <img
+                                src="assets/icons/instagram.svg"
+                                alt=""
+                            >
+                        </span>
 
                         <span class="card-content">
                             <strong>Mes réseaux</strong>
@@ -240,7 +331,7 @@
 
             <section
                 id="social"
-                class="section"
+                class="section reveal"
             >
 
                 <p class="section-label">
@@ -259,6 +350,12 @@
                         target="_blank"
                         rel="noopener noreferrer"
                     >
+
+                        <img
+                            class="social-platform-icon"
+                            src="assets/icons/tiktok.svg"
+                            alt=""
+                        >
                         <strong>TikTok</strong>
                         <span>@fitfrenzy_1</span>
                     </a>
@@ -269,6 +366,13 @@
                         target="_blank"
                         rel="noopener noreferrer"
                     >
+
+                        <img
+                            class="social-platform-icon"
+                            src="assets/icons/youtube.svg"
+                            alt=""
+                        >
+
                         <strong>YouTube</strong>
                         <span>Relaxer &amp; Apaiser L'Esprit</span>
                     </a>
@@ -279,6 +383,19 @@
                         target="_blank"
                         rel="noopener noreferrer"
                     >
+
+                        <img
+                            class="social-platform-icon"
+                            src="assets/icons/instagram.svg"
+                            alt=""
+                        >
+
+                        <img
+                            class="social-platform-icon"
+                            src="assets/icons/instagram.svg"
+                            alt=""
+                        >
+
                         <strong>Instagram</strong>
                         <span>@chest0_0</span>
                     </a>
@@ -289,6 +406,13 @@
                         target="_blank"
                         rel="noopener noreferrer"
                     >
+
+                    <img
+                        class="social-platform-icon"
+                        src="assets/icons/facebook.svg"
+                        alt=""
+                    >
+
                         <strong>Facebook</strong>
                         <span>Fit Frenzy</span>
                     </a>
@@ -299,6 +423,13 @@
                         target="_blank"
                         rel="noopener noreferrer"
                     >
+
+                    <img
+                        class="social-platform-icon"
+                        src="assets/icons/facebook.svg"
+                        alt=""
+                    >
+
                         <strong>Facebook</strong>
                         <span>Created by FitFrenzy</span>
                     </a>
@@ -309,6 +440,13 @@
                         target="_blank"
                         rel="noopener noreferrer"
                     >
+
+                    <img
+                        class="social-platform-icon"
+                        src="assets/icons/x.svg"
+                        alt=""
+                    >
+
                         <strong>X</strong>
                         <span>@chesto232</span>
                     </a>
@@ -318,7 +456,7 @@
             </section>
 
 
-            <section class="section">
+            <section class="section reveal">
 
                 <p class="section-label">
                     Créations
@@ -370,7 +508,7 @@
             </section>
 
 
-            <section class="section about-section">
+            <section class="section about-section reveal">
 
                 <p class="section-label">
                     Contact
