@@ -926,62 +926,144 @@ const Chest0Data = {
                 "";
 
 
-            const title =
-                document.createElement(
-                    "strong"
-                );
-
-
-            title.textContent =
-                data.name ||
-                "Blog Bien-être";
-
-
-            const description =
-                document.createElement(
-                    "p"
-                );
-
-
-            description.textContent =
-                data.description ||
-                "";
-
-
-            container.append(
-                title,
-                description
-            );
+            const articles =
+                Array.isArray(
+                    data.articles
+                )
+                    ? data.articles.filter(
+                        (article) =>
+                            article.enabled !== false
+                    )
+                    : [];
 
 
             /*
-             * Bouton vers Blogger.
+             * Aucun article sélectionné.
              */
 
-            if (
-                this.isValidUrl(
-                    data.url
-                )
-            ) {
+            if (!articles.length) {
 
-                const link =
-                    this.createExternalLink(
-                        data.url
+                const title =
+                    document.createElement(
+                        "strong"
                     );
 
 
-                link.className =
-                    "product-button blog-button";
+                title.textContent =
+                    "Articles à découvrir";
 
 
-                link.textContent =
-                    "Accéder au blog";
+                const description =
+                    document.createElement(
+                        "p"
+                    );
 
 
-                container.appendChild(
-                    link
+                description.textContent =
+                    "Une sélection d’articles du blog sera ajoutée progressivement.";
+
+
+                container.append(
+                    title,
+                    description
                 );
+
+
+                return;
             }
+
+
+            /*
+             * Articles provenant de blog.json.
+             */
+
+            const grid =
+                document.createElement(
+                    "div"
+                );
+
+
+            grid.className =
+                "blog-articles-grid";
+
+
+            articles.forEach(
+                (article) => {
+
+                    const card =
+                        document.createElement(
+                            "article"
+                        );
+
+
+                    card.className =
+                        "blog-article-card";
+
+
+                    const title =
+                        document.createElement(
+                            "h2"
+                        );
+
+
+                    title.textContent =
+                        article.title ||
+                        "Article";
+
+
+                    const description =
+                        document.createElement(
+                            "p"
+                        );
+
+
+                    description.textContent =
+                        article.description ||
+                        "";
+
+
+                    card.append(
+                        title,
+                        description
+                    );
+
+
+                    if (
+                        this.isValidUrl(
+                            article.url
+                        )
+                    ) {
+
+                        const link =
+                            this.createExternalLink(
+                                article.url
+                            );
+
+
+                        link.className =
+                            "product-button";
+
+
+                        link.textContent =
+                            "Lire l’article";
+
+
+                        card.appendChild(
+                            link
+                        );
+                    }
+
+
+                    grid.appendChild(
+                        card
+                    );
+                }
+            );
+
+
+            container.appendChild(
+                grid
+            );
 
 
         } catch (error) {
@@ -989,6 +1071,25 @@ const Chest0Data = {
             console.error(
                 "Chest0 Hub — blog :",
                 error
+            );
+
+
+            container.innerHTML =
+                "";
+
+
+            const message =
+                document.createElement(
+                    "p"
+                );
+
+
+            message.textContent =
+                "Impossible de charger les articles pour le moment.";
+
+
+            container.appendChild(
+                message
             );
         }
     }

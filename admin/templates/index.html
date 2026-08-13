@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex,nofollow"
+    >
+
+    <title>
+        Chest0 Hub Admin
+    </title>
+    <link
+        rel="icon"
+        href="/static/favicon.svg"
+        type="image/svg+xml"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="/static/admin.css"
+    >
+
+</head>
+
+
+<body>
+
+    <header class="admin-header">
+
+        <div class="admin-header-content">
+
+            <div>
+
+                <p class="eyebrow">
+                    Administration locale
+                </p>
+
+                <h1>
+                    Chest0 Hub Admin
+                </h1>
+
+            </div>
+
+
+            <div
+                id="server-status"
+                class="status-badge"
+            >
+                Vérification...
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main class="admin-main">
+
+        <section class="intro-panel">
+
+            <p class="eyebrow">
+                Chest0 Hub v1
+            </p>
+
+            <h2>
+                Gestion des contenus
+            </h2>
+
+            <p>
+                Sélectionne une rubrique, modifie les champs,
+                puis utilise le bouton Enregistrer.
+                Une sauvegarde automatique est créée avant
+                chaque modification.
+            </p>
+
+        </section>
+
+
+        <nav
+            id="admin-tabs"
+            class="admin-tabs"
+            aria-label="Rubriques d'administration"
+        >
+        </nav>
+
+
+        <section
+            id="editor"
+            class="editor-panel"
+        >
+
+            <p class="loading-message">
+                Chargement des données...
+            </p>
+
+        </section>
+
+
+        <section class="system-panel">
+
+            <h2>
+                État du système
+            </h2>
+
+            <dl>
+
+                <div>
+
+                    <dt>
+                        Application
+                    </dt>
+
+                    <dd id="status-application">
+                        —
+                    </dd>
+
+                </div>
+
+
+                <div>
+
+                    <dt>
+                        Version
+                    </dt>
+
+                    <dd id="status-version">
+                        —
+                    </dd>
+
+                </div>
+
+
+                <div>
+
+                    <dt>
+                        Serveur
+                    </dt>
+
+                    <dd id="status-server">
+                        —
+                    </dd>
+
+                </div>
+
+            </dl>
+
+        </section>
+
+    </main>
+
+
+    <div
+        id="notification"
+        class="notification"
+        role="status"
+        aria-live="polite"
+    >
+    </div>
+
+
+    <footer>
+
+        <p>
+            Chest0 Hub Admin —
+            administration locale
+        </p>
+
+    </footer>
+
+
+    <script
+        src="/static/admin.js"
+        defer
+    ></script>
+
+</body>
+
+</html>
