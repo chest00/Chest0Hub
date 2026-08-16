@@ -1,7 +1,22 @@
 {
-    "name": "Blog Bien-être",
-    "platform": "Blogger",
-    "url": "https://bien-et-etre.blogspot.com/",
-    "description": "Articles consacrés au bien-être, à l'alimentation, au sport et au développement personnel.",
-    "articles": []
+  "name": "Blog Bien-être",
+  "platform": "Blogger",
+  "url": "https://bien-et-etre.blogspot.com/",
+  "description": "Articles consacrés au bien-être, à l'alimentation, au sport et au développement personnel.",
+  "articles": [
+    {
+      "id": "Article Centenaires",
+      "title": "Les 20 aliments que les centenaires consomment régulièrement pour vivre plus longtemps",
+      "description": "Chaque année, de nouvelles études viennent confirmer une idée qui semblait autrefois relever du simple bon sens : notre alimentation influence profondément notre espérance de vie",
+      "url": "https://bien-et-etre.blogspot.com/2026/07/20-aliments-centenaires-longevite.html",
+      "enabled": true
+    },
+    {
+      "id": "Article Microbiote",
+      "title": "Microbiote intestinal : cet organe invisible qui gouverne votre santé et votre vitalité.",
+      "description": "Pour appréhender l'importance du microbiote, il faut d'abord comprendre sa composition et l'échelle vertigineuse à laquelle il opère au sein de notre tube digestif.",
+      "url": "https://bien-et-etre.blogspot.com/2026/07/le-microbiote-intestinal-cet-organe.html",
+      "enabled": true
+    }
+  ]
 }
