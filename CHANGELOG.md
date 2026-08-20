@@ -1,5 +1,55 @@
 # Journal des versions — Chest0 Hub
 
+## Version 1.1.0 — Administration et médias
+
+### Ajouté
+
+- Interface locale Chest0 Hub Admin.
+- Gestion du Profil.
+- Gestion des Réseaux sociaux.
+- Gestion des Produits.
+- Gestion des Livres.
+- Gestion des Projets.
+- Gestion du Blog.
+- Import d’images depuis Finder.
+- Gestion de l’avatar du profil.
+- Gestion des couvertures de livres.
+- Gestion des images produits.
+- Aperçu des images avant enregistrement.
+- Conservation de l’aperçu après enregistrement.
+- Génération automatique des chemins des médias.
+- Remplacement des médias existants.
+- Retrait sécurisé des images sans suppression du fichier physique.
+- Sauvegardes automatiques des fichiers JSON.
+- Aides contextuelles dans les formulaires Admin.
+- Hiérarchie et organisation améliorées des formulaires.
+- Protection contre les modifications non enregistrées.
+- Détection des ajouts, suppressions et retraits de médias non enregistrés.
+- Interface Admin responsive.
+
+### Amélioré
+
+- Affichage public des couvertures de livres.
+- Cartes Livres adaptatives avec ou sans couverture.
+- Utilisation optimale de la largeur disponible pour les livres sans couverture.
+- Affichage public des images produits.
+- Affichage adaptatif des produits sur desktop, formats intermédiaires et mobile.
+- Navigation Admin responsive sans défilement horizontal.
+- Présentation et lisibilité générales des formulaires Admin.
+
+### Sécurité et fiabilité
+
+- Validation des fichiers JSON.
+- Contrôle de la compilation Python de l’Admin.
+- Vérification des chemins locaux.
+- Conservation des fichiers médias lors du retrait d’une image.
+- Confirmation avant retrait d’un média.
+- Confirmation avant abandon de modifications non enregistrées.
+- Sauvegardes techniques avant les modifications sensibles.
+
+---
+
+
 ## Version 0.2.0 — Sprint 2
 
 ### Ajouté

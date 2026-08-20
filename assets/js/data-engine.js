@@ -574,6 +574,55 @@ const Chest0Data = {
                         "product-card";
 
 
+                    /*
+                     * Image du produit.
+                     * PRODUCT_IMAGE_PUBLIC_V110
+                     */
+
+                    if (
+                        typeof item.image === "string" &&
+                        item.image.trim()
+                    ) {
+
+                        article.classList.add(
+                            "has-image"
+                        );
+
+
+                        const image =
+                            document.createElement(
+                                "img"
+                            );
+
+
+                        image.className =
+                            "product-image";
+
+
+                        image.src =
+                            `${this.getRootPath()}${item.image}`;
+
+
+                        image.alt =
+                            `Image du produit ${item.name || ""}`;
+
+
+                        article.appendChild(
+                            image
+                        );
+                    }
+
+
+                    const content =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    content.className =
+                        "product-content";
+
+
                     const platform =
                         document.createElement(
                             "span"
@@ -611,7 +660,7 @@ const Chest0Data = {
                         "";
 
 
-                    article.append(
+                    content.append(
                         platform,
                         title,
                         description
@@ -638,10 +687,15 @@ const Chest0Data = {
                             "Découvrir";
 
 
-                        article.appendChild(
+                        content.appendChild(
                             link
                         );
                     }
+
+
+                    article.appendChild(
+                        content
+                    );
 
 
                     container.appendChild(
@@ -782,6 +836,12 @@ const Chest0Data = {
                         typeof item.cover === "string" &&
                         item.cover.trim()
                     ) {
+
+                        // BOOK_CARD_ADAPTIVE_V110
+                        article.classList.add(
+                            "has-cover"
+                        );
+
 
                         const image =
                             document.createElement(

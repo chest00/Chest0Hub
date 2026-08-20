@@ -82,3 +82,103 @@ Puis saisir :
 
 ```bash
 cd ~/Applications/Chest0Hub
+./run_dev.sh
+```
+
+Puis ouvrir dans Brave :
+
+```text
+http://localhost:8080
+```
+
+Pour arrêter le serveur :
+
+```text
+Control + C
+```
+
+## Chest0 Hub Admin — V1.1.0
+
+Chest0 Hub Admin est une interface locale permettant de gérer les contenus du site sans modifier manuellement les fichiers JSON.
+
+### Lancer l’Admin
+
+Dans le Terminal :
+
+```bash
+cd ~/Applications/Chest0Hub
+./run_admin.sh
+```
+
+Puis ouvrir dans Brave :
+
+```text
+http://127.0.0.1:8090
+```
+
+Pour arrêter le serveur :
+
+```text
+Control + C
+```
+
+### Fonctions principales
+
+L’Admin permet de gérer :
+
+- le Profil ;
+- les Réseaux sociaux ;
+- les Produits ;
+- les Livres ;
+- les Projets ;
+- le Blog.
+
+La V1.1.0 ajoute également :
+
+- l’import d’images depuis Finder ;
+- l’aperçu avant enregistrement ;
+- le remplacement des images ;
+- le retrait sécurisé d’une image ;
+- la gestion de l’avatar ;
+- la gestion des couvertures de livres ;
+- la gestion des images produits ;
+- les aides contextuelles dans les formulaires ;
+- une interface Admin responsive ;
+- la protection contre les modifications non enregistrées ;
+- des sauvegardes automatiques des fichiers JSON.
+
+### Médias
+
+Les médias importés sont stockés dans :
+
+```text
+assets/images/
+```
+
+avec notamment :
+
+```text
+assets/images/avatar/
+assets/images/books/
+assets/images/products/
+```
+
+Lorsqu’une image est retirée d’une fiche, sa référence est supprimée du JSON après enregistrement, mais le fichier physique est conservé afin d’éviter toute suppression accidentelle.
+
+### Sauvegardes
+
+Les sauvegardes automatiques créées par l’Admin sont stockées dans :
+
+```text
+backups/admin/
+```
+
+Le dossier `backups/` est ignoré par Git.
+
+## Documentation
+
+Documentation complémentaire :
+
+- `docs/ARCHITECTURE.md` ;
+- `docs/BRAND.md` ;
+- `CHANGELOG.md`.
