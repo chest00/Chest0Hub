@@ -2,8 +2,8 @@
   {
     "id": "chest0-ai-studio",
     "name": "Chest0 AI Studio",
-    "status": "En développement",
-    "description": "Studio local dédié aux technologies d'intelligence artificielle et à la synthèse vocale.",
+    "status": "V1 finalisée — Local",
+    "description": "Application locale de synthèse vocale conçue pour générer des voix à partir de textes en français et en anglais. Chest0 AI Studio fonctionne directement sur Mac, avec une utilisation hors ligne après installation, et permet d’exporter les créations audio aux formats WAV et MP3. Version 1.0 finalisée.",
     "url": "",
     "enabled": true
   },
@@ -18,7 +18,7 @@
   {
     "id": "chest0-hub",
     "name": "Chest0 Hub",
-    "status": "En développement actif",
+    "status": "V1 finalisée — Prochène version en développement active",
     "description": "Portail numérique personnel conçu pour centraliser l’univers Chest0 JM.S. : livres, contenus, réseaux sociaux, produits et projets. Chest0 Hub intègre une interface d’administration locale permettant de gérer simplement les contenus et les médias. Version actuelle : V1.1.0.",
     "url": "https://chest00.github.io/Chest0Hub/",
     "enabled": true

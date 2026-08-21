@@ -1,11 +1,21 @@
 [
   {
-    "id": "gumroad-store",
-    "name": "Boutique Chest0",
+    "id": "Pack Vitalité",
+    "name": "Pack Vitalité Totale",
     "platform": "Gumroad",
-    "description": "Retrouvez mes produits numériques consacrés au bien-être et à mes créations.",
-    "url": "https://fitfrenzy00.gumroad.com/",
+    "description": "Reprenez le contrôle de votre énergie en 7 jours.\n\nCe pack exclusif a été conçu pour ceux qui veulent des résultats concrets sans perdre de temps. J'ai réuni pour vous le meilleur de la nutrition naturelle et de l'organisation sportive.",
+    "url": "https://fitfrenzy00.gumroad.com/l/PackVitaliteTotale",
     "image": "assets/images/products/template-gumroad-bedc3ce6.png",
+    "featured": true,
+    "enabled": true
+  },
+  {
+    "id": "classeur équilibre",
+    "name": "Le Classeur de l’Équilibre - 30 fiches pratiques + outils de suivi",
+    "platform": "Gumroad",
+    "description": "Un système pratique pour observer tes habitudes, mieux comprendre ton quotidien et construire progressivement un équilibre qui te ressemble.\n\nTu veux prendre davantage de recul sur ton énergie, ton sommeil, ton alimentation, ton activité physique, ton stress et tes habitudes sans transformer ton quotidien en programme rigide ?",
+    "url": "https://fitfrenzy00.gumroad.com/l/classeur-equilibre",
+    "image": "assets/images/products/image-principale-hero-d60f3b0b.png",
     "featured": true,
     "enabled": true
   }
