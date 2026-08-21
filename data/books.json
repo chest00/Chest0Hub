@@ -12,10 +12,10 @@
     },
     {
       "id": "le 10 juin 2026",
-      "title": "40 Élixirs Anti-Stress Naturels",
+      "title": "40 ÉLIXIRS ANTI-STRESS NATURELS",
       "description": "40 Élixirs Anti-Stress Naturels vous propose une collection de boissons apaisantes inspirées des plantes, des ingrédients naturels et des traditions du bien-être.",
       "amazonUrl": "https://www.amazon.fr/dp/B0H4QPN1V9",
-      "cover": "",
+      "cover": "assets/images/books/digital-book-anti-stress-bf228c18.jpeg",
       "enabled": true
     },
     {
@@ -23,7 +23,7 @@
       "title": "DÉTOX NATURELLE & VITALITÉ DURABLE",
       "description": "Le mot “détox” est souvent mal compris.Il évoque des cures brutales, des restrictions excessives, des promesses rapides.\nSe purifier ne signifie pas se contraindre.Cela signifie restaurer le mouvement naturel : respirer, éliminer, relâcher, se reposer.",
       "amazonUrl": "https://www.amazon.fr/dp/B0GPK511WX",
-      "cover": "",
+      "cover": "assets/images/books/digital-book-detox-7415db45.jpeg",
       "enabled": true
     }
   ]
