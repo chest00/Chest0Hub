@@ -77,7 +77,8 @@ qu’après validation, commit, push et déploiement GitHub Pages.
 
 Les fichiers `links.json`, `navigation.json` et `settings.json` sont
 conservés comme données historiques ou réservées. Ils ne pilotent pas
-actuellement le site et ne sont pas présentés dans l’Admin.
+actuellement le site, ne sont pas présentés dans l’Admin et sont exclus de la
+publication GitHub Pages.
 
 ### Ressources
 
@@ -223,3 +224,22 @@ Un succès se termine par `PASS — certification locale complète`. En cas de
 `FAIL` ou d’échec d’un test, lire l’étape et le message immédiatement au-dessus,
 corriger la cause, puis relancer la même commande. Cette commande ne crée aucun
 commit, ne pousse rien et ne déclenche aucun déploiement GitHub.
+
+## Périmètres et publication
+
+- Le **site public** contient les sept pages, les ressources nécessaires, les
+  six JSON actifs, le manifest et le Service Worker.
+- Le **serveur public local** (`./run_dev.sh`) sert le dépôt de travail sur
+  `127.0.0.1:8080` pour permettre les vérifications avant publication.
+- L’**Admin local** (`./run_admin.sh`) écoute uniquement sur
+  `127.0.0.1:8090` et n’est jamais requis par le site public.
+- Le **dépôt de développement** contient aussi les tests, scripts,
+  documentation, données dormantes et outils locaux.
+- La **publication GitHub Pages** est construite depuis la branche configurée
+  sur GitHub. `_config.yml` exclut les éléments internes lorsque la racine du
+  dépôt est utilisée comme source.
+
+Une publication reste une action manuelle distincte : valider, committer,
+pousser, puis vérifier le build GitHub Pages. La future release devra également
+mettre à jour le numéro de cache du Service Worker et les versions concernées ;
+ce dépôt n’est pas encore déclaré V1.2.0.

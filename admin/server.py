@@ -225,7 +225,7 @@ class AdminHandler(BaseHTTPRequestHandler):
             self.send_json(
                 {
                     "application": "Chest0 Hub Admin",
-                    "version": "1.0.0-dev",
+                    "version": "1.1.0",
                     "status": "ok",
                     "project": str(PROJECT_DIR),
                     "mode": "local",

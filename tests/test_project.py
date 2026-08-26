@@ -674,5 +674,56 @@ class Chest0HubTests(unittest.TestCase):
         self.assertIn("dormant", documentation.lower())
 
 
+    def test_18_publication_scope_excludes_internal_files(self):
+        configuration = (
+            ROOT / "_config.yml"
+        ).read_text(encoding="utf-8")
+        excluded = set(
+            re.findall(
+                r"^\s+-\s+(.+?)\s*$",
+                configuration,
+                flags=re.MULTILINE
+            )
+        )
+        expected_internal_paths = {
+            "admin",
+            "backups",
+            "docs",
+            "scripts",
+            "tests",
+            "README.md",
+            "CHANGELOG.md",
+            "run_admin.sh",
+            "run_dev.sh",
+            *{
+                f"data/{file_name}"
+                for file_name in DORMANT_JSON
+            },
+        }
+
+        self.assertTrue(
+            expected_internal_paths.issubset(excluded)
+        )
+
+        service_worker = (
+            ROOT / "sw.js"
+        ).read_text(encoding="utf-8")
+        shell = service_worker.split(
+            "const APP_SHELL = [",
+            1
+        )[1].split("];", 1)[0]
+
+        for file_name in DORMANT_JSON:
+            with self.subTest(file=file_name):
+                self.assertNotIn(file_name, shell)
+
+        for page in PUBLIC_PAGES:
+            with self.subTest(page=page.name):
+                self.assertNotIn(
+                    "admin/",
+                    page.read_text(encoding="utf-8")
+                )
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

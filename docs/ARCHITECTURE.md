@@ -28,6 +28,12 @@ sw.js
 
 Il reste compatible avec GitHub Pages.
 
+La racine du dépôt contient également des outils de développement qui ne font
+pas partie du site. La configuration `_config.yml` exclut de la construction
+GitHub Pages `admin/`, `tests/`, `scripts/`, `docs/`, les scripts de lancement,
+la documentation racine, les sauvegardes et les trois JSON dormants. Les six
+JSON actifs restent publiés, car le moteur public les charge directement.
+
 ## Données
 
 Les contenus évolutifs sont stockés dans le dossier `data/`.
@@ -70,7 +76,9 @@ site et ne sont pas proposés dans l’Admin :
 - `settings.json`.
 
 Ils ne doivent pas être présentés comme des sources fonctionnelles tant
-qu’un consommateur public explicite n’a pas été mis en place.
+qu’un consommateur public explicite n’a pas été mis en place. Ils sont conservés
+comme données historiques ou réservées dans le dépôt, mais exclus de l’app shell
+et de la publication GitHub Pages.
 
 ## Médias
 
@@ -182,6 +190,18 @@ Le dossier `backups/` est ignoré par Git.
 
 Le site public est compatible avec GitHub Pages et ne nécessite pas de serveur Python en production.
 
+Les périmètres sont distincts :
+
+1. le site public statique comprend les pages et ressources nécessaires ;
+2. `run_dev.sh` fournit uniquement le serveur public local de contrôle ;
+3. `run_admin.sh` et `admin/` constituent l’Admin strictement local ;
+4. le dépôt de développement contient en plus tests, scripts et documentation ;
+5. GitHub Pages construit le périmètre public en appliquant `_config.yml`.
+
+Le choix de la branche et du dossier source reste une configuration distante
+GitHub à confirmer lors de chaque publication. Aucun fichier local ne peut à
+lui seul modifier cette sélection distante.
+
 L’interface Admin reste volontairement locale.
 
 ## PWA
@@ -189,3 +209,7 @@ L’interface Admin reste volontairement locale.
 Le Service Worker est désactivé sur `localhost` pendant le développement.
 
 Il est activé automatiquement sur le site public.
+
+Le cache conserve provisoirement le numéro `v1.0.0`. Son incrément appartient
+à la future release V1.2.0 : il déclenchera alors la suppression de l’ancien
+cache Chest0 Hub. Les JSON dormants ne font déjà plus partie de l’app shell.

@@ -1,0 +1,13 @@
+exclude:
+  - admin
+  - backups
+  - docs
+  - scripts
+  - tests
+  - README.md
+  - CHANGELOG.md
+  - run_admin.sh
+  - run_dev.sh
+  - data/links.json
+  - data/navigation.json
+  - data/settings.json

@@ -42,9 +42,6 @@ const APP_SHELL = [
     "./manifest.webmanifest",
 
     "./data/profile.json",
-    "./data/settings.json",
-    "./data/navigation.json",
-    "./data/links.json",
     "./data/social.json",
     "./data/books.json",
     "./data/products.json",
