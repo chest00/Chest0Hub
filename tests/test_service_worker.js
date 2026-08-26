@@ -42,7 +42,8 @@ Deno.test(
                     keys: async () => [
                         "other-app-v7",
                         "chest0-hub-v0.9.0",
-                        "chest0-hub-v1.0.0"
+                        "chest0-hub-v1.0.0",
+                        "chest0-hub-v1.2.0"
                     ],
                     delete: async (name) => {
                         deletedCaches.push(name);
@@ -89,7 +90,10 @@ Deno.test(
         if (
             JSON.stringify(deletedCaches) !==
             JSON.stringify(
-                ["chest0-hub-v0.9.0"]
+                [
+                    "chest0-hub-v0.9.0",
+                    "chest0-hub-v1.0.0"
+                ]
             )
         ) {
 

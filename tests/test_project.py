@@ -725,5 +725,54 @@ class Chest0HubTests(unittest.TestCase):
                 )
 
 
+    def test_19_active_release_versions_are_consistent(self):
+        expected_version = "1.2.0"
+
+        admin_server = (
+            ROOT / "admin/server.py"
+        ).read_text(encoding="utf-8")
+        service_worker = (
+            ROOT / "sw.js"
+        ).read_text(encoding="utf-8")
+        readme = (
+            ROOT / "README.md"
+        ).read_text(encoding="utf-8")
+        changelog = (
+            ROOT / "CHANGELOG.md"
+        ).read_text(encoding="utf-8")
+        projects = json.loads(
+            (ROOT / "data/projects.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        chest0_hub = next(
+            item
+            for item in projects
+            if item["id"] == "chest0-hub"
+        )
+
+        self.assertIn(
+            f'"version": "{expected_version}"',
+            admin_server
+        )
+        self.assertIn(
+            f"`${{CACHE_PREFIX}}v{expected_version}`",
+            service_worker
+        )
+        self.assertIn(
+            f"Chest0 Hub Admin — V{expected_version}",
+            readme
+        )
+        self.assertRegex(
+            changelog,
+            rf"(?m)^## Version {re.escape(expected_version)}\b"
+        )
+        self.assertIn(
+            f"Version actuelle : V{expected_version}.",
+            chest0_hub["description"]
+        )
+        self.assertNotIn("1.0.0-dev", admin_server)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

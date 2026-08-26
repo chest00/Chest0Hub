@@ -98,7 +98,7 @@ Le retrait d’une image depuis une fiche supprime sa référence dans les donn�
 
 ## Chest0 Hub Admin
 
-La V1.1.0 ajoute une interface d’administration locale dans `admin/`.
+L’interface d’administration locale se trouve dans `admin/`.
 
 Elle comprend notamment :
 
@@ -210,6 +210,6 @@ Le Service Worker est désactivé sur `localhost` pendant le développement.
 
 Il est activé automatiquement sur le site public.
 
-Le cache conserve provisoirement le numéro `v1.0.0`. Son incrément appartient
-à la future release V1.2.0 : il déclenchera alors la suppression de l’ancien
-cache Chest0 Hub. Les JSON dormants ne font déjà plus partie de l’app shell.
+Le cache actif porte le numéro `v1.2.0`. Grâce au préfixe `chest0-hub-`, son
+activation supprime uniquement les anciens caches Chest0 Hub et conserve ceux
+des autres applications. Les JSON dormants ne font pas partie de l’app shell.

@@ -6,7 +6,7 @@ const CACHE_PREFIX =
 
 
 const CACHE_VERSION =
-    `${CACHE_PREFIX}v1.0.0`;
+    `${CACHE_PREFIX}v1.2.0`;
 
 
 const APP_SHELL = [

@@ -115,7 +115,7 @@ Pour arrêter le serveur :
 Control + C
 ```
 
-## Chest0 Hub Admin — V1.1.0
+## Chest0 Hub Admin — V1.2.0
 
 Chest0 Hub Admin est une interface locale permettant de gérer les contenus du site sans modifier manuellement les fichiers JSON.
 
@@ -151,7 +151,7 @@ L’Admin permet de gérer :
 - les Projets ;
 - le Blog.
 
-La V1.1.0 ajoute également :
+Depuis la V1.1.0, l’Admin comprend également :
 
 - l’import d’images depuis Finder ;
 - l’aperçu avant enregistrement ;
@@ -240,6 +240,6 @@ commit, ne pousse rien et ne déclenche aucun déploiement GitHub.
   dépôt est utilisée comme source.
 
 Une publication reste une action manuelle distincte : valider, committer,
-pousser, puis vérifier le build GitHub Pages. La future release devra également
-mettre à jour le numéro de cache du Service Worker et les versions concernées ;
-ce dépôt n’est pas encore déclaré V1.2.0.
+pousser, puis vérifier le build GitHub Pages. La version active préparée dans
+le dépôt est V1.2.0 ; sa publication et la création du tag restent des étapes
+séparées, réalisées uniquement après approbation du candidat certifié.

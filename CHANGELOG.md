@@ -1,5 +1,25 @@
 # Journal des versions — Chest0 Hub
 
+## Version 1.2.0 — Fiabilité et assainissement structurel
+
+### Amélioré
+
+- Données dynamiques publiques fiabilisées et cohérentes avec l’Admin.
+- Validation des structures JSON, URL, identifiants et chemins médias renforcée.
+- Tests permanents du site public, de l’Admin, de la PWA et des références.
+- Commande unique de certification locale : `./scripts/validate.sh`.
+- Périmètre GitHub Pages limité aux ressources publiques nécessaires.
+
+### Sécurité et fiabilité
+
+- Serveurs public et Admin limités à `127.0.0.1`.
+- Contrôles Admin contre les Host et Origin anormaux et les traversées de chemins.
+- Isolation des caches PWA au moyen du préfixe `chest0-hub-`.
+- Script historique protégé contre une exécution accidentelle.
+- Cache PWA incrémenté pour la V1.2.0.
+
+---
+
 ## Version 1.1.0 — Administration et médias
 
 ### Ajouté
