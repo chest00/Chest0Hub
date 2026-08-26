@@ -164,6 +164,12 @@ protections du Bloc 3 et l’absence de secret. Le test Deno
 `tests/test_data_engine.js` vérifie le rendu du profil et
 `tests/test_service_worker.js` vérifie dynamiquement l’isolation des caches.
 
+Le point d’entrée unique `./scripts/validate.sh`, lancé depuis la racine,
+orchestre ces tests, les contrôles de syntaxe et Git, ainsi qu’une comparaison
+SHA-256 avant/après de `data/` et `assets/images/`. Les serveurs HTTP des tests
+écoutent uniquement sur `127.0.0.1`, utilisent des ports temporaires et sont
+arrêtés même en cas d’échec. La commande valide localement sans publier.
+
 ## Sauvegardes
 
 Les sauvegardes automatiques de l’Admin sont stockées dans `backups/admin/`.

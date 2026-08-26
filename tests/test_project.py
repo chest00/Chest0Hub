@@ -1,6 +1,8 @@
 from html.parser import HTMLParser
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit
+from functools import partial
 import hashlib
 import http.client
 import importlib.util
@@ -57,6 +59,12 @@ class HtmlInspector(HTMLParser):
                 self.references.append(
                     attributes[key]
                 )
+
+
+class QuietPublicHandler(SimpleHTTPRequestHandler):
+
+    def log_message(self, format, *args):
+        pass
 
 
 def load_admin_module():
@@ -563,6 +571,107 @@ class Chest0HubTests(unittest.TestCase):
             capture_output=True,
             text=True
         )
+
+
+    def test_15_public_site_is_served_on_loopback(self):
+        handler = partial(
+            QuietPublicHandler,
+            directory=str(ROOT)
+        )
+        server = ThreadingHTTPServer(
+            ("127.0.0.1", 0),
+            handler
+        )
+        thread = threading.Thread(
+            target=server.serve_forever,
+            daemon=True
+        )
+        thread.start()
+        port = server.server_address[1]
+        required_paths = [
+            "/index.html",
+            *[
+                f"/pages/{path.name}"
+                for path in PUBLIC_PAGES[1:]
+            ],
+            "/assets/css/style.css",
+            "/assets/js/app.js",
+            "/assets/js/data-engine.js",
+            "/manifest.webmanifest",
+            "/sw.js",
+            *[
+                f"/data/{path.name}"
+                for path in sorted(
+                    (ROOT / "data").glob("*.json")
+                )
+            ],
+        ]
+
+        try:
+            for path in required_paths:
+                with self.subTest(path=path):
+                    connection = http.client.HTTPConnection(
+                        "127.0.0.1",
+                        port,
+                        timeout=5
+                    )
+                    connection.request("GET", path)
+                    response = connection.getresponse()
+                    response.read()
+                    connection.close()
+                    self.assertEqual(response.status, 200)
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join(timeout=5)
+            self.assertFalse(thread.is_alive())
+
+
+    def test_16_manifest_is_valid_and_references_exist(self):
+        manifest = json.loads(
+            (ROOT / "manifest.webmanifest").read_text(
+                encoding="utf-8"
+            )
+        )
+
+        for field in (
+            "name",
+            "short_name",
+            "start_url",
+            "scope",
+            "display",
+            "icons",
+        ):
+            with self.subTest(field=field):
+                self.assertIn(field, manifest)
+
+        self.assertIsInstance(manifest["icons"], list)
+        self.assertTrue(manifest["icons"])
+
+        for icon in manifest["icons"]:
+            with self.subTest(icon=icon.get("src")):
+                self.assertTrue(
+                    (ROOT / icon["src"]).exists()
+                )
+
+
+    def test_17_dormant_json_status_is_documented(self):
+        documentation = "\n".join(
+            [
+                (ROOT / "README.md").read_text(
+                    encoding="utf-8"
+                ),
+                (ROOT / "docs/ARCHITECTURE.md").read_text(
+                    encoding="utf-8"
+                ),
+            ]
+        )
+
+        for file_name in DORMANT_JSON:
+            with self.subTest(file=file_name):
+                self.assertIn(file_name, documentation)
+
+        self.assertIn("dormant", documentation.lower())
 
 
 if __name__ == "__main__":

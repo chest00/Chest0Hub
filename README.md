@@ -202,13 +202,24 @@ Documentation complémentaire :
 
 ## Validation technique
 
-Les contrôles permanents sont lancés avec :
+Depuis la racine du dépôt, la campagne qualité complète se lance avec une
+commande unique :
 
 ```bash
-python3 -B -m unittest discover -s tests -p 'test_*.py' -v
-deno test --no-config \
-  --allow-read=sw.js,assets/js/data-engine.js \
-  tests/test_data_engine.js tests/test_service_worker.js
+./scripts/validate.sh
 ```
 
-Les écritures Admin testées utilisent exclusivement une copie temporaire.
+Prérequis : macOS, Bash, Python 3, Deno, Git et les outils système `find`,
+`sort`, `xargs` et `shasum`. Le script signale explicitement tout outil absent.
+
+La campagne contrôle les syntaxes, les neuf JSON, les six sources actives et
+les trois sources dormantes documentées, les sept pages et leurs ressources,
+l’Admin local, la PWA, les protections de sécurité des Blocs 3 et 4, les
+secrets évidents, Git et l’intégrité des données/médias. Les écritures Admin
+sont testées exclusivement sur une copie temporaire et les serveurs de test
+sont arrêtés automatiquement.
+
+Un succès se termine par `PASS — certification locale complète`. En cas de
+`FAIL` ou d’échec d’un test, lire l’étape et le message immédiatement au-dessus,
+corriger la cause, puis relancer la même commande. Cette commande ne crée aucun
+commit, ne pousse rien et ne déclenche aucun déploiement GitHub.
