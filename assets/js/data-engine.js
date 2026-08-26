@@ -109,6 +109,126 @@ const Chest0Data = {
 
 
     /*
+     * ========================================================
+     * PROFIL COMMUN
+     * ========================================================
+     */
+
+    async renderProfile() {
+
+        try {
+
+            const profile =
+                await this.loadJson(
+                    "profile.json"
+                );
+
+
+            if (
+                !profile ||
+                typeof profile !== "object" ||
+                Array.isArray(profile)
+            ) {
+
+                throw new Error(
+                    "profile.json doit contenir un objet."
+                );
+            }
+
+
+            document
+                .querySelectorAll(
+                    "[data-profile]"
+                )
+                .forEach(
+                    (element) => {
+
+                        const key =
+                            element.dataset.profile;
+
+
+                        const value =
+                            profile[key];
+
+
+                        if (
+                            typeof value === "string" &&
+                            value.trim()
+                        ) {
+
+                            element.textContent =
+                                value;
+                        }
+                    }
+                );
+
+
+            document
+                .querySelectorAll(
+                    "[data-profile-link]"
+                )
+                .forEach(
+                    (link) => {
+
+                        const key =
+                            link.dataset.profileLink;
+
+
+                        const value =
+                            profile[key];
+
+
+                        if (
+                            key === "email" &&
+                            typeof value === "string" &&
+                            value.trim()
+                        ) {
+
+                            link.href =
+                                `mailto:${value.trim()}`;
+                        }
+                    }
+                );
+
+
+            document
+                .querySelectorAll(
+                    "[data-profile-image]"
+                )
+                .forEach(
+                    (image) => {
+
+                        const key =
+                            image.dataset.profileImage;
+
+
+                        const value =
+                            profile[key];
+
+
+                        if (
+                            typeof value === "string" &&
+                            value.startsWith("assets/")
+                        ) {
+
+                            image.src =
+                                `${this.getRootPath()}${value}`;
+                        }
+                    }
+                );
+
+
+        } catch (error) {
+
+            console.error(
+                "Chest0 Hub — profil :",
+                error
+            );
+        }
+    },
+
+
+    /*
      * --------------------------------------------------------
      * VALIDATION SIMPLE DES URL
      * --------------------------------------------------------
@@ -328,6 +448,10 @@ const Chest0Data = {
                         "social-card";
 
 
+                    card.dataset.contentId =
+                        String(item.id || "");
+
+
                     const icon =
                         this.createIcon(
                             this.socialIconName(
@@ -359,10 +483,26 @@ const Chest0Data = {
                         "";
 
 
+                    const description =
+                        document.createElement(
+                            "p"
+                        );
+
+
+                    description.className =
+                        "social-description";
+
+
+                    description.textContent =
+                        item.description ||
+                        "";
+
+
                     card.append(
                         icon,
                         name,
-                        username
+                        username,
+                        description
                     );
 
 
@@ -433,6 +573,10 @@ const Chest0Data = {
 
                     article.className =
                         "project-card";
+
+
+                    article.dataset.contentId =
+                        String(item.id || "");
 
 
                     const status =
@@ -572,6 +716,18 @@ const Chest0Data = {
 
                     article.className =
                         "product-card";
+
+
+                    article.dataset.contentId =
+                        String(item.id || "");
+
+
+                    if (item.featured === true) {
+
+                        article.classList.add(
+                            "is-featured"
+                        );
+                    }
 
 
                     /*
@@ -752,6 +908,40 @@ const Chest0Data = {
                     : [];
 
 
+            document
+                .querySelectorAll(
+                    "[data-books-author]"
+                )
+                .forEach(
+                    (element) => {
+
+                        element.textContent =
+                            data.author ||
+                            "";
+                    }
+                );
+
+
+            document
+                .querySelectorAll(
+                    "[data-books-author-link]"
+                )
+                .forEach(
+                    (link) => {
+
+                        if (
+                            this.isValidUrl(
+                                data.amazonAuthorPage
+                            )
+                        ) {
+
+                            link.href =
+                                data.amazonAuthorPage;
+                        }
+                    }
+                );
+
+
             container.innerHTML =
                 "";
 
@@ -826,6 +1016,10 @@ const Chest0Data = {
 
                     article.className =
                         "book-card";
+
+
+                    article.dataset.contentId =
+                        String(item.id || "");
 
 
                     /*
@@ -982,6 +1176,49 @@ const Chest0Data = {
                 );
 
 
+            document
+                .querySelectorAll(
+                    "[data-blog]"
+                )
+                .forEach(
+                    (element) => {
+
+                        const value =
+                            data[element.dataset.blog];
+
+
+                        if (
+                            typeof value === "string" &&
+                            value.trim()
+                        ) {
+
+                            element.textContent =
+                                value;
+                        }
+                    }
+                );
+
+
+            document
+                .querySelectorAll(
+                    "[data-blog-link]"
+                )
+                .forEach(
+                    (link) => {
+
+                        if (
+                            this.isValidUrl(
+                                data.url
+                            )
+                        ) {
+
+                            link.href =
+                                data.url;
+                        }
+                    }
+                );
+
+
             container.innerHTML =
                 "";
 
@@ -1058,6 +1295,10 @@ const Chest0Data = {
 
                     card.className =
                         "blog-article-card";
+
+
+                    card.dataset.contentId =
+                        String(article.id || "");
 
 
                     const title =

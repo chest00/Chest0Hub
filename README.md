@@ -62,6 +62,23 @@ Les contenus évolutifs sont stockés dans `data/`.
 - `projects.json`
 - `blog.json`
 
+Les six sources actives et administrables sont :
+
+- `profile.json` ;
+- `social.json` ;
+- `books.json` ;
+- `products.json` ;
+- `projects.json` ;
+- `blog.json`.
+
+Une modification enregistrée dans l’Admin agit sur le rendu public
+correspondant après rechargement du site local. Elle ne devient publique
+qu’après validation, commit, push et déploiement GitHub Pages.
+
+Les fichiers `links.json`, `navigation.json` et `settings.json` sont
+conservés comme données historiques ou réservées. Ils ne pilotent pas
+actuellement le site et ne sont pas présentés dans l’Admin.
+
 ### Ressources
 
 Le dossier `assets/` contient :
@@ -182,3 +199,16 @@ Documentation complémentaire :
 - `docs/ARCHITECTURE.md` ;
 - `docs/BRAND.md` ;
 - `CHANGELOG.md`.
+
+## Validation technique
+
+Les contrôles permanents sont lancés avec :
+
+```bash
+python3 -B -m unittest discover -s tests -p 'test_*.py' -v
+deno test --no-config \
+  --allow-read=sw.js,assets/js/data-engine.js \
+  tests/test_data_engine.js tests/test_service_worker.js
+```
+
+Les écritures Admin testées utilisent exclusivement une copie temporaire.

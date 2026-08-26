@@ -96,6 +96,7 @@
 
         <a
             class="nav-brand"
+            data-profile="brand"
             href="index.html"
         >
             Chest0
@@ -142,7 +143,7 @@
 
     <div class="mobile-menu-header">
 
-        <strong>
+        <strong data-profile="brand">
             Chest0
         </strong>
 
@@ -182,23 +183,33 @@
 
                 <img
                     class="hero-logo"
+                    data-profile-image="logo"
                     src="assets/icons/chest0-mark.svg"
                     alt="Logo Chest0"
                 >
 
-                <div class="brand-badge">
+                <div
+                    class="brand-badge"
+                    data-profile="brand"
+                >
                     Chest0
                 </div>
 
-                <h1>
+                <h1 data-profile="siteName">
                     Chest0 Hub
                 </h1>
 
-                <p class="subtitle">
+                <p
+                    class="subtitle"
+                    data-profile="tagline"
+                >
                     L'univers de Chest0 JM.S.
                 </p>
 
-                <p class="description">
+                <p
+                    class="description"
+                    data-profile="description"
+                >
                     Auteur et créateur de contenus autour du bien-être,
                     de l'alimentation, du sport, du développement personnel
                     et des projets numériques.
@@ -386,6 +397,7 @@
 
                 <a
                     class="primary-cta"
+                    data-profile-link="email"
                     href="mailto:fitfrenzy00@gmail.com"
                 >
                     Me contacter
@@ -402,13 +414,13 @@
 
         <div class="footer-content">
 
-            <strong>
+            <strong data-profile="brand">
                 Chest0
             </strong>
 
             <p>
                 © <span id="current-year"></span>
-                Chest0 JM.S.
+                <span data-profile="copyright">Chest0 JM.S.</span>
             </p>
 
             <a href="#">

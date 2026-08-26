@@ -44,6 +44,34 @@ Les contenus évolutifs sont stockés dans le dossier `data/`.
 - `navigation.json` : navigation ;
 - `settings.json` : paramètres généraux.
 
+### Sources actives
+
+Les fichiers suivants sont consommés par le site public et modifiables
+depuis Chest0 Hub Admin :
+
+- `profile.json` : identité commune, accueil, contact, logo, avatar et pieds de page ;
+- `social.json` : cartes des réseaux sociaux ;
+- `books.json` : identité auteur, page Amazon et fiches Livres ;
+- `products.json` : fiches Produits et mise en avant ;
+- `projects.json` : fiches Projets ;
+- `blog.json` : identité du blog et articles sélectionnés.
+
+Les identifiants `id` sont des clés techniques. Ils sont propagés dans le
+DOM avec `data-content-id` afin de conserver une identité stable sans être
+affichés comme du contenu éditorial.
+
+### Sources dormantes ou réservées
+
+Les fichiers suivants restent versionnés mais ne pilotent pas encore le
+site et ne sont pas proposés dans l’Admin :
+
+- `links.json` ;
+- `navigation.json` ;
+- `settings.json`.
+
+Ils ne doivent pas être présentés comme des sources fonctionnelles tant
+qu’un consommateur public explicite n’a pas été mis en place.
+
 ## Médias
 
 Les médias utilisés par le site sont stockés dans `assets/images/`.
@@ -84,6 +112,11 @@ L’interface permet de gérer :
 - le Blog ;
 - les médias associés.
 
+Le serveur valide le type racine, les champs indispensables, les types de
+champs, l’unicité des identifiants, les URL web et les chemins médias avant
+toute sauvegarde ou écriture. Un refus de validation laisse le fichier
+source inchangé.
+
 ## Fonctionnement local de l’Admin
 
 Chest0 Hub Admin est lancé avec :
@@ -101,6 +134,35 @@ http://127.0.0.1:8090
 L’Admin Python fonctionne uniquement en local et n’est pas exécuté par GitHub Pages.
 
 Les modifications réalisées avec l’Admin sont enregistrées dans les fichiers du projet local. Les fichiers destinés au site public peuvent ensuite être versionnés avec Git et publiés sur GitHub.
+
+Le flux réel est :
+
+```text
+ADMIN LOCAL
+    ↓
+JSON ACTIF / MÉDIA LOCAL
+    ↓
+MOTEUR DE DONNÉES
+    ↓
+SITE LOCAL
+    ↓
+COMMIT ET PUSH MANUELS
+    ↓
+GITHUB PAGES
+    ↓
+SITE PUBLIC
+```
+
+L’Admin ne crée aucun commit, ne fait aucun push et ne déclenche aucun
+déploiement.
+
+## Tests permanents
+
+La suite `tests/test_project.py` contrôle les JSON, les consommateurs,
+l’Admin sur une copie temporaire, les pages, les assets, JavaScript, les
+protections du Bloc 3 et l’absence de secret. Le test Deno
+`tests/test_data_engine.js` vérifie le rendu du profil et
+`tests/test_service_worker.js` vérifie dynamiquement l’isolation des caches.
 
 ## Sauvegardes
 

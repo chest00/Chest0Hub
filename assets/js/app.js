@@ -47,6 +47,9 @@ function initializeDynamicContent() {
     }
 
 
+    window.Chest0Data.renderProfile();
+
+
     /*
      * Page d'accueil :
      * réseaux sociaux.

@@ -907,6 +907,125 @@ class AdminHandler(BaseHTTPRequestHandler):
             )
 
 
+        validation_error = (
+            self.validate_required_fields(
+                file_name,
+                payload
+            )
+        )
+
+
+        if validation_error:
+
+            return validation_error
+
+
+        return None
+
+
+    def validate_required_fields(
+        self,
+        file_name,
+        payload
+    ):
+
+        profile_fields = {
+            "brand": (str, False),
+            "authorName": (str, False),
+            "siteName": (str, False),
+            "tagline": (str, False),
+            "description": (str, False),
+            "email": (str, False),
+            "copyright": (str, False),
+            "logo": (str, False),
+            "avatar": (str, False),
+        }
+
+
+        list_item_fields = {
+            "social.json": {
+                "id": (str, False),
+                "name": (str, False),
+                "username": (str, False),
+                "url": (str, False),
+                "description": (str, False),
+                "enabled": (bool, False),
+            },
+            "products.json": {
+                "id": (str, False),
+                "name": (str, False),
+                "platform": (str, False),
+                "description": (str, False),
+                "url": (str, True),
+                "image": (str, True),
+                "featured": (bool, False),
+                "enabled": (bool, False),
+            },
+            "projects.json": {
+                "id": (str, False),
+                "name": (str, False),
+                "status": (str, False),
+                "description": (str, False),
+                "url": (str, True),
+                "enabled": (bool, False),
+            },
+            "books.json": {
+                "id": (str, False),
+                "title": (str, False),
+                "description": (str, False),
+                "amazonUrl": (str, True),
+                "cover": (str, True),
+                "enabled": (bool, False),
+            },
+            "blog.json": {
+                "id": (str, False),
+                "title": (str, False),
+                "description": (str, False),
+                "url": (str, True),
+                "enabled": (bool, False),
+            },
+        }
+
+
+        if file_name == "profile.json":
+
+            error = self.validate_object_fields(
+                payload,
+                profile_fields,
+                "profile.json"
+            )
+
+
+            if error:
+                return error
+
+
+            if not re.fullmatch(
+                r"[^\s@]+@[^\s@]+\.[^\s@]+",
+                payload["email"]
+            ):
+
+                return "profile.json contient un email invalide."
+
+
+            for media_field in (
+                "logo",
+                "avatar",
+            ):
+
+                error = self.validate_media_path(
+                    payload[media_field],
+                    f"profile.json.{media_field}"
+                )
+
+
+                if error:
+                    return error
+
+
+            return None
+
+
         if file_name == "books.json":
 
             items = payload.get(
@@ -924,6 +1043,31 @@ class AdminHandler(BaseHTTPRequestHandler):
                 )
 
 
+            error = self.validate_object_fields(
+                payload,
+                {
+                    "author": (str, False),
+                    "amazonAuthorPage": (str, False),
+                    "items": (list, False),
+                },
+                "books.json"
+            )
+
+
+            if error:
+                return error
+
+
+            error = self.validate_web_url(
+                payload["amazonAuthorPage"],
+                "books.json.amazonAuthorPage"
+            )
+
+
+            if error:
+                return error
+
+
         if file_name == "blog.json":
 
             articles = payload.get(
@@ -939,6 +1083,256 @@ class AdminHandler(BaseHTTPRequestHandler):
                     "blog.json doit contenir "
                     "un champ articles de type liste."
                 )
+
+
+            error = self.validate_object_fields(
+                payload,
+                {
+                    "name": (str, False),
+                    "platform": (str, False),
+                    "url": (str, False),
+                    "description": (str, False),
+                    "articles": (list, False),
+                },
+                "blog.json"
+            )
+
+
+            if error:
+                return error
+
+
+            error = self.validate_web_url(
+                payload["url"],
+                "blog.json.url"
+            )
+
+
+            if error:
+                return error
+
+
+        items = payload
+
+
+        if file_name == "books.json":
+            items = payload["items"]
+
+
+        if file_name == "blog.json":
+            items = payload["articles"]
+
+
+        fields = list_item_fields.get(
+            file_name
+        )
+
+
+        if fields is not None:
+
+            identifiers = set()
+
+
+            for index, item in enumerate(items):
+
+                context = (
+                    f"{file_name}[{index}]"
+                )
+
+
+                if not isinstance(item, dict):
+
+                    return (
+                        f"{context} doit contenir "
+                        "un objet JSON."
+                    )
+
+
+                error = self.validate_object_fields(
+                    item,
+                    fields,
+                    context
+                )
+
+
+                if error:
+                    return error
+
+
+                identifier = item["id"].strip()
+
+
+                if identifier in identifiers:
+
+                    return (
+                        f"{file_name} contient "
+                        f"un identifiant dupliqué : {identifier}."
+                    )
+
+
+                identifiers.add(identifier)
+
+
+                for url_field in (
+                    "url",
+                    "amazonUrl",
+                ):
+
+                    if (
+                        url_field in item
+                        and item[url_field]
+                    ):
+
+                        error = self.validate_web_url(
+                            item[url_field],
+                            f"{context}.{url_field}"
+                        )
+
+
+                        if error:
+                            return error
+
+
+                for media_field in (
+                    "image",
+                    "cover",
+                ):
+
+                    if (
+                        media_field in item
+                        and item[media_field]
+                    ):
+
+                        error = self.validate_media_path(
+                            item[media_field],
+                            f"{context}.{media_field}"
+                        )
+
+
+                        if error:
+                            return error
+
+
+        return None
+
+
+    def validate_object_fields(
+        self,
+        payload,
+        fields,
+        context
+    ):
+
+        for field_name, configuration in fields.items():
+
+            expected_type, allow_empty = configuration
+
+
+            if field_name not in payload:
+
+                return (
+                    f"{context} doit contenir "
+                    f"le champ {field_name}."
+                )
+
+
+            value = payload[field_name]
+
+
+            if type(value) is not expected_type:
+
+                return (
+                    f"{context}.{field_name} "
+                    "a un type incompatible."
+                )
+
+
+            if (
+                expected_type is str
+                and not allow_empty
+                and not value.strip()
+            ):
+
+                return (
+                    f"{context}.{field_name} "
+                    "ne peut pas être vide."
+                )
+
+
+        return None
+
+
+    def validate_web_url(
+        self,
+        value,
+        context
+    ):
+
+        parsed = urlparse(value)
+
+
+        if (
+            parsed.scheme not in {
+                "http",
+                "https",
+            }
+            or not parsed.netloc
+        ):
+
+            return (
+                f"{context} doit contenir "
+                "une URL HTTP ou HTTPS valide."
+            )
+
+
+        return None
+
+
+    def validate_media_path(
+        self,
+        value,
+        context
+    ):
+
+        path = Path(value)
+
+
+        if (
+            not value.startswith("assets/")
+            or ".." in path.parts
+            or path.is_absolute()
+        ):
+
+            return (
+                f"{context} doit contenir "
+                "un chemin relatif dans assets/."
+            )
+
+
+        target = (
+            PROJECT_DIR / path
+        ).resolve()
+
+
+        try:
+
+            target.relative_to(
+                (PROJECT_DIR / "assets").resolve()
+            )
+
+        except ValueError:
+
+            return (
+                f"{context} sort du dossier assets/."
+            )
+
+
+        if not target.is_file():
+
+            return (
+                f"{context} référence "
+                "un média introuvable."
+            )
 
 
         return None
