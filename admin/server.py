@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote, parse_qs, urlparse
 from datetime import datetime
+import ipaddress
 import json
 import shutil
 import tempfile
@@ -12,6 +13,18 @@ import unicodedata
 
 HOST = "127.0.0.1"
 PORT = 8090
+
+ALLOWED_HOST_HEADERS = {
+    "127.0.0.1",
+    f"127.0.0.1:{PORT}",
+    "localhost",
+    f"localhost:{PORT}",
+}
+
+ALLOWED_ORIGINS = {
+    f"http://127.0.0.1:{PORT}",
+    f"http://localhost:{PORT}",
+}
 
 ADMIN_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = ADMIN_DIR.parent
@@ -83,7 +96,60 @@ ALLOWED_MEDIA_TYPES = {
 
 class AdminHandler(BaseHTTPRequestHandler):
 
+    def is_local_request_allowed(self):
+
+        try:
+
+            client_is_loopback = ipaddress.ip_address(
+                self.client_address[0]
+            ).is_loopback
+
+        except ValueError:
+
+            client_is_loopback = False
+
+
+        host = self.headers.get(
+            "Host",
+            ""
+        ).strip().lower()
+
+
+        origin = self.headers.get(
+            "Origin"
+        )
+
+
+        origin_is_allowed = (
+            origin is None
+            or origin in ALLOWED_ORIGINS
+        )
+
+
+        return (
+            client_is_loopback
+            and host in ALLOWED_HOST_HEADERS
+            and origin_is_allowed
+        )
+
+
+    def reject_non_local_request(self):
+
+        self.send_json(
+            {
+                "ok": False,
+                "error": "Accès local uniquement."
+            },
+            status=403
+        )
+
+
     def do_GET(self):
+
+        if not self.is_local_request_allowed():
+
+            self.reject_non_local_request()
+            return
 
         path = unquote(
             self.path.split("?", 1)[0]
@@ -181,6 +247,11 @@ class AdminHandler(BaseHTTPRequestHandler):
 
 
     def do_POST(self):
+
+        if not self.is_local_request_allowed():
+
+            self.reject_non_local_request()
+            return
 
         path = unquote(
             self.path.split("?", 1)[0]

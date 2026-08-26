@@ -1,7 +1,35 @@
 from pathlib import Path
 import json
+import os
 import shutil
+import sys
 from datetime import datetime
+
+
+CONFIRMATION_FLAG = (
+    "--confirm-historical-project-rewrite"
+)
+
+CONFIRMATION_ENVIRONMENT = (
+    "CHEST0_ALLOW_HISTORICAL_FINALIZE"
+)
+
+
+if (
+    __name__ != "__main__"
+    or sys.argv[1:] != [CONFIRMATION_FLAG]
+    or os.environ.get(
+        CONFIRMATION_ENVIRONMENT
+    ) != "YES"
+):
+
+    print(
+        "Script historique archivé : exécution bloquée. "
+        "Il réécrit massivement le projet et ne doit pas "
+        "être lancé comme une commande courante."
+    )
+
+    raise SystemExit(2)
 
 
 PROJECT = Path(__file__).resolve().parent.parent

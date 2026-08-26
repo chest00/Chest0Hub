@@ -17,7 +17,7 @@ echo "          Chest0 Hub"
 echo "======================================"
 echo ""
 echo "Serveur local :"
-echo "http://localhost:${PORT}"
+echo "http://127.0.0.1:${PORT}"
 echo ""
 echo "Pour arrêter le serveur :"
 echo "Control + C"
@@ -26,4 +26,4 @@ echo "======================================"
 echo ""
 
 
-python3 -m http.server "$PORT"
+python3 -m http.server "$PORT" --bind 127.0.0.1

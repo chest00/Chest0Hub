@@ -1,8 +1,12 @@
 "use strict";
 
 
+const CACHE_PREFIX =
+    "chest0-hub-";
+
+
 const CACHE_VERSION =
-    "chest0-hub-v1.0.0";
+    `${CACHE_PREFIX}v1.0.0`;
 
 
 const APP_SHELL = [
@@ -85,6 +89,9 @@ self.addEventListener(
                             cacheNames
                                 .filter(
                                     (cacheName) =>
+                                        cacheName.startsWith(
+                                            CACHE_PREFIX
+                                        ) &&
                                         cacheName !== CACHE_VERSION
                                 )
                                 .map(
