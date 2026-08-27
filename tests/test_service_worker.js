@@ -43,7 +43,7 @@ Deno.test(
                         "other-app-v7",
                         "chest0-hub-v0.9.0",
                         "chest0-hub-v1.0.0",
-                        "chest0-hub-v1.2.0"
+                        "chest0-hub-v1.3.0"
                     ],
                     delete: async (name) => {
                         deletedCaches.push(name);

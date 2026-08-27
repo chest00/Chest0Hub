@@ -229,6 +229,6 @@ Le Service Worker est désactivé sur `localhost` pendant le développement.
 
 Il est activé automatiquement sur le site public.
 
-Le cache actif porte le numéro `v1.2.0`. Grâce au préfixe `chest0-hub-`, son
+Le cache actif porte le numéro `v1.3.0`. Grâce au préfixe `chest0-hub-`, son
 activation supprime uniquement les anciens caches Chest0 Hub et conserve ceux
 des autres applications. Les JSON dormants ne font pas partie de l’app shell.

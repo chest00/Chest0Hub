@@ -1,6 +1,6 @@
 # Journal des versions — Chest0 Hub
 
-## En développement — Écosystème local
+## Version 1.3.0 — Écosystème local — 27 août 2026
 
 - Panneau Admin de lancement et d’état pour Quiz Studio et AI Studio.
 - Ports locaux fixes 8501 et 8502 et contrôle de santé Streamlit.

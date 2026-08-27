@@ -787,7 +787,7 @@ class Chest0HubTests(unittest.TestCase):
 
 
     def test_19_active_release_versions_are_consistent(self):
-        expected_version = "1.2.0"
+        expected_version = "1.3.0"
 
         admin_server = (
             ROOT / "admin/server.py"
