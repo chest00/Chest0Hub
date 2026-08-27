@@ -141,6 +141,25 @@ http://127.0.0.1:8090
 
 L’Admin Python fonctionne uniquement en local et n’est pas exécuté par GitHub Pages.
 
+### Contrôleur de l’écosystème local
+
+`admin/ecosystem.py` isole le registre allowlisté et le cycle de vie des deux
+applications locales. Les racines réelles viennent d’une configuration locale
+ignorée par Git ; le navigateur ne reçoit jamais ces chemins, les commandes,
+les PID ou les sorties système.
+
+Le contrôleur construit lui-même des arguments `subprocess` sans shell, impose
+les ports 8501 et 8502, vérifie la santé Streamlit et refuse tout arrêt d’un
+processus qu’il n’a pas lancé. Un port occupé par un service non détenu n’est
+jamais libéré automatiquement.
+
+Les endpoints de démarrage et d’arrêt restent sur le serveur Admin loopback et
+exigent les contrôles Host, Origin et un jeton CSRF en mémoire. La fermeture de
+l’Admin nettoie les processus qu’il détient.
+
+Le guide Exchange est un affichage de session sans persistance. Hub n’accède ni
+aux téléchargements, ni à SQLite, ni aux projets AI Studio.
+
 Les modifications réalisées avec l’Admin sont enregistrées dans les fichiers du projet local. Les fichiers destinés au site public peuvent ensuite être versionnés avec Git et publiés sur GitHub.
 
 Le flux réel est :

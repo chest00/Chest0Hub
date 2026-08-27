@@ -275,6 +275,31 @@ class Chest0HubTests(unittest.TestCase):
             module.STATIC_DIR = project / "admin/static"
             module.TEMPLATES_DIR = project / "admin/templates"
 
+            original_ecosystem_manager = module.ECOSYSTEM_MANAGER
+
+            class StubEcosystemManager:
+                def __init__(self):
+                    self.actions = []
+
+                def statuses(self):
+                    return [{
+                        "id": "chest0-quiz-studio", "label": "Chest0 Quiz Studio",
+                        "version": "1.1.0", "head": "12345678", "port": 8501,
+                        "url": "http://127.0.0.1:8501", "state": "arrêté",
+                        "owned": False, "message": "Application prête à être lancée.",
+                    }]
+
+                def start(self, identifier):
+                    self.actions.append(("start", identifier))
+                    return {**self.statuses()[0], "state": "opérationnel", "owned": True}
+
+                def stop(self, identifier):
+                    self.actions.append(("stop", identifier))
+                    return self.statuses()[0]
+
+            stub_ecosystem = StubEcosystemManager()
+            module.ECOSYSTEM_MANAGER = stub_ecosystem
+
             server = module.ThreadingHTTPServer(
                 ("127.0.0.1", 0),
                 module.AdminHandler
@@ -314,11 +339,32 @@ class Chest0HubTests(unittest.TestCase):
                 return response.status, content
 
             try:
-                status, _ = request(
+                status, content = request(
                     "GET",
                     "/api/status"
                 )
                 self.assertEqual(status, 200)
+                status_payload = json.loads(content)
+                csrf_token = status_payload["csrfToken"]
+                self.assertNotIn("project", status_payload)
+
+                status, content = request("GET", "/api/ecosystem/status")
+                self.assertEqual(status, 200)
+                self.assertNotIn(str(project), content.decode("utf-8"))
+
+                action_body = json.dumps({
+                    "applicationId": "chest0-quiz-studio"
+                }).encode("utf-8")
+                status, _ = request(
+                    "POST", "/api/ecosystem/start", body=action_body,
+                    headers={
+                        "Content-Type": "application/json",
+                        "Origin": "http://127.0.0.1:8090",
+                        "X-CSRF-Token": csrf_token,
+                    },
+                )
+                self.assertEqual(status, 200)
+                self.assertEqual(stub_ecosystem.actions, [("start", "chest0-quiz-studio")])
 
                 status, _ = request(
                     "GET",
@@ -355,6 +401,19 @@ class Chest0HubTests(unittest.TestCase):
                         "Origin": "http://127.0.0.1:8090",
                     }
                 )
+                self.assertEqual(status, 403)
+                self.assertEqual(sha256(profile_path), original_hash)
+
+                status, _ = request(
+                    "POST",
+                    "/api/save/profile.json",
+                    body=b'{"brand":"incomplet"}',
+                    headers={
+                        "Content-Type": "application/json",
+                        "Origin": "http://127.0.0.1:8090",
+                        "X-CSRF-Token": csrf_token,
+                    }
+                )
                 self.assertEqual(status, 400)
                 self.assertEqual(
                     sha256(profile_path),
@@ -372,6 +431,7 @@ class Chest0HubTests(unittest.TestCase):
                     headers={
                         "Content-Type": "application/json",
                         "Origin": "http://127.0.0.1:8090",
+                        "X-CSRF-Token": csrf_token,
                     }
                 )
                 self.assertEqual(status, 200)
@@ -392,6 +452,7 @@ class Chest0HubTests(unittest.TestCase):
                 server.shutdown()
                 server.server_close()
                 thread.join(timeout=5)
+                module.ECOSYSTEM_MANAGER = original_ecosystem_manager
 
 
     def test_08_seven_pages_and_internal_references(self):

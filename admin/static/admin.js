@@ -231,6 +231,8 @@ function appendFieldHelp(
 
 let allData = {};
 let activeSectionId = "profile";
+let csrfToken = "";
+let ecosystemTimer = null;
 
 
 document.addEventListener(
@@ -242,6 +244,13 @@ document.addEventListener(
 async function initializeAdmin() {
 
     await loadStatus();
+
+    await loadEcosystem();
+
+    ecosystemTimer = window.setInterval(
+        loadEcosystem,
+        3000
+    );
 
     const loaded =
         await loadData();
@@ -286,6 +295,8 @@ async function loadStatus() {
 
         const data =
             await response.json();
+
+        csrfToken = data.csrfToken || "";
 
 
         setText(
@@ -2434,7 +2445,9 @@ async function uploadMediaFile(
                 method: "POST",
                 headers: {
                     "Content-Type":
-                        file.type
+                        file.type,
+                    "X-CSRF-Token":
+                        csrfToken
                 },
                 body:
                     file
@@ -2702,7 +2715,9 @@ async function saveSection(
                     method: "POST",
                     headers: {
                         "Content-Type":
-                            "application/json"
+                            "application/json",
+                        "X-CSRF-Token":
+                            csrfToken
                     },
                     body:
                         JSON.stringify(
@@ -2930,6 +2945,93 @@ function setText(
 }
 
 
+async function loadEcosystem() {
+    const container = document.getElementById("ecosystem-applications");
+    if (!container) {
+        return;
+    }
+    try {
+        const response = await fetch("/api/ecosystem/status", {cache: "no-store"});
+        const result = await response.json();
+        if (!response.ok || !result.ok) {
+            throw new Error(result.error || `HTTP ${response.status}`);
+        }
+        renderEcosystem(result.applications);
+    } catch (error) {
+        container.replaceChildren();
+        const message = document.createElement("p");
+        message.className = "ecosystem-error";
+        message.textContent = "État des applications indisponible.";
+        container.appendChild(message);
+    }
+}
+
+
+function renderEcosystem(applications) {
+    const container = document.getElementById("ecosystem-applications");
+    container.replaceChildren();
+    applications.forEach((application) => {
+        const card = document.createElement("article");
+        card.className = "ecosystem-card";
+        const heading = document.createElement("h3");
+        heading.textContent = application.label;
+        const state = document.createElement("span");
+        state.className = `ecosystem-state state-${application.state}`;
+        state.textContent = application.state.replaceAll("_", " ");
+        const details = document.createElement("p");
+        details.className = "ecosystem-details";
+        details.textContent = `Version ${application.version} · HEAD ${application.head || "indéterminé"} · port ${application.port}`;
+        const explanation = document.createElement("p");
+        explanation.className = "ecosystem-message";
+        explanation.textContent = application.message;
+        const actions = document.createElement("div");
+        actions.className = "ecosystem-actions";
+
+        const start = ecosystemButton("Lancer", () => ecosystemAction("start", application.id));
+        start.disabled = !["arrêté", "erreur"].includes(application.state);
+        const open = ecosystemButton("Ouvrir", () => window.open(application.url, "_blank", "noopener"));
+        open.disabled = !["opérationnel", "déjà_actif"].includes(application.state);
+        const stop = ecosystemButton("Arrêter", () => ecosystemAction("stop", application.id));
+        stop.disabled = !application.owned;
+        actions.append(start, open, stop);
+        card.append(heading, state, details, explanation, actions);
+        container.appendChild(card);
+    });
+}
+
+
+function ecosystemButton(label, handler) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = label;
+    button.addEventListener("click", handler);
+    return button;
+}
+
+
+async function ecosystemAction(action, applicationId) {
+    try {
+        const response = await fetch(`/api/ecosystem/${action}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": csrfToken
+            },
+            body: JSON.stringify({applicationId})
+        });
+        const result = await response.json();
+        if (!response.ok || !result.ok) {
+            throw new Error(result.error || `HTTP ${response.status}`);
+        }
+        showNotification(action === "start" ? "Application lancée." : "Application arrêtée.", "success");
+        await loadEcosystem();
+    } catch (error) {
+        showNotification(`Écosystème : ${error.message}`, "error");
+        await loadEcosystem();
+    }
+}
+
+
 window.addEventListener(
     "beforeunload",
     (event) => {
@@ -2945,4 +3047,3 @@ window.addEventListener(
             "";
     }
 );
-

@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "chest0-quiz-studio": {
+      "root": "/path/to/Chest0QuizStudio"
+    },
+    "chest0-ai-studio": {
+      "root": "/path/to/Chest0AIStudio"
+    }
+  }
+}

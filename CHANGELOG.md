@@ -1,5 +1,16 @@
 # Journal des versions — Chest0 Hub
 
+## En développement — Écosystème local
+
+- Panneau Admin de lancement et d’état pour Quiz Studio et AI Studio.
+- Ports locaux fixes 8501 et 8502 et contrôle de santé Streamlit.
+- Registre allowlisté, processus détenus et arrêt sécurisé sans shell.
+- Protection CSRF des actions Admin mutables.
+- Guide non persistant du parcours Chest0 Quiz Exchange 1.0.
+- Aucun accès Hub aux paquets, bases ou projets des applications.
+
+---
+
 ## Version 1.2.0 — Fiabilité et assainissement structurel
 
 ### Amélioré

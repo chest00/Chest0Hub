@@ -151,6 +151,25 @@ L’Admin permet de gérer :
 - les Projets ;
 - le Blog.
 
+### Écosystème local
+
+L’Admin comprend un panneau local permettant de contrôler Chest0 Quiz Studio
+et Chest0 AI Studio. Les chemins propres à la machine sont définis dans
+`config/ecosystem.local.json`, créé à partir de
+`config/ecosystem.example.json` et ignoré par Git.
+
+- Hub Admin : `127.0.0.1:8090` ;
+- Quiz Studio : `127.0.0.1:8501` ;
+- AI Studio : `127.0.0.1:8502`.
+
+Le panneau affiche disponibilité, version, HEAD abrégé et état technique. Il
+peut lancer et arrêter uniquement les processus qu’il possède. Les commandes
+sont allowlistées côté serveur et les actions sont protégées par CSRF.
+
+Le guide Quiz Exchange reste informatif : Hub ne recherche, ne lit, ne copie et
+ne valide aucun JSON. La sélection du fichier, Kokoro, la confirmation et la
+promotion restent entièrement dans AI Studio.
+
 Depuis la V1.1.0, l’Admin comprend également :
 
 - l’import d’images depuis Finder ;

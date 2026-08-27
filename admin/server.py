@@ -7,8 +7,15 @@ import json
 import shutil
 import tempfile
 import hashlib
+import hmac
 import re
+import secrets
 import unicodedata
+
+try:
+    from admin.ecosystem import EcosystemError, EcosystemManager
+except ModuleNotFoundError:
+    from ecosystem import EcosystemError, EcosystemManager
 
 
 HOST = "127.0.0.1"
@@ -33,6 +40,9 @@ TEMPLATES_DIR = ADMIN_DIR / "templates"
 STATIC_DIR = ADMIN_DIR / "static"
 DATA_DIR = PROJECT_DIR / "data"
 BACKUP_DIR = PROJECT_DIR / "backups" / "admin"
+ECOSYSTEM_CONFIG = PROJECT_DIR / "config" / "ecosystem.local.json"
+ECOSYSTEM_MANAGER = EcosystemManager(ECOSYSTEM_CONFIG)
+CSRF_TOKEN = secrets.token_urlsafe(32)
 
 
 CONTENT_TYPES = {
@@ -227,8 +237,17 @@ class AdminHandler(BaseHTTPRequestHandler):
                     "application": "Chest0 Hub Admin",
                     "version": "1.2.0",
                     "status": "ok",
-                    "project": str(PROJECT_DIR),
                     "mode": "local",
+                    "csrfToken": CSRF_TOKEN,
+                }
+            )
+            return
+
+        if path == "/api/ecosystem/status":
+            self.send_json(
+                {
+                    "ok": True,
+                    "applications": ECOSYSTEM_MANAGER.statuses(),
                 }
             )
             return
@@ -253,6 +272,14 @@ class AdminHandler(BaseHTTPRequestHandler):
             self.reject_non_local_request()
             return
 
+        supplied_token = self.headers.get("X-CSRF-Token", "")
+        if not hmac.compare_digest(supplied_token, CSRF_TOKEN):
+            self.send_json(
+                {"ok": False, "error": "Jeton de sécurité absent ou invalide."},
+                status=403,
+            )
+            return
+
         path = unquote(
             self.path.split("?", 1)[0]
         )
@@ -260,6 +287,10 @@ class AdminHandler(BaseHTTPRequestHandler):
         parsed_url = urlparse(
             self.path
         )
+
+        if parsed_url.path in {"/api/ecosystem/start", "/api/ecosystem/stop"}:
+            self.handle_ecosystem_action(parsed_url.path)
+            return
 
         if parsed_url.path == "/api/media/upload":
 
@@ -319,6 +350,37 @@ class AdminHandler(BaseHTTPRequestHandler):
         self.save_data_file(
             file_name
         )
+
+
+    def handle_ecosystem_action(self, path):
+        try:
+            content_length = int(self.headers.get("Content-Length", "0"))
+        except ValueError:
+            content_length = 0
+        if content_length <= 0 or content_length > 4096:
+            self.send_json({"ok": False, "error": "Requête invalide."}, status=400)
+            return
+        try:
+            payload = json.loads(self.rfile.read(content_length).decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            self.send_json({"ok": False, "error": "JSON invalide."}, status=400)
+            return
+        if not isinstance(payload, dict) or set(payload) != {"applicationId"}:
+            self.send_json({"ok": False, "error": "Requête invalide."}, status=400)
+            return
+        identifier = payload.get("applicationId")
+        if not isinstance(identifier, str):
+            self.send_json({"ok": False, "error": "Application non autorisée."}, status=400)
+            return
+        try:
+            if path.endswith("/start"):
+                application = ECOSYSTEM_MANAGER.start(identifier)
+            else:
+                application = ECOSYSTEM_MANAGER.stop(identifier)
+        except EcosystemError as exc:
+            self.send_json({"ok": False, "error": str(exc)}, status=409)
+            return
+        self.send_json({"ok": True, "application": application})
 
 
     def upload_media(
@@ -1634,6 +1696,8 @@ def main():
         )
 
     finally:
+
+        ECOSYSTEM_MANAGER.shutdown()
 
         server.server_close()
 

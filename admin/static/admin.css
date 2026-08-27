@@ -931,3 +931,94 @@ footer {
     background: rgba(255, 176, 176, 0.08);
     color: #ffd0d0;
 }
+
+
+.ecosystem-panel {
+    margin: 0 0 50px;
+    padding: 30px;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: var(--surface);
+}
+
+.ecosystem-intro,
+.exchange-guide p,
+.ecosystem-message,
+.ecosystem-details {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.ecosystem-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin: 24px 0;
+}
+
+.ecosystem-card {
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface-light);
+}
+
+.ecosystem-state {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: capitalize;
+}
+
+.state-opérationnel,
+.state-déjà_actif {
+    color: var(--success);
+    background: rgba(116, 198, 157, 0.1);
+}
+
+.state-erreur,
+.state-port_occupé,
+.ecosystem-error {
+    color: #ffb0b0;
+}
+
+.ecosystem-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.ecosystem-actions button {
+    margin: 0;
+}
+
+.exchange-guide {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+}
+
+.guide-steps {
+    display: grid;
+    gap: 10px;
+    padding-left: 24px;
+}
+
+.guide-steps label {
+    cursor: pointer;
+    line-height: 1.5;
+}
+
+@media (max-width: 720px) {
+    .ecosystem-panel {
+        padding: 22px;
+    }
+
+    .ecosystem-grid {
+        grid-template-columns: 1fr;
+    }
+}

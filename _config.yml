@@ -11,3 +11,4 @@ exclude:
   - data/links.json
   - data/navigation.json
   - data/settings.json
+  - config

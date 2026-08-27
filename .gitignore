@@ -5,3 +5,4 @@ temp/
 tmp/
 backups/
 __pycache__/
+config/ecosystem.local.json
