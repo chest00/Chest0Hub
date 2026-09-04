@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://chest0.fr/sitemap.xml

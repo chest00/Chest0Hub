@@ -835,5 +835,105 @@ class Chest0HubTests(unittest.TestCase):
         self.assertNotIn("1.0.0-dev", admin_server)
 
 
+
+    def test_20_public_pages_have_complete_core_seo(self):
+        expected_urls = {
+            "index.html": "https://chest0.fr/",
+            "apropos.html": "https://chest0.fr/pages/apropos.html",
+            "blog.html": "https://chest0.fr/pages/blog.html",
+            "contact.html": "https://chest0.fr/pages/contact.html",
+            "livres.html": "https://chest0.fr/pages/livres.html",
+            "produits.html": "https://chest0.fr/pages/produits.html",
+            "projets.html": "https://chest0.fr/pages/projets.html",
+        }
+        for page in PUBLIC_PAGES:
+            with self.subTest(page=page.name):
+                text = page.read_text(encoding="utf-8")
+                expected_url = expected_urls[page.name]
+                self.assertIn(
+                    f'<link rel="canonical" href="{expected_url}">',
+                    text
+                )
+                self.assertIn(
+                    f'<meta property="og:url" content="{expected_url}">',
+                    text
+                )
+                for marker in (
+                    'property="og:title"',
+                    'property="og:description"',
+                    'property="og:type"',
+                    'property="og:site_name"',
+                    'property="og:locale"',
+                    'name="twitter:card"',
+                    'name="twitter:title"',
+                    'name="twitter:description"',
+                    'type="application/ld+json"',
+                ):
+                    self.assertIn(marker, text)
+                self.assertNotIn(
+                    "https://chest00.github.io/Chest0Hub/",
+                    text
+                )
+
+    def test_21_sitemap_robots_and_404_are_consistent(self):
+        sitemap = (ROOT / "sitemap.xml").read_text(
+            encoding="utf-8"
+        )
+        robots = (ROOT / "robots.txt").read_text(
+            encoding="utf-8"
+        )
+        not_found = (ROOT / "404.html").read_text(
+            encoding="utf-8"
+        )
+        expected_urls = {
+            "https://chest0.fr/",
+            "https://chest0.fr/pages/apropos.html",
+            "https://chest0.fr/pages/blog.html",
+            "https://chest0.fr/pages/contact.html",
+            "https://chest0.fr/pages/livres.html",
+            "https://chest0.fr/pages/produits.html",
+            "https://chest0.fr/pages/projets.html",
+        }
+        for url in expected_urls:
+            with self.subTest(url=url):
+                self.assertIn(f"<loc>{url}</loc>", sitemap)
+        self.assertEqual(sitemap.count("<url>"), 7)
+        self.assertIn(
+            "Sitemap: https://chest0.fr/sitemap.xml",
+            robots
+        )
+        self.assertIn("User-agent: *", robots)
+        self.assertIn("Allow: /", robots)
+        self.assertIn(
+            'name="robots" content="noindex, follow"',
+            not_found
+        )
+        self.assertIn('href="/"', not_found)
+
+    def test_22_public_chest0_hub_url_uses_custom_domain(self):
+        projects = json.loads(
+            (ROOT / "data/projects.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        chest0_hub = next(
+            item
+            for item in projects
+            if item["id"] == "chest0-hub"
+        )
+        self.assertEqual(
+            chest0_hub["url"],
+            "https://chest0.fr/"
+        )
+        readme = (ROOT / "README.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("https://chest0.fr/", readme)
+        self.assertNotIn(
+            "https://chest00.github.io/Chest0Hub/",
+            readme
+        )
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -39,6 +39,7 @@ const APP_SHELL = [
     "./assets/icons/x.svg",
     "./assets/icons/mail.svg",
 
+    "./404.html",
     "./manifest.webmanifest",
 
     "./data/profile.json",
