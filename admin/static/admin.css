@@ -996,6 +996,13 @@ footer {
     margin: 0;
 }
 
+.ecosystem-action-help {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.45;
+}
+
 .exchange-guide {
     margin-top: 28px;
     padding-top: 24px;

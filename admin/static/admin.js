@@ -2994,7 +2994,10 @@ function renderEcosystem(applications) {
         const stop = ecosystemButton("Arrêter", () => ecosystemAction("stop", application.id));
         stop.disabled = !application.owned;
         actions.append(start, open, stop);
-        card.append(heading, state, details, explanation, actions);
+        const actionHelp = document.createElement("p");
+        actionHelp.className = "ecosystem-action-help";
+        actionHelp.textContent = "Lancer démarre l’application en arrière-plan · Ouvrir l’affiche dans le navigateur · Arrêter ferme uniquement le processus lancé par Hub.";
+        card.append(heading, state, details, explanation, actions, actionHelp);
         container.appendChild(card);
     });
 }

@@ -62,7 +62,7 @@ class ApplicationDefinition:
         return (
             str(self.python), "-m", "streamlit", "run", self.entrypoint,
             "--server.address", "127.0.0.1", "--server.port", str(self.port),
-            "--server.fileWatcherType", "none",
+            "--server.fileWatcherType", "none", "--server.headless", "true",
         )
 
 

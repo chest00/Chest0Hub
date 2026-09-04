@@ -132,6 +132,7 @@ class EcosystemManagerTests(unittest.TestCase):
         arguments, options = calls[0]
         self.assertIsInstance(arguments, list)
         self.assertEqual(arguments[arguments.index("--server.port") + 1], "8501")
+        self.assertEqual(arguments[arguments.index("--server.headless") + 1], "true")
         self.assertNotIn("shell", options)
         manager.stop("chest0-quiz-studio")
         self.assertTrue(process.terminated)
@@ -160,8 +161,20 @@ class EcosystemManagerTests(unittest.TestCase):
         self.assertIn("Écosystème local", html)
         self.assertIn("Chest0 Hub ne lit pas et ne transfère pas le paquet", html)
         self.assertIn("Importer un quiz Chest0", html)
+        self.assertIn("Lancer démarre l’application en arrière-plan", js)
+        self.assertIn("Ouvrir l’affiche dans le navigateur", js)
+        self.assertIn("Arrêter ferme uniquement le processus lancé par Hub", js)
         self.assertNotIn("file_uploader", html + js)
         self.assertNotIn("shell=True", (root / "admin/ecosystem.py").read_text())
+
+    def test_admin_launcher_disables_bytecode_and_certification_uses_ast(self):
+        root = Path(__file__).parents[1]
+        launcher = (root / "run_admin.sh").read_text(encoding="utf-8")
+        validation = (root / "scripts/validate.sh").read_text(encoding="utf-8")
+        self.assertIn("PYTHONDONTWRITEBYTECODE=1 python3 -B admin/server.py", launcher)
+        self.assertIn("ast.parse", validation)
+        self.assertNotIn("py_compile", validation)
+        self.assertIn("fichier Python compilé indésirable détecté", validation)
 
 
 if __name__ == "__main__":

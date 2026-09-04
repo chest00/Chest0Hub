@@ -26,4 +26,4 @@ echo
 echo "======================================"
 echo
 
-python3 admin/server.py
+PYTHONDONTWRITEBYTECODE=1 python3 -B admin/server.py
