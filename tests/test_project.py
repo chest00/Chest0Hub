@@ -935,5 +935,61 @@ class Chest0HubTests(unittest.TestCase):
         )
 
 
+    def test_23_indexnow_key_is_publishable(self):
+        key_files = list(ROOT.glob("*.txt"))
+        indexnow_keys = [
+            path
+            for path in key_files
+            if len(path.stem) == 32
+            and path.stem.isalnum()
+        ]
+        self.assertEqual(len(indexnow_keys), 1)
+
+        key_file = indexnow_keys[0]
+        key = key_file.read_text(encoding="utf-8").strip()
+
+        self.assertEqual(key_file.stem, key)
+        self.assertEqual(len(key), 32)
+        self.assertTrue(key.isalnum())
+
+        config = (ROOT / "_config.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertNotIn(key_file.name, config)
+
+        sitemap = (ROOT / "sitemap.xml").read_text(
+            encoding="utf-8"
+        )
+        self.assertNotIn(key_file.name, sitemap)
+
+    def test_24_indexnow_script_has_safety_guards(self):
+        script_path = ROOT / "scripts/indexnow.py"
+        self.assertTrue(script_path.is_file())
+
+        script = script_path.read_text(encoding="utf-8")
+
+        for marker in (
+            'HOST = "chest0.fr"',
+            'BASE_URL = f"https://{HOST}"',
+            'ENDPOINT = "https://api.indexnow.org/indexnow"',
+            'MAX_URLS = 10_000',
+            'parsed.scheme != "https"',
+            'parsed.hostname != HOST',
+            'parsed.fragment',
+            '"--dry-run"',
+            '"keyLocation": KEY_LOCATION',
+            '"urlList": prepare_urls(urls)',
+            'status == 200',
+            'status == 202',
+            '400: "requête invalide"',
+            '403: "clé invalide ou non autorisée"',
+            '422: "URL ou clé incompatible avec l\'hôte"',
+            '429: "trop de requêtes"',
+        ):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, script)
+
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
