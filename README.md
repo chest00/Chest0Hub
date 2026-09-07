@@ -220,6 +220,44 @@ Documentation complémentaire :
 - `docs/BRAND.md` ;
 - `CHANGELOG.md`.
 
+## SEO et indexation
+
+Le domaine public canonique de Chest0 Hub est :
+
+```text
+https://chest0.fr/
+```
+
+Le référencement technique repose sur :
+
+- `sitemap.xml` : liste les sept pages publiques ;
+- `robots.txt` : autorise l’exploration du site et référence le sitemap ;
+- des URL canoniques en `https://chest0.fr/` ;
+- des métadonnées SEO, Open Graph, Twitter et Schema.org sur les pages publiques ;
+- Google Search Console pour le suivi de l’indexation Google ;
+- Bing Webmaster Tools pour le suivi de l’indexation Bing ;
+- IndexNow pour notifier les moteurs compatibles après une publication.
+
+Le sitemap public est disponible à l’adresse :
+
+```text
+https://chest0.fr/sitemap.xml
+```
+
+La clé IndexNow est publiée à la racine du site. Le script
+`scripts/indexnow.py` permet d’envoyer les URL publiées à IndexNow.
+
+Exemple de contrôle sans envoi réseau :
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/indexnow.py --dry-run https://chest0.fr/
+```
+
+Une notification IndexNow doit être effectuée uniquement après la publication
+effective des modifications sur `https://chest0.fr/`. L’acceptation d’une
+notification par IndexNow ne garantit pas son indexation par un moteur de
+recherche.
+
 ## Validation technique
 
 Depuis la racine du dépôt, la campagne qualité complète se lance avec une
