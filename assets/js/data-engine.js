@@ -1412,3 +1412,23 @@ const Chest0Data = {
 
 window.Chest0Data =
     Chest0Data;
+
+/* Phase 4 - partage natif et copie de lien, sans service tiers. */
+function initChest0Share() {
+  if (typeof document === "undefined" || typeof document.querySelector !== "function") return;
+  const host=document.querySelector("main");
+  if (!host || document.querySelector("[data-chest0-share]")) return;
+  const box=document.createElement("section");
+  box.className="share-panel"; box.setAttribute("data-chest0-share","");
+  const title=document.createElement("h2"); title.textContent="Partager cette page";
+  const text=document.createElement("p"); text.textContent="Partagez cette page ou copiez son adresse.";
+  const button=document.createElement("button"); button.type="button"; button.className="primary-cta share-button";
+  button.textContent=navigator.share ? "Partager" : "Copier le lien";
+  const feedback=document.createElement("span"); feedback.className="share-feedback"; feedback.setAttribute("aria-live","polite");
+  button.addEventListener("click",async()=>{const url=document.querySelector('link[rel="canonical"]')?.href||location.href;
+    try{if(navigator.share){await navigator.share({title:document.title,url});feedback.textContent="Page partagée.";}
+    else if(navigator.clipboard){await navigator.clipboard.writeText(url);feedback.textContent="Lien copié.";}
+    else feedback.textContent=url;}catch(error){if(error&&error.name!=="AbortError")feedback.textContent="Partage indisponible.";}});
+  box.append(title,text,button,feedback); host.appendChild(box);
+}
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",initChest0Share,{once:true}); else initChest0Share();

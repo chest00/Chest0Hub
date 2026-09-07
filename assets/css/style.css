@@ -1611,3 +1611,8 @@ body.menu-open {
 #products-grid {
     min-height: 760px;
 }
+
+/* Phase 4 - distribution */
+.share-panel { max-width:760px; margin:2rem auto; padding:1.25rem; text-align:center; }
+.share-panel h2 { margin-top:0; }
+.share-panel .share-feedback { display:block; min-height:1.5em; margin-top:.75rem; }
