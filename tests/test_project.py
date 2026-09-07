@@ -991,5 +991,29 @@ class Chest0HubTests(unittest.TestCase):
 
 
 
+
+    def test_25_blog_rss_feed_is_public_and_integrated(self):
+        import xml.etree.ElementTree as ET
+
+        feed_path = ROOT / "feed.xml"
+        self.assertTrue(feed_path.exists())
+        root_xml = ET.fromstring(feed_path.read_text(encoding="utf-8"))
+        self.assertEqual(root_xml.tag, "rss")
+
+        blog_page = (ROOT / "pages/blog.html").read_text(encoding="utf-8")
+        self.assertIn('type="application/rss+xml"', blog_page)
+        self.assertIn("https://chest0.fr/feed.xml", blog_page)
+
+        server = (ROOT / "admin/server.py").read_text(encoding="utf-8")
+        self.assertIn("CHEST0_FEED_GENERATOR_V1", server)
+        self.assertIn('if file_name == "blog.json":', server)
+        self.assertIn("self.write_blog_feed(payload)", server)
+
+        blog_data = json.loads((ROOT / "data/blog.json").read_text(encoding="utf-8"))
+        xml_text = feed_path.read_text(encoding="utf-8")
+        for article in blog_data.get("articles", []):
+            if article.get("enabled") and article.get("url"):
+                self.assertIn(article["url"].replace("&", "&amp;"), xml_text)
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

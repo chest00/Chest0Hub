@@ -11,6 +11,7 @@ import hmac
 import re
 import secrets
 import unicodedata
+from xml.sax.saxutils import escape
 
 try:
     from admin.ecosystem import EcosystemError, EcosystemManager
@@ -776,6 +777,67 @@ class AdminHandler(BaseHTTPRequestHandler):
         return result
 
 
+    # CHEST0_FEED_GENERATOR_V1
+    def build_blog_feed(self, payload):
+        site_url = "https://chest0.fr"
+        feed_url = site_url + "/feed.xml"
+        title = str(payload.get("name") or "Chest0 Hub — Blog")
+        description = str(payload.get("description") or "Articles de Chest0 JM.S.")
+        items = []
+
+        for article in payload.get("articles", []):
+            if not isinstance(article, dict) or not article.get("enabled"):
+                continue
+            article_url = str(article.get("url") or "").strip()
+            article_title = str(article.get("title") or "").strip()
+            article_description = str(article.get("description") or "").strip()
+            if not article_url.startswith(("https://", "http://")) or not article_title:
+                continue
+            safe_url = escape(article_url, {'"': "&quot;"})
+            items.append(
+                "    <item>\n"
+                + "      <title>" + escape(article_title) + "</title>\n"
+                + "      <link>" + safe_url + "</link>\n"
+                + "      <guid isPermaLink=\"true\">" + safe_url + "</guid>\n"
+                + "      <description>" + escape(article_description) + "</description>\n"
+                + "    </item>"
+            )
+
+        item_block = "\n".join(items)
+        if item_block:
+            item_block += "\n"
+
+        return (
+            '<?xml version="1.0" encoding="UTF-8"?>\n'
+            + '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n'
+            + "  <channel>\n"
+            + "    <title>" + escape(title) + "</title>\n"
+            + "    <link>" + site_url + "/pages/blog.html</link>\n"
+            + "    <description>" + escape(description) + "</description>\n"
+            + "    <language>fr-FR</language>\n"
+            + '    <atom:link href="' + feed_url + '" rel="self" type="application/rss+xml" />\n'
+            + item_block
+            + "  </channel>\n"
+            + "</rss>\n"
+        )
+
+    def write_blog_feed(self, payload):
+        target = PROJECT_DIR / "feed.xml"
+        content = self.build_blog_feed(payload)
+        temporary_path = None
+        try:
+            with tempfile.NamedTemporaryFile(
+                mode="w", encoding="utf-8", dir=PROJECT_DIR,
+                prefix=".feed-", suffix=".xml", delete=False
+            ) as temporary_file:
+                temporary_file.write(content)
+                temporary_file.flush()
+                temporary_path = Path(temporary_file.name)
+            temporary_path.replace(target)
+        finally:
+            if temporary_path and temporary_path.exists():
+                temporary_path.unlink()
+
     def save_data_file(
         self,
         file_name
@@ -891,6 +953,9 @@ class AdminHandler(BaseHTTPRequestHandler):
                 target,
                 payload
             )
+
+            if file_name == "blog.json":
+                self.write_blog_feed(payload)
 
 
             self.send_json(
