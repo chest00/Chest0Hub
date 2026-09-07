@@ -596,7 +596,7 @@ const Chest0Data = {
 
                     const title =
                         document.createElement(
-                            "h3"
+                            "h2"
                         );
 
 
@@ -757,6 +757,18 @@ const Chest0Data = {
 
                         image.src =
                             `${this.getRootPath()}${item.image}`;
+
+                        const productImageDimensions = {
+                            "assets/images/products/image-principale-hero-d60f3b0b.png": [1448, 1086],
+                            "assets/images/products/template-gumroad-bedc3ce6.png": [445, 634],
+                        };
+
+                        const dimensions = productImageDimensions[item.image];
+
+                        if (dimensions) {
+                            image.width = dimensions[0];
+                            image.height = dimensions[1];
+                        }
 
 
                         image.alt =

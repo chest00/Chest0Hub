@@ -1595,3 +1595,14 @@ body.menu-open {
     }
 
 }
+
+
+/* PERFORMANCE_MOBILE_DYNAMIC_LAYOUT_STABILITY */
+.page-hero,
+#projects-page-grid {
+    min-height: 560px;
+}
+
+#products-grid {
+    min-height: 760px;
+}
