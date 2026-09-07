@@ -232,3 +232,19 @@ Il est activé automatiquement sur le site public.
 Le cache actif porte le numéro `v1.3.0`. Grâce au préfixe `chest0-hub-`, son
 activation supprime uniquement les anciens caches Chest0 Hub et conserve ceux
 des autres applications. Les JSON dormants ne font pas partie de l’app shell.
+
+## Distribution de l’écosystème Chest0
+
+<!-- CHEST0_ECOSYSTEM_DISTRIBUTION_POLICY_V1 -->
+
+Chest0 Hub (`https://chest0.fr/`) est le point central de découverte de l’écosystème Chest0.
+
+Principe permanent pour les projets et contenus Chest0 :
+
+- tout nouveau projet public Chest0 doit prévoir, lorsque le contexte s’y prête, un lien visible vers `https://chest0.fr/` ;
+- les pages, applications, livres, produits et contenus externes contrôlés doivent favoriser un retour vers Chest0 Hub lorsque la plateforme l’autorise ;
+- Chest0 Hub centralise ensuite la circulation vers les livres, articles, produits, réseaux et projets ;
+- cette circulation doit rester utile et naturelle : aucun lien artificiel, trompeur ou répétitif ne doit être ajouté uniquement pour le référencement ;
+- les fonctions essentielles des projets ne doivent jamais dépendre d’un réseau social ou d’un service payant pour assurer cette circulation.
+
+Cette règle doit être prise en compte dès la conception des futurs projets Chest0 afin que l’écosystème renforce progressivement et durablement la visibilité de `chest0.fr`.
