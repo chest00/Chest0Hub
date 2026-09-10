@@ -17,6 +17,13 @@
       "description": "Découvrez le microbiote intestinal, sa composition et les raisons pour lesquelles cet écosystème microscopique occupe une place importante dans l’équilibre quotidien.",
       "url": "https://bien-et-etre.blogspot.com/2026/07/le-microbiote-intestinal-cet-organe.html",
       "enabled": true
+    },
+    {
+      "id": "Article-AAPSS",
+      "title": "Alimentation, activité physique, sédentarité, sommeil : 4 habitudes à observer au quotidien",
+      "description": "Nos habitudes quotidiennes se construisent souvent sans que nous y prêtions vraiment attention. Ce que nous mangeons, notre niveau d’activité physique, le temps que nous passons assis ou encore la qualité de notre sommeil font pourtant partie des grands aspects de notre mode de vie.",
+      "url": "https://bien-et-etre.blogspot.com/2026/09/alimentation-activite-physique-sedentarite-sommeil.html",
+      "enabled": true
     }
   ]
 }
