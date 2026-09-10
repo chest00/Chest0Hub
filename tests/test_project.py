@@ -893,11 +893,13 @@ class Chest0HubTests(unittest.TestCase):
             "https://chest0.fr/pages/livres.html",
             "https://chest0.fr/pages/produits.html",
             "https://chest0.fr/pages/projets.html",
+            "https://chest0.fr/outils/",
+            "https://chest0.fr/outils/equilibre-quotidien/",
         }
         for url in expected_urls:
             with self.subTest(url=url):
                 self.assertIn(f"<loc>{url}</loc>", sitemap)
-        self.assertEqual(sitemap.count("<url>"), 7)
+        self.assertEqual(sitemap.count("<url>"), 9)
         self.assertIn(
             "Sitemap: https://chest0.fr/sitemap.xml",
             robots
@@ -1014,6 +1016,24 @@ class Chest0HubTests(unittest.TestCase):
         for article in blog_data.get("articles", []):
             if article.get("enabled") and article.get("url"):
                 self.assertIn(article["url"].replace("&", "&amp;"), xml_text)
+
+
+    def test_26_free_tools_are_public_and_safe(self):
+        tools_index = ROOT / "outils" / "index.html"
+        balance = ROOT / "outils" / "equilibre-quotidien" / "index.html"
+        script = ROOT / "assets" / "js" / "equilibre-quotidien.js"
+        self.assertTrue(tools_index.exists())
+        self.assertTrue(balance.exists())
+        self.assertTrue(script.exists())
+        text = balance.read_text(encoding="utf-8")
+        self.assertIn("aucune réponse au questionnaire n'est envoyée à Chest0", text)
+        self.assertIn("Il ne constitue ni un diagnostic", text)
+        self.assertIn('rel="canonical" href="https://chest0.fr/outils/equilibre-quotidien/"', text)
+        self.assertIn('type="application/ld+json"', text)
+        js = script.read_text(encoding="utf-8")
+        self.assertIn('navigator.share', js)
+        self.assertNotIn("localStorage", js)
+        self.assertNotIn("sessionStorage", js)
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
