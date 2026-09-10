@@ -1034,6 +1034,14 @@ class Chest0HubTests(unittest.TestCase):
         self.assertIn('navigator.share', js)
         self.assertNotIn("localStorage", js)
         self.assertNotIn("sessionStorage", js)
+        self.assertNotIn("fetch(", js)
+        self.assertNotIn("XMLHttpRequest", js)
+        self.assertNotIn("sendBeacon", js)
+        self.assertIn('["q12",null,', js)
+        self.assertIn('Q.filter(q=>q[1])', js)
+        self.assertIn('d.get("q12")', js)
+        self.assertIn('id="change-method"', text)
+        self.assertIn('"inLanguage":"fr"', text)
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
