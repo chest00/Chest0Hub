@@ -92,8 +92,8 @@ PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest \
 
 step "Tests JavaScript/Deno permanents"
 DENO_DIR="$TEMP_DIR/deno" deno test --no-config \
-    --allow-read=sw.js,assets/js/data-engine.js \
-    tests/test_data_engine.js tests/test_service_worker.js
+    --allow-read=sw.js,assets/js/data-engine.js,assets/js/pauses-actives.js \
+    tests/test_data_engine.js tests/test_service_worker.js tests/test_pauses_actives.js
 
 step "État Git pertinent"
 git diff --check

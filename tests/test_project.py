@@ -900,7 +900,7 @@ class Chest0HubTests(unittest.TestCase):
         for url in expected_urls:
             with self.subTest(url=url):
                 self.assertIn(f"<loc>{url}</loc>", sitemap)
-        self.assertEqual(sitemap.count("<url>"), 10)
+        self.assertEqual(sitemap.count("<url>"), 11)
         self.assertIn(
             "Sitemap: https://chest0.fr/sitemap.xml",
             robots
@@ -1043,6 +1043,23 @@ class Chest0HubTests(unittest.TestCase):
         self.assertIn('d.get("q12")', js)
         self.assertIn('id="change-method"', text)
         self.assertIn('"inLanguage":"fr"', text)
+
+    def test_28_pause_planner_integration(self):
+        page = ROOT / "outils/pauses-actives/index.html"
+        html = page.read_text(encoding="utf-8")
+        self.assertIn('https://chest0.fr/outils/pauses-actives/', html)
+        self.assertIn('href="pauses-actives/"', (ROOT / "outils/index.html").read_text())
+        self.assertIn('id="planning-inputs" disabled', html)
+        self.assertIn('role="alert"', html)
+        self.assertIn('role="status"', html)
+        for path in ("assets/js/pauses-actives.js", "assets/css/pauses-actives.css"):
+            self.assertTrue((ROOT / path).is_file())
+            self.assertIn(path, (ROOT / "sw.js").read_text())
+        script = (ROOT / "assets/js/pauses-actives.js").read_text()
+        for forbidden in ("fetch(", "XMLHttpRequest", "localStorage", "sessionStorage", "innerHTML", "document.cookie"):
+            self.assertNotIn(forbidden, script)
+        self.assertIn("window.print()", script)
+
 
     def test_27_sleep_journal_is_local_private_and_public(self):
         page = ROOT / "outils" / "journal-sommeil" / "index.html"

@@ -6,7 +6,7 @@ const CACHE_PREFIX =
 
 
 const CACHE_VERSION =
-    `${CACHE_PREFIX}v1.3.0`;
+    `${CACHE_PREFIX}v1.3.0` + "-pauses-actives";
 
 
 const APP_SHELL = [
@@ -21,6 +21,9 @@ const APP_SHELL = [
     "./outils/",
     "./outils/equilibre-quotidien/",
     "./outils/journal-sommeil/",
+    "./outils/pauses-actives/",
+    "./assets/css/pauses-actives.css",
+    "./assets/js/pauses-actives.js",
     "./assets/css/tools.css",
     "./assets/js/equilibre-quotidien.js",
     "./assets/js/journal-sommeil.js",
