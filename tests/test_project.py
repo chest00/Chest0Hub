@@ -895,11 +895,12 @@ class Chest0HubTests(unittest.TestCase):
             "https://chest0.fr/pages/projets.html",
             "https://chest0.fr/outils/",
             "https://chest0.fr/outils/equilibre-quotidien/",
+            "https://chest0.fr/outils/journal-sommeil/",
         }
         for url in expected_urls:
             with self.subTest(url=url):
                 self.assertIn(f"<loc>{url}</loc>", sitemap)
-        self.assertEqual(sitemap.count("<url>"), 9)
+        self.assertEqual(sitemap.count("<url>"), 10)
         self.assertIn(
             "Sitemap: https://chest0.fr/sitemap.xml",
             robots
@@ -1042,6 +1043,31 @@ class Chest0HubTests(unittest.TestCase):
         self.assertIn('d.get("q12")', js)
         self.assertIn('id="change-method"', text)
         self.assertIn('"inLanguage":"fr"', text)
+
+    def test_27_sleep_journal_is_local_private_and_public(self):
+        page = ROOT / "outils" / "journal-sommeil" / "index.html"
+        script = ROOT / "assets" / "js" / "journal-sommeil.js"
+        tools_index = (ROOT / "outils" / "index.html").read_text(encoding="utf-8")
+        sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
+        service_worker = (ROOT / "sw.js").read_text(encoding="utf-8")
+        self.assertTrue(page.exists())
+        self.assertTrue(script.exists())
+        text = page.read_text(encoding="utf-8")
+        js = script.read_text(encoding="utf-8")
+        self.assertIn('rel="canonical" href="https://chest0.fr/outils/journal-sommeil/"', text)
+        self.assertIn("elles sont enregistrées uniquement dans le stockage local", text)
+        self.assertIn("Il ne constitue ni un diagnostic", text)
+        self.assertIn('href="journal-sommeil/"', tools_index)
+        self.assertIn("<loc>https://chest0.fr/outils/journal-sommeil/</loc>", sitemap)
+        self.assertIn('"./outils/journal-sommeil/"', service_worker)
+        self.assertIn('"./assets/js/journal-sommeil.js"', service_worker)
+        self.assertIn("localStorage", js)
+        self.assertIn("chest0_sleep_journal_v1", js)
+        self.assertIn("LIMIT=7", js)
+        self.assertIn("localStorage.removeItem(KEY)", js)
+        self.assertNotIn("fetch(", js)
+        self.assertNotIn("XMLHttpRequest", js)
+        self.assertNotIn("sendBeacon", js)
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

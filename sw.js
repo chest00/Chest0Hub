@@ -20,8 +20,10 @@ const APP_SHELL = [
     "./pages/projets.html",
     "./outils/",
     "./outils/equilibre-quotidien/",
+    "./outils/journal-sommeil/",
     "./assets/css/tools.css",
     "./assets/js/equilibre-quotidien.js",
+    "./assets/js/journal-sommeil.js",
     "./pages/apropos.html",
     "./pages/contact.html",
 
