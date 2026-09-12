@@ -5,6 +5,13 @@
   "description": "Retrouvez mes articles consacrés au bien-être, à l’alimentation, au sport, aux habitudes de vie et au développement personnel.",
   "articles": [
     {
+      "id": "Article-Pauses-Actives",
+      "title": "Travail assis : comment organiser des pauses actives dans sa journée",
+      "description": "Repères institutionnels, organisation des pauses au bureau et exemple de planning gratuit, sans compte ni prescription médicale.",
+      "url": "https://bien-et-etre.blogspot.com/2026/09/blog-post_12.html",
+      "enabled": true
+    },
+    {
       "id": "Article-Journal-Sommeil",
       "title": "Journal du sommeil : comment observer ses habitudes sur 7 jours",
       "description": "Comment tenir un journal du sommeil sur 7 jours : horaires, ressentis, limites et outil gratuit Chest0, sans compte ni diagnostic.",
