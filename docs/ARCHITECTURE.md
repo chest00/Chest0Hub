@@ -20,13 +20,30 @@ Le site public repose principalement sur :
 ```text
 index.html
 pages/
+outils/
 assets/
 data/
+feed.xml
+sitemap.xml
+robots.txt
 manifest.webmanifest
 sw.js
 ```
 
-Il reste compatible avec GitHub Pages.
+Le domaine canonique est `https://chest0.fr/`, hébergé sur GitHub Pages.
+Les onze pages comprennent l’accueil, six pages dans `pages/`, le catalogue
+`outils/` et les trois outils : équilibre quotidien, journal du sommeil et
+pauses actives. Le sitemap les référence ; `404.html` est une page technique.
+
+Les outils chargent leurs scripts dédiés. Seul le journal du sommeil conserve
+les saisies, dans le LocalStorage du navigateur, avec effacement explicite.
+Les deux autres outils n’ont pas de stockage persistant des saisies. Aucun
+n’envoie ces données à Chest0.
+
+Le moteur public charge `data/blog.json` pour afficher les liens vers Blogger,
+où les articles restent hébergés. L’Admin régénère `feed.xml` à chaque
+sauvegarde du Blog ; les cinq articles activés sont repris dans le RSS à la
+clôture V1.
 
 La racine du dépôt contient également des outils de développement qui ne font
 pas partie du site. La configuration `_config.yml` exclut de la construction
@@ -190,6 +207,9 @@ l’Admin sur une copie temporaire, les pages, les assets, JavaScript, les
 protections du Bloc 3 et l’absence de secret. Le test Deno
 `tests/test_data_engine.js` vérifie le rendu du profil et
 `tests/test_service_worker.js` vérifie dynamiquement l’isolation des caches.
+`tests/test_pauses_actives.js` couvre le calcul du planning, les bornes et les
+saisies invalides. `tests/test_ecosystem.py` vérifie le contrôleur local sur des
+applications simulées. La campagne compte 37 tests Python et 6 tests Deno.
 
 Le point d’entrée unique `./scripts/validate.sh`, lancé depuis la racine,
 orchestre ces tests, les contrôles de syntaxe et Git, ainsi qu’une comparaison
@@ -225,13 +245,20 @@ L’interface Admin reste volontairement locale.
 
 ## PWA
 
-Le Service Worker est désactivé sur `localhost` pendant le développement.
+L’enregistrement du Service Worker est désactivé sur `localhost` et
+`127.0.0.1` pendant le développement. Les pages chargeant `app.js`
+l’enregistrent sur le site public ; sa portée couvre aussi les outils.
 
-Il est activé automatiquement sur le site public.
-
-Le cache actif porte le numéro `v1.3.0`. Grâce au préfixe `chest0-hub-`, son
-activation supprime uniquement les anciens caches Chest0 Hub et conserve ceux
+Le cache actif se nomme `chest0-hub-v1.3.0-pauses-actives`. Grâce au préfixe
+`chest0-hub-`, son activation supprime uniquement les anciens caches Chest0 Hub et conserve ceux
 des autres applications. Les JSON dormants ne font pas partie de l’app shell.
+Les onze pages et les ressources CSS/JS des outils sont précachées. Les
+requêtes GET de même origine utilisent le réseau en priorité et le cache en
+secours ; le RSS n’est pas précaché mais peut être mis en cache à sa lecture.
+
+La livraison globale de clôture V1 est identifiée par `v1.4.0`. Le numéro de
+composant Admin et l’identifiant du cache restent inchangés, puisqu’aucune
+ressource publique n’est modifiée lors de cette clôture documentaire.
 
 ## Distribution de l’écosystème Chest0
 

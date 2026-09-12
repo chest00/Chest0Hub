@@ -1,5 +1,20 @@
 # Journal des versions — Chest0 Hub
 
+## Version 1.4.0 — Clôture de Chest0 Hub V1 — 12 septembre 2026
+
+- Certification finale du Sprint global 3/3 ; aucun sprint V1 restant.
+- Livraison des évolutions intégrées depuis v1.3.0 : domaine chest0.fr, SEO,
+  Blog/RSS et trois outils gratuits (équilibre quotidien, journal du sommeil,
+  planning de pauses actives).
+- Documentation alignée sur les onze pages publiques et les cinq articles.
+- Campagne de certification : 37 tests Python et 6 tests JavaScript/Deno.
+- Clôture sans changement de code, de données ni de médias ; version Admin
+  V1.3.0 et cache chest0-hub-v1.3.0-pauses-actives conservés.
+- Ancienne référence d’avatar dans settings.json conservée comme dette V2
+  dormante, sans consommation ni publication.
+
+---
+
 ## Version 1.3.0 — Écosystème local — 27 août 2026
 
 - Panneau Admin de lancement et d’état pour Quiz Studio et AI Studio.
