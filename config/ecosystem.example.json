@@ -5,6 +5,9 @@
     },
     "chest0-ai-studio": {
       "root": "/path/to/Chest0AIStudio"
+    },
+    "chest0-social-studio": {
+      "root": "/path/to/Chest0SocialStudio"
     }
   }
 }

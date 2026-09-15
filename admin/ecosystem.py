@@ -15,6 +15,13 @@ from urllib.request import urlopen
 
 
 APPLICATION_SPECS = {
+    "chest0-social-studio": {
+        "label": "Chest0 Social Studio",
+        "port": 8503,
+        "entrypoint": "run_dev.sh",
+        "version_file": "src/chest0_social_studio/web/app.py",
+        "markers": ("run_dev.sh", "src/chest0_social_studio/workflow/production.py"),
+    },
     "chest0-quiz-studio": {
         "label": "Chest0 Quiz Studio",
         "port": 8501,
@@ -51,7 +58,7 @@ class ApplicationDefinition:
 
     @property
     def health_url(self) -> str:
-        return f"{self.url}/_stcore/health"
+        return f"{self.url}/api/health" if self.identifier == "chest0-social-studio" else f"{self.url}/_stcore/health"
 
     @property
     def python(self) -> Path:
@@ -59,6 +66,8 @@ class ApplicationDefinition:
 
     @property
     def command(self) -> tuple[str, ...]:
+        if self.identifier == "chest0-social-studio":
+            return ("/bin/bash", str(self.root / "run_dev.sh"), "--no-browser", "--server.port", str(self.port))
         return (
             str(self.python), "-m", "streamlit", "run", self.entrypoint,
             "--server.address", "127.0.0.1", "--server.port", str(self.port),
@@ -77,11 +86,14 @@ def load_registry(config_path: str | Path) -> dict[str, ApplicationDefinition]:
     if not isinstance(payload, dict) or set(payload) != {"applications"}:
         raise EcosystemError("Structure de configuration locale invalide.")
     configured = payload["applications"]
-    if not isinstance(configured, dict) or set(configured) != set(APPLICATION_SPECS):
+    required = set(APPLICATION_SPECS) - {"chest0-social-studio"}
+    if not isinstance(configured, dict) or not required <= set(configured) or not set(configured) <= set(APPLICATION_SPECS):
         raise EcosystemError("La configuration doit définir exactement les applications autorisées.")
 
     result: dict[str, ApplicationDefinition] = {}
     for identifier, spec in APPLICATION_SPECS.items():
+        if identifier not in configured:
+            continue
         item = configured[identifier]
         if not isinstance(item, dict) or set(item) != {"root"}:
             raise EcosystemError(f"Configuration invalide pour {spec['label']}.")
@@ -93,7 +105,7 @@ def load_registry(config_path: str | Path) -> dict[str, ApplicationDefinition]:
             raise EcosystemError(f"Application indisponible : {spec['label']}.")
         if any(not (root / marker).is_file() for marker in spec["markers"]):
             raise EcosystemError(f"La racine ne correspond pas à {spec['label']}.")
-        if not (root / ".venv" / "bin" / "python").is_file():
+        if identifier != "chest0-social-studio" and not (root / ".venv" / "bin" / "python").is_file():
             raise EcosystemError(f"Environnement Python indisponible : {spec['label']}.")
         result[identifier] = ApplicationDefinition(
             identifier=identifier,
@@ -168,7 +180,8 @@ class EcosystemManager:
     def _healthy(application: ApplicationDefinition) -> bool:
         try:
             with urlopen(application.health_url, timeout=0.5) as response:
-                return response.status == 200 and response.read(32).strip().lower() == b"ok"
+                expected = b"chest0-social-studio" if application.identifier == "chest0-social-studio" else b"ok"
+                return response.status == 200 and response.read(64).strip().lower() == expected
         except Exception:
             return False
 

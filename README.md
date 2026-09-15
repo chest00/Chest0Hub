@@ -341,3 +341,21 @@ l’exploitation continue. La référence historique à un avatar absent dans
 `data/settings.json` reste une dette dormante : ce fichier n’est ni consommé
 par le site ni publié. Les rapports datés de `docs/` décrivent leur état
 historique ; le présent README et `docs/ARCHITECTURE.md` décrivent l’état actuel.
+
+
+## Accès local à Chest0 Social Studio
+
+L’Admin local (`./run_admin.sh`, port 8090) propose Social Studio dans
+« Écosystème local ». « Lancer » appelle le `run_dev.sh` du projet Social Studio
+avec `--no-browser`, puis « Ouvrir » rejoint `http://127.0.0.1:8503`. Une instance
+déjà lancée directement est reconnue : utilisez « Ouvrir ». Hub n’arrête que
+les processus qu’il a lui-même lancés. Aucun moteur ni interface Social Studio
+n’est copié dans Hub.
+
+La racine est renseignée dans `config/ecosystem.local.json`, non versionné ;
+voir le fichier exemple. Les anciennes configurations sans Social Studio restent
+valides. Le serveur local vérifie la signature de santé Social Studio et refuse
+un service étranger sur ce port. L’Admin, ses scripts et sa configuration sont
+exclus du site GitHub Pages : aucun démarrage local depuis le site public.
+
+Validation : `bash scripts/validate.sh` (Python, Deno, sécurité et données).
