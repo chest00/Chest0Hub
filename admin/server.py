@@ -15,8 +15,10 @@ from xml.sax.saxutils import escape
 
 try:
     from admin.ecosystem import EcosystemError, EcosystemManager
+    from admin.registry import admin_view
 except ModuleNotFoundError:
     from ecosystem import EcosystemError, EcosystemManager
+    from registry import admin_view
 
 
 HOST = "127.0.0.1"
@@ -242,6 +244,10 @@ class AdminHandler(BaseHTTPRequestHandler):
                     "csrfToken": CSRF_TOKEN,
                 }
             )
+            return
+
+        if path == "/api/registry":
+            self.send_json(admin_view(PROJECT_DIR / "config" / "projects.registry.json", ECOSYSTEM_CONFIG))
             return
 
         if path == "/api/ecosystem/status":

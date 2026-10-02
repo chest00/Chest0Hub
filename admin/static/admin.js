@@ -2956,7 +2956,15 @@ async function loadEcosystem() {
         if (!response.ok || !result.ok) {
             throw new Error(result.error || `HTTP ${response.status}`);
         }
-        renderEcosystem(result.applications);
+        let registry;
+        try {
+            const catalogue = await fetch("/api/registry", {cache: "no-store"});
+            registry = await catalogue.json();
+            if (!catalogue.ok || !registry.ok) throw new Error("Registre indisponible");
+        } catch (_) {
+            registry = null;
+        }
+        renderEcosystem(result.applications, registry);
     } catch (error) {
         container.replaceChildren();
         const message = document.createElement("p");
@@ -2967,14 +2975,36 @@ async function loadEcosystem() {
 }
 
 
-function renderEcosystem(applications) {
+function renderEcosystem(applications, registry = null) {
     const container = document.getElementById("ecosystem-applications");
     container.replaceChildren();
-    applications.forEach((application) => {
+    if (!registry) {
+        const warning = document.createElement("p");
+        warning.textContent = "Registre indisponible : catalogue non vérifié. Les accès locaux existants restent séparés.";
+        container.appendChild(warning);
+    }
+    const projects = registry ? registry.projects : applications.map(a => ({project_id:a.id, name:a.label, launch_id:a.id}));
+    projects.forEach((project) => {
+        const application = applications.find(a => a.id === project.launch_id);
+        if (!application) {
+            const card = document.createElement("article");
+            card.className = "ecosystem-card";
+            const title = document.createElement("h3");
+            title.textContent = project.name;
+            const details = document.createElement("p");
+            details.textContent = registryDetails(project, registry);
+            const description = document.createElement("p");
+            description.textContent = project.description || "";
+            const availability = document.createElement("p");
+            availability.textContent = localAvailability(project.local_status);
+            card.append(title, details, description, availability);
+            container.appendChild(card);
+            return;
+        }
         const card = document.createElement("article");
         card.className = "ecosystem-card";
         const heading = document.createElement("h3");
-        heading.textContent = application.label;
+        heading.textContent = project.name;
         const state = document.createElement("span");
         state.className = `ecosystem-state state-${application.state}`;
         state.textContent = application.state.replaceAll("_", " ");
@@ -2983,7 +3013,7 @@ function renderEcosystem(applications) {
         details.textContent = `Version ${application.version} · HEAD ${application.head || "indéterminé"} · port ${application.port}`;
         const explanation = document.createElement("p");
         explanation.className = "ecosystem-message";
-        explanation.textContent = application.message;
+        explanation.textContent = [registry ? registryDetails(project, registry) : "", application.message].filter(Boolean).join(" · ");
         const actions = document.createElement("div");
         actions.className = "ecosystem-actions";
 
@@ -3050,3 +3080,19 @@ window.addEventListener(
             "";
     }
 );
+
+
+function localAvailability(state) {
+    return ({natif:"Natif dans Hub", present:"Dossier local présent (état de l’application non déduit)",
+        absent:"Projet absent à l’emplacement configuré", chemin_refuse:"Chemin local refusé",
+        non_configure:"Emplacement local non configuré"})[state] || "Disponibilité non déterminée";
+}
+
+function registryDetails(project, registry) {
+    const commercial = {non_commercial:"Non commercial", gratuit:"Gratuit",
+        commercialisation_prevue:"Commercialisation prévue", commercialise:"Commercialisé"};
+    const levels = (project.integration_levels || []).map(level => `${level} — ${registry?.levels?.[level] || level}`).join(", ");
+    return [project.category, project.state?.replaceAll("_", " "),
+        project.stable_version ? `Référence stable ${project.stable_version}` : "Version stable non renseignée",
+        levels, commercial[project.commercial_status]].filter(Boolean).join(" · ");
+}

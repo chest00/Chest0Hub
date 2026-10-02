@@ -75,7 +75,7 @@ class ApplicationDefinition:
         )
 
 
-def load_registry(config_path: str | Path) -> dict[str, ApplicationDefinition]:
+def load_registry(config_path: str | Path, only: str | None = None) -> dict[str, ApplicationDefinition]:
     path = Path(config_path)
     if not path.is_file():
         raise EcosystemError("Configuration locale absente.")
@@ -92,7 +92,7 @@ def load_registry(config_path: str | Path) -> dict[str, ApplicationDefinition]:
 
     result: dict[str, ApplicationDefinition] = {}
     for identifier, spec in APPLICATION_SPECS.items():
-        if identifier not in configured:
+        if identifier not in configured or (only is not None and identifier != only):
             continue
         item = configured[identifier]
         if not isinstance(item, dict) or set(item) != {"root"}:
@@ -100,7 +100,10 @@ def load_registry(config_path: str | Path) -> dict[str, ApplicationDefinition]:
         raw_root = item["root"]
         if not isinstance(raw_root, str) or not raw_root.strip():
             raise EcosystemError(f"Racine invalide pour {spec['label']}.")
-        root = Path(raw_root).expanduser().resolve()
+        root = Path(raw_root).expanduser()
+        if not root.is_absolute() or '..' in root.parts or root.is_symlink():
+            raise EcosystemError("Chemin local refusé.")
+        root = root.resolve()
         if not root.is_dir():
             raise EcosystemError(f"Application indisponible : {spec['label']}.")
         if any(not (root / marker).is_file() for marker in spec["markers"]):
@@ -166,7 +169,7 @@ class EcosystemManager:
 
     def _application(self, identifier: str) -> ApplicationDefinition:
         try:
-            return self._registry()[identifier]
+            return load_registry(self.config_path, only=identifier)[identifier]
         except KeyError as exc:
             raise EcosystemError("Application non autorisée.") from exc
 
@@ -206,17 +209,19 @@ class EcosystemManager:
         }
 
     def statuses(self) -> list[dict]:
-        try:
-            registry = self._registry()
-        except EcosystemError as exc:
-            return [{
-                "id": identifier, "label": str(spec["label"]), "version": "indéterminée",
-                "head": None, "port": int(spec["port"]),
-                "url": f"http://127.0.0.1:{spec['port']}",
-                "state": "configuration_absente", "owned": False, "message": str(exc),
-            } for identifier, spec in APPLICATION_SPECS.items()]
-
+        registry = {}
         result = []
+        for identifier, spec in APPLICATION_SPECS.items():
+            try:
+                registry[identifier] = self._application(identifier)
+            except EcosystemError as exc:
+                result.append({
+                    "id": identifier, "label": str(spec["label"]), "version": "indéterminée",
+                    "head": None, "port": int(spec["port"]),
+                    "url": f"http://127.0.0.1:{spec['port']}",
+                    "state": "configuration_absente", "owned": False, "message": str(exc),
+                })
+
         with self._lock:
             for identifier, application in registry.items():
                 process = self._processes.get(identifier)

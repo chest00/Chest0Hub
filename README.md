@@ -359,3 +359,19 @@ un service étranger sur ce port. L’Admin, ses scripts et sa configuration son
 exclus du site GitHub Pages : aucun démarrage local depuis le site public.
 
 Validation : `bash scripts/validate.sh` (Python, Deno, sécurité et données).
+
+## Sprint 10 — registre central Hub Admin
+
+Base de cette intervention : **v1.5.0**, commit
+`195df37d0720678e39aa2da35a425f795b2a4392`. Aucun nouveau tag créé.
+Le catalogue `config/projects.registry.json`, schéma 1, représente huit projets,
+y compris les futurs produits et l’infrastructure privée Chest0 Cloud.
+L’Admin réutilise son panneau Écosystème local ; aucune nouvelle page publique
+ni interconnexion métier n’est activée. Les versions de référence sont distinctes
+des versions observées du lanceur. Une présence de dossier ne prouve pas qu’une
+application fonctionne. Les projets absents n’arrêtent pas le reste du catalogue.
+
+Consulter [le registre, ses limites et son extension](docs/REGISTRY.md).
+Validation : `bash scripts/validate.sh` (suite complète), ou
+`python3 -B -m unittest discover -s tests -p test_registry.py -v` (ciblée).
+Les tests UI ciblés utilisent aussi Node.js, sans téléchargement de dépendance.

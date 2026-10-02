@@ -160,13 +160,13 @@ L’Admin Python fonctionne uniquement en local et n’est pas exécuté par Git
 
 ### Contrôleur de l’écosystème local
 
-`admin/ecosystem.py` isole le registre allowlisté et le cycle de vie des deux
+`admin/ecosystem.py` isole le registre allowlisté et le cycle de vie des trois
 applications locales. Les racines réelles viennent d’une configuration locale
 ignorée par Git ; le navigateur ne reçoit jamais ces chemins, les commandes,
 les PID ou les sorties système.
 
 Le contrôleur construit lui-même des arguments `subprocess` sans shell, impose
-les ports 8501 et 8502, vérifie la santé Streamlit et refuse tout arrêt d’un
+les ports 8501, 8502 et 8503, vérifie la santé Streamlit ou la signature Social Studio et refuse tout arrêt d’un
 processus qu’il n’a pas lancé. Un port occupé par un service non détenu n’est
 jamais libéré automatiquement.
 
@@ -275,3 +275,22 @@ Principe permanent pour les projets et contenus Chest0 :
 - les fonctions essentielles des projets ne doivent jamais dépendre d’un réseau social ou d’un service payant pour assurer cette circulation.
 
 Cette règle doit être prise en compte dès la conception des futurs projets Chest0 afin que l’écosystème renforce progressivement et durablement la visibilité de `chest0.fr`.
+
+## Registre central — Sprint 10
+
+La base réelle du sprint est v1.5.0. `config/projects.registry.json` est la
+source unique du catalogue administratif, validée par `admin/registry.py`.
+`GET /api/registry` conserve Host/Origin et loopback ; il ne lit aucune donnée
+métier et n’exécute aucun processus. Il retourne les références et la présence
+facultative des dossiers configurés, sans les chemins. L’interface fusionne ce
+catalogue avec les états des accès locaux existants. Un catalogue corrompu
+signale son indisponibilité sans casser les rubriques de contenu ni les accès
+locaux indépendants.
+
+Les trois spécifications de lancement Python restent une allowlist technique,
+pas un catalogue commercial. Ajouter un projet ne lui donne aucun droit de
+lancement. Une application absente n’invalide plus les autres accès configurés.
+Le fichier `data/projects.json` reste le contenu éditorial public historique,
+non synchronisé automatiquement : le registre n’est pas une autorisation de
+publication. L’export public explicite est une fonction pure, sans fichier créé
+ni déploiement. [Schéma et politique](REGISTRY.md).
