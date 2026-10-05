@@ -24,7 +24,7 @@ KEYS = {'project_id', 'name', 'short_name', 'description', 'category', 'state',
         'public_visible', 'commercial_status', 'integration_levels', 'launch_id',
         'repository', 'documentation', 'public_links', 'capabilities', 'dependencies', 'notes'}
 PUBLIC_KEYS = ('project_id', 'name', 'short_name', 'description', 'category', 'type',
-               'platforms', 'commercial_status', 'public_links')
+               'platforms', 'commercial_status', 'public_links', 'state')
 
 
 class RegistryError(ValueError):
@@ -83,6 +83,7 @@ def validate(payload):
             for key in ('name','short_name','description','category','notes'):text(row[key])
             if row['state'] not in STATES or row['type'] not in TYPES or row['commercial_status'] not in COMMERCIAL:fail()
             if type(row['admin_visible']) is not bool or type(row['public_visible']) is not bool:fail()
+            if row['public_visible'] and (row['state']=='prive' or pid=='chest0-cloud'):fail()
             for key in ('platforms','integration_levels','capabilities','dependencies'):strings(row[key])
             if not row['integration_levels'] or not set(row['integration_levels'])<=LEVELS.keys():fail()
             if not set(row['capabilities'])<=CAPABILITIES:fail()

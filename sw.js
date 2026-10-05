@@ -6,7 +6,7 @@ const CACHE_PREFIX =
 
 
 const CACHE_VERSION =
-    `${CACHE_PREFIX}v1.3.0` + "-pauses-actives";
+    `${CACHE_PREFIX}v1.3.0` + "-ecosystem-sprint11";
 
 
 const APP_SHELL = [
@@ -56,6 +56,7 @@ const APP_SHELL = [
     "./data/books.json",
     "./data/products.json",
     "./data/projects.json",
+    "./data/public/ecosystem.json",
     "./data/blog.json"
 ];
 

@@ -363,7 +363,8 @@ Validation : `bash scripts/validate.sh` (Python, Deno, sécurité et données).
 ## Sprint 10 — registre central Hub Admin
 
 Base de cette intervention : **v1.5.0**, commit
-`195df37d0720678e39aa2da35a425f795b2a4392`. Aucun nouveau tag créé.
+`195df37d0720678e39aa2da35a425f795b2a4392`. Sprint 10 clôturé par le tag
+`v1.6.0`, commit `0c01aa15afb2e34782fa1a41d4b827c1bc6b3f02`.
 Le catalogue `config/projects.registry.json`, schéma 1, représente huit projets,
 y compris les futurs produits et l’infrastructure privée Chest0 Cloud.
 L’Admin réutilise son panneau Écosystème local ; aucune nouvelle page publique
@@ -375,3 +376,28 @@ Consulter [le registre, ses limites et son extension](docs/REGISTRY.md).
 Validation : `bash scripts/validate.sh` (suite complète), ou
 `python3 -B -m unittest discover -s tests -p test_registry.py -v` (ciblée).
 Les tests UI ciblés utilisent aussi Node.js, sans téléchargement de dépendance.
+
+## Sprint 11 — vitrine de l’écosystème (validation en cours)
+
+La page Projets consomme l’export public filtré `data/public/ecosystem.json`.
+Sélection corrigée par le propriétaire : Hub, AI Studio, Quiz Studio, Social
+Studio, Photo Cleaner et Market Intelligence, dans cet ordre. Cloud et Mes
+Démarches de Vie restent absents de cette vitrine.
+`data/projects.json` n’est pas remplacé : les descriptions existantes restent
+consultables comme présentations historiques des seuls projets autorisés.
+Leur ancien statut/version ne remplace pas l’état courant du registre.
+
+Génération volontaire, sans publication ni changement des données éditoriales :
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/export_public_projects.py --write
+PYTHONDONTWRITEBYTECODE=1 python3 -B scripts/export_public_projects.py --check
+bash scripts/validate.sh
+```
+
+Prévisualisation : `./run_dev.sh`, puis
+`http://127.0.0.1:8080/pages/projets.html`. Le serveur reste local. Aucun lancement
+d’application ni achat n’est proposé. Les tests ciblés sont dans
+`tests/test_public_ecosystem.py`. [Politique de mise à jour](docs/REGISTRY.md).
+Le cache conserve le numéro de composant historique mais change de suffixe :
+`chest0-hub-v1.3.0-ecosystem-sprint11`, afin de renouveler les ressources publiques.

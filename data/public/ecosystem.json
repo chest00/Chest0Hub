@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "projects": [
+    {
+      "project_id": "chest0-hub",
+      "name": "Chest0 Hub",
+      "short_name": "Hub",
+      "description": "Admin privé de pilotage et vitrine publique de l’écosystème.",
+      "category": "Écosystème",
+      "type": "hub",
+      "platforms": [
+        "Web",
+        "macOS local"
+      ],
+      "commercial_status": "non_commercial",
+      "public_links": [
+        "https://chest0.fr/"
+      ],
+      "state": "stable"
+    },
+    {
+      "project_id": "chest0-ai-studio",
+      "name": "Chest0 AI Studio",
+      "short_name": "AI Studio",
+      "description": "Services IA locaux, notamment synthèse vocale.",
+      "category": "IA locale",
+      "type": "application",
+      "platforms": [
+        "macOS local"
+      ],
+      "commercial_status": "non_commercial",
+      "public_links": [],
+      "state": "developpement"
+    },
+    {
+      "project_id": "chest0-quiz-studio",
+      "name": "Chest0 Quiz Studio",
+      "short_name": "Quiz Studio",
+      "description": "Création de quiz et contenus structurés.",
+      "category": "Création",
+      "type": "application",
+      "platforms": [
+        "macOS local"
+      ],
+      "commercial_status": "non_commercial",
+      "public_links": [],
+      "state": "developpement"
+    },
+    {
+      "project_id": "chest0-social-studio",
+      "name": "Chest0 Social Studio",
+      "short_name": "Social Studio",
+      "description": "Outil local d’automatisation de la création et de la préparation de contenus et vidéos pour les réseaux sociaux, avec validations humaines.",
+      "category": "Création",
+      "type": "application",
+      "platforms": [
+        "macOS local"
+      ],
+      "commercial_status": "non_commercial",
+      "public_links": [],
+      "state": "stable"
+    },
+    {
+      "project_id": "chest0-photo-cleaner",
+      "name": "Chest0 Photo Cleaner",
+      "short_name": "Photo Cleaner",
+      "description": "Détection et nettoyage assisté des doublons et photos similaires.",
+      "category": "Photos",
+      "type": "produit",
+      "platforms": [
+        "macOS prévu",
+        "Windows prévu",
+        "Android ultérieur",
+        "Web/PWA à étudier"
+      ],
+      "commercial_status": "commercialisation_prevue",
+      "public_links": [],
+      "state": "developpement"
+    },
+    {
+      "project_id": "chest0-market-intelligence",
+      "name": "Chest0 Market Intelligence",
+      "short_name": "Market Intelligence",
+      "description": "Application en développement de surveillance, d’analyse et d’aide à la décision sur les marchés crypto, actions et ETF. Périmètre visé : signaux explicables, alertes, gestion du risque, portefeuille fictif, backtesting et paper trading. La V1 cible la simulation, sans envoi d’ordres financiers réels.",
+      "category": "Marchés",
+      "type": "application",
+      "platforms": [],
+      "commercial_status": "commercialisation_prevue",
+      "public_links": [],
+      "state": "developpement"
+    }
+  ]
+}

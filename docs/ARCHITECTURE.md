@@ -249,7 +249,7 @@ L’enregistrement du Service Worker est désactivé sur `localhost` et
 `127.0.0.1` pendant le développement. Les pages chargeant `app.js`
 l’enregistrent sur le site public ; sa portée couvre aussi les outils.
 
-Le cache actif se nomme `chest0-hub-v1.3.0-pauses-actives`. Grâce au préfixe
+Le cache actif préparé au Sprint 11 se nomme `chest0-hub-v1.3.0-ecosystem-sprint11`. Grâce au préfixe
 `chest0-hub-`, son activation supprime uniquement les anciens caches Chest0 Hub et conserve ceux
 des autres applications. Les JSON dormants ne font pas partie de l’app shell.
 Les onze pages et les ressources CSS/JS des outils sont précachées. Les
@@ -292,5 +292,28 @@ pas un catalogue commercial. Ajouter un projet ne lui donne aucun droit de
 lancement. Une application absente n’invalide plus les autres accès configurés.
 Le fichier `data/projects.json` reste le contenu éditorial public historique,
 non synchronisé automatiquement : le registre n’est pas une autorisation de
-publication. L’export public explicite est une fonction pure, sans fichier créé
-ni déploiement. [Schéma et politique](REGISTRY.md).
+publication. Au Sprint 10, l’export public était une fonction pure sans fichier créé.
+Le Sprint 11 ajoute une commande explicite de génération, sans déploiement. [Schéma et politique](REGISTRY.md).
+
+## Vitrine Sprint 11
+
+Base Git clôturée v1.6.0. Publication effective distincte : au diagnostic, aucun
+build Pages visible pour ce commit ; dernier build visible sur v1.5.0. Aucune
+relance de build dans ce sprint.
+
+Registre privé → `public_export` (champs allowlistés + état public) → commande
+manuelle `scripts/export_public_projects.py --write` → `data/public/ecosystem.json`
+→ moteur statique existant de la page Projets. Pas de lecture navigateur de
+config/, pas de synchronisation au changement de registre. `--check` et les
+tests détectent un export absent ou obsolète, sans le régénérer.
+
+La racine data/ conserve ses neuf JSON historiques. Son sous-dossier public/
+contient le dérivé publiable. Les descriptions de projects.json sont affichées
+à part, comme texte antérieur, uniquement pour les identifiants autorisés par
+l’export. Sans export valide, aucune ancienne liste n’est utilisée comme repli.
+Un échec du catalogue éditorial n’empêche pas la présentation publique validée.
+
+Le service worker précache ce dérivé et renouvelle son cache avec le suffixe
+`ecosystem-sprint11`. Le numéro de composant Admin reste indépendant. Les URL
+canoniques, sitemap et liens existants ne changent pas. Le titre de la rubrique
+et ses métadonnées de titre deviennent « L’écosystème Chest0 ».

@@ -8,8 +8,8 @@
       "description": "Admin privé de pilotage et vitrine publique de l’écosystème.",
       "category": "Écosystème",
       "state": "stable",
-      "stable_version": "v1.5.0",
-      "stable_commit": "195df37d0720678e39aa2da35a425f795b2a4392",
+      "stable_version": "v1.6.0",
+      "stable_commit": "0c01aa15afb2e34782fa1a41d4b827c1bc6b3f02",
       "type": "hub",
       "platforms": [
         "Web",
@@ -32,39 +32,7 @@
         "public_web_app"
       ],
       "dependencies": [],
-      "notes": "Admin natif ; base stable antérieure au Sprint 10."
-    },
-    {
-      "project_id": "chest0-social-studio",
-      "name": "Chest0 Social Studio",
-      "short_name": "Social Studio",
-      "description": "Production sociale avec validations humaines et contrat d’échange versionné.",
-      "category": "Création",
-      "state": "stable",
-      "stable_version": "v1.0.0",
-      "stable_commit": "bf8550b50648a4ed4bddbde323788cabd47b2184",
-      "type": "application",
-      "platforms": [
-        "macOS local"
-      ],
-      "admin_visible": true,
-      "public_visible": false,
-      "commercial_status": "non_commercial",
-      "integration_levels": [
-        "A",
-        "D"
-      ],
-      "launch_id": "chest0-social-studio",
-      "repository": null,
-      "documentation": [],
-      "public_links": [],
-      "capabilities": [
-        "local_api",
-        "versioned_json_exchange",
-        "launchable_local_app"
-      ],
-      "dependencies": [],
-      "notes": "Version stable fournie par le propriétaire ; aucune API interrogée."
+      "notes": "Admin natif ; Sprint 10 clôturé, base du Sprint 11."
     },
     {
       "project_id": "chest0-ai-studio",
@@ -80,7 +48,7 @@
         "macOS local"
       ],
       "admin_visible": true,
-      "public_visible": false,
+      "public_visible": true,
       "commercial_status": "non_commercial",
       "integration_levels": [
         "A",
@@ -110,7 +78,7 @@
         "macOS local"
       ],
       "admin_visible": true,
-      "public_visible": false,
+      "public_visible": true,
       "commercial_status": "non_commercial",
       "integration_levels": [
         "A",
@@ -126,6 +94,93 @@
       ],
       "dependencies": [],
       "notes": "Développement très avancé ; version stable non renseignée."
+    },
+    {
+      "project_id": "chest0-social-studio",
+      "name": "Chest0 Social Studio",
+      "short_name": "Social Studio",
+      "description": "Outil local d’automatisation de la création et de la préparation de contenus et vidéos pour les réseaux sociaux, avec validations humaines.",
+      "category": "Création",
+      "state": "stable",
+      "stable_version": "v1.0.0",
+      "stable_commit": "bf8550b50648a4ed4bddbde323788cabd47b2184",
+      "type": "application",
+      "platforms": [
+        "macOS local"
+      ],
+      "admin_visible": true,
+      "public_visible": true,
+      "commercial_status": "non_commercial",
+      "integration_levels": [
+        "A",
+        "D"
+      ],
+      "launch_id": "chest0-social-studio",
+      "repository": null,
+      "documentation": [],
+      "public_links": [],
+      "capabilities": [
+        "local_api",
+        "versioned_json_exchange",
+        "launchable_local_app"
+      ],
+      "dependencies": [],
+      "notes": "Version stable fournie par le propriétaire ; aucune API interrogée."
+    },
+    {
+      "project_id": "chest0-photo-cleaner",
+      "name": "Chest0 Photo Cleaner",
+      "short_name": "Photo Cleaner",
+      "description": "Détection et nettoyage assisté des doublons et photos similaires.",
+      "category": "Photos",
+      "state": "developpement",
+      "stable_version": null,
+      "stable_commit": null,
+      "type": "produit",
+      "platforms": [
+        "macOS prévu",
+        "Windows prévu",
+        "Android ultérieur",
+        "Web/PWA à étudier"
+      ],
+      "admin_visible": true,
+      "public_visible": true,
+      "commercial_status": "commercialisation_prevue",
+      "integration_levels": [
+        "A"
+      ],
+      "launch_id": null,
+      "repository": null,
+      "documentation": [],
+      "public_links": [],
+      "capabilities": [],
+      "dependencies": [],
+      "notes": "Produit futur ; aucun prix, lien de vente ou téléchargement disponible dans ce registre."
+    },
+    {
+      "project_id": "chest0-market-intelligence",
+      "name": "Chest0 Market Intelligence",
+      "short_name": "Market Intelligence",
+      "description": "Application en développement de surveillance, d’analyse et d’aide à la décision sur les marchés crypto, actions et ETF. Périmètre visé : signaux explicables, alertes, gestion du risque, portefeuille fictif, backtesting et paper trading. La V1 cible la simulation, sans envoi d’ordres financiers réels.",
+      "category": "Marchés",
+      "state": "developpement",
+      "stable_version": null,
+      "stable_commit": null,
+      "type": "application",
+      "platforms": [],
+      "admin_visible": true,
+      "public_visible": true,
+      "commercial_status": "commercialisation_prevue",
+      "integration_levels": [
+        "A"
+      ],
+      "launch_id": null,
+      "repository": null,
+      "documentation": [],
+      "public_links": [],
+      "capabilities": [],
+      "dependencies": [],
+      "notes": "Présentation publique autorisée ; application financière privée. Fonctionnalités cibles en développement ; aucune disponibilité commerciale annoncée."
     },
     {
       "project_id": "mes-demarches-de-vie",
@@ -154,61 +209,6 @@
       "capabilities": [],
       "dependencies": [],
       "notes": "Référence locale ; aucune interconnexion automatique."
-    },
-    {
-      "project_id": "chest0-photo-cleaner",
-      "name": "Chest0 Photo Cleaner",
-      "short_name": "Photo Cleaner",
-      "description": "Détection et nettoyage assisté des doublons et photos similaires.",
-      "category": "Photos",
-      "state": "developpement",
-      "stable_version": null,
-      "stable_commit": null,
-      "type": "produit",
-      "platforms": [
-        "macOS prévu",
-        "Windows prévu",
-        "Android ultérieur",
-        "Web/PWA à étudier"
-      ],
-      "admin_visible": true,
-      "public_visible": false,
-      "commercial_status": "commercialisation_prevue",
-      "integration_levels": [
-        "A"
-      ],
-      "launch_id": null,
-      "repository": null,
-      "documentation": [],
-      "public_links": [],
-      "capabilities": [],
-      "dependencies": [],
-      "notes": "Produit futur ; aucun prix, lien de vente ou téléchargement disponible dans ce registre."
-    },
-    {
-      "project_id": "chest0-market-intelligence",
-      "name": "Chest0 Market Intelligence",
-      "short_name": "Market Intelligence",
-      "description": "Analyse et aide à la décision sur les marchés crypto, actions et ETF.",
-      "category": "Marchés",
-      "state": "developpement",
-      "stable_version": null,
-      "stable_commit": null,
-      "type": "application",
-      "platforms": [],
-      "admin_visible": true,
-      "public_visible": false,
-      "commercial_status": "commercialisation_prevue",
-      "integration_levels": [
-        "A"
-      ],
-      "launch_id": null,
-      "repository": null,
-      "documentation": [],
-      "public_links": [],
-      "capabilities": [],
-      "dependencies": [],
-      "notes": "Présentation et commercialisation uniquement après maturité ; aucune disponibilité annoncée."
     },
     {
       "project_id": "chest0-cloud",

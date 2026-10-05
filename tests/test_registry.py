@@ -27,7 +27,7 @@ class RegistryTests(unittest.TestCase):
         self.assertEqual(social['stable_version'],'v1.0.0')
         self.assertEqual(social['stable_commit'],'bf8550b50648a4ed4bddbde323788cabd47b2184')
         for key in ('chest0-photo-cleaner','chest0-market-intelligence'):
-            row=rows[key];self.assertIsNone(row['stable_version']);self.assertFalse(row['public_visible'])
+            row=rows[key];self.assertIsNone(row['stable_version']);self.assertTrue(row['public_visible'])
             self.assertEqual(row['public_links'],[]);self.assertEqual(row['commercial_status'],'commercialisation_prevue')
         self.assertFalse(rows['chest0-cloud']['public_visible'])
     def test_future_project(self):
@@ -59,7 +59,7 @@ class RegistryTests(unittest.TestCase):
         out=r.public_export(self.data);encoded=json.dumps(out)
         for key in ('notes','repository','stable_commit','launch_id','local_status','documentation'):self.assertNotIn(key,out['projects'][0])
         self.assertNotIn('PRIVATE',encoded);self.assertNotIn('/Users/',encoded)
-        self.assertEqual(len(out['projects']),1)
+        self.assertEqual({p['project_id'] for p in out['projects']},{'chest0-photo-cleaner', 'chest0-quiz-studio', 'chest0-hub', 'chest0-ai-studio', 'chest0-market-intelligence', 'chest0-social-studio'})
         row['description']='/Users/person/private'
         with self.assertRaises(r.RegistryError):r.public_export(self.data)
     def test_file_corruption_bounds_version_and_duplicate_keys(self):
@@ -150,7 +150,7 @@ const registry=JSON.parse(fs.readFileSync('config/projects.registry.json','utf8'
 registry.projects[0].name='<img onerror=bad>';registry.projects[0].local_status='natif';
 ctx.renderEcosystem([],registry);assert.equal(container.children.length,8);assert.equal(container.children[0].children[0].textContent,'<img onerror=bad>');
 ctx.renderEcosystem([{id:'chest0-social-studio',label:'Social',state:'arrêté',version:'1',port:8503,message:'Prêt',owned:false,url:'http://127.0.0.1:8503'}],registry);
-assert.equal(container.children.length,8);const buttons=container.children[1].children[4].children;assert.equal(buttons[0].disabled,false);assert.equal(buttons[2].disabled,true);
+assert.equal(container.children.length,8);const buttons=container.children[registry.projects.findIndex(p=>p.project_id==='chest0-social-studio')].children[4].children;assert.equal(buttons[0].disabled,false);assert.equal(buttons[2].disabled,true);
 ctx.renderEcosystem([],null);assert(container.children[0].textContent.includes('indisponible'));
 '''],cwd=ROOT,capture_output=True,text=True)
         self.assertEqual(result.returncode,0,result.stderr)

@@ -52,10 +52,10 @@ Pour une autre machine, adapter cette configuration locale seulement.
 
 `public_export(payload)` valide puis projette uniquement les projets public_visible
 et les champs project_id, name, short_name, description, category, type,
-platforms, commercial_status, public_links. Pas de notes, références techniques,
+platforms, commercial_status, public_links et state. Pas de notes, références techniques,
 commandes, versions observées, chemins ou documentation administrative.
-Aucun export n’est automatiquement enregistré ; les pages publiques restent
-inchangées. `data/projects.json` est encore la sélection éditoriale publiée,
+Aucun export n’est automatiquement enregistré. Depuis le Sprint 11, la commande
+explicite décrite ci-dessous prépare le dérivé consommé par la page Projets. `data/projects.json` est encore la sélection éditoriale publiée,
 non une seconde configuration de pilotage. Une publication future devra choisir
 explicitement un contenu et valider son export. Ne jamais servir le dépôt brut
 sur Internet : run_dev.sh est un serveur de travail loopback qui peut servir
@@ -93,3 +93,51 @@ Les scénarios sont fictifs, dans des répertoires temporaires nettoyés.
 Hors périmètre : automatisation inter-applications, API métier appelée,
 boutique/paiement, collecte de statistiques, déploiement, redesign public.
 Aucun document maître n’a été recopié ; les exigences de reprise guident ce sprint.
+
+## Mise à jour publique — Sprint 11
+
+Le propriétaire a autorisé public_visible, dans cet ordre, pour Hub, AI Studio,
+Quiz Studio, Social Studio, Photo Cleaner et Market Intelligence. Cloud et Mes
+Démarches de Vie restent non publics. Cloud et un état
+prive sont refusés à l’export même si public_visible est activé par erreur.
+Le schéma public 1 reçoit le champ additif state ; le schéma administratif ne
+change pas. Le client vérifie strictement champs/types/états/liens avant rendu.
+
+1. Modifier volontairement les informations publiques et la visibilité dans le
+registre après décision éditoriale. Les notes et champs privés ne servent pas
+à rédiger automatiquement une description publique.
+2. Exécuter `python3 -B scripts/export_public_projects.py --write` : validation,
+projection, écriture temporaire puis remplacement atomique, JSON déterministe.
+Aucun timestamp variable ni chemin local n’est généré. Un échec garde l’export
+précédent. Les liens symboliques de destination sont refusés.
+3. Vérifier `python3 -B scripts/export_public_projects.py --check`, puis la
+certification complète. Toute divergence est signalée, jamais corrigée à l’insu
+du propriétaire. Le serveur Admin ne lance pas ce générateur.
+4. Prévisualiser avec run_dev.sh et approuver l’aspect. Commit/tag/push constituent
+une opération distincte autorisée séparément ; Pages conserve sa configuration.
+
+Le catalogue éditorial public historique n’est ni réécrit ni importé dans le
+registre administratif. Les anciens textes, dont certains parlent de versions
+anciennes, sont présentés dans des détails « Présentation historique » avec
+avertissement de contexte. Le registre courant fournit nom/rôle/état/plateformes.
+
+Photo Cleaner est en développement : macOS et Windows prévus, Android ultérieur,
+Web/PWA à étudier. Aucun prix/version/date/capture/téléchargement inventé. Aucun
+bouton d’achat : le schéma actuel n’identifie pas de lien officiel de vente.
+Un lien public générique reste un lien « Site officiel », jamais assimilé à un
+paiement. Une future vente nécessitera statut compatible et validation explicite
+d’un lien commercial avant toute présentation comme tel.
+
+Confidentialité : navigateur public = fichiers data/ publics seulement ; aucune
+route Admin, commande ou config machine. Les exclusions Pages admin/config/
+backups/scripts/tests sont conservées. Le serveur de développement brut reste
+strictement loopback et ne constitue pas le périmètre publié. Les descriptions
+sont du texte, pas du HTML ; aucun chemin provenant du registre privé n’est
+injecté dans les liens. Aucun service distant requis pour le rendu.
+
+
+Correction Sprint 11 : six cartes, ordre issu du registre. Social Studio conserve
+son état stable et macOS local. Market Intelligence présente un périmètre visé
+en développement, sans ordres réels en V1, promesse financière ou accès privé.
+Les intégrations futures Photo Cleaner et Video Studio restent hors périmètre ;
+Video Studio n’est pas une septième carte.

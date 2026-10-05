@@ -529,148 +529,97 @@ const Chest0Data = {
      * ========================================================
      */
 
-    async renderProjects(
-        containerId
-    ) {
-
-        const container =
-            document.getElementById(
-                containerId
-            );
-
-
-        if (!container) {
-            return;
-        }
-
-
+    async renderProjects(containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
         try {
-
-            const data =
-                await this.loadJson(
-                    "projects.json"
-                );
-
-
-            const items =
-                this.enabledItems(
-                    data
-                );
-
-
-            container.innerHTML =
-                "";
-
-
-            items.forEach(
-                (item) => {
-
-                    const article =
-                        document.createElement(
-                            "article"
-                        );
-
-
-                    article.className =
-                        "project-card";
-
-
-                    article.dataset.contentId =
-                        String(item.id || "");
-
-
-                    const status =
-                        document.createElement(
-                            "span"
-                        );
-
-
-                    status.className =
-                        "project-status";
-
-
-                    status.textContent =
-                        item.status ||
-                        "Projet";
-
-
-                    const title =
-                        document.createElement(
-                            "h2"
-                        );
-
-
-                    title.textContent =
-                        item.name ||
-                        "Projet Chest0";
-
-
-                    const description =
-                        document.createElement(
-                            "p"
-                        );
-
-
-                    description.textContent =
-                        item.description ||
-                        "";
-
-
-                    article.append(
-                        status,
-                        title,
-                        description
-                    );
-
-
-                    if (
-                        this.isValidUrl(
-                            item.url
-                        )
-                    ) {
-
-                        const link =
-                            this.createExternalLink(
-                                item.url
-                            );
-
-
-                        link.className =
-                            "project-link";
-
-
-                        link.textContent =
-                            "Découvrir";
-
-
-                        article.appendChild(
-                            link
-                        );
-                    }
-
-
-                    container.appendChild(
-                        article
-                    );
+            // The browser never reads config/ or an Admin endpoint.
+            const catalogue = await this.loadJson("public/ecosystem.json");
+            const items = this.publicProjects(catalogue);
+            let editorial = [];
+            try { editorial = this.enabledItems(await this.loadJson("projects.json")); }
+            catch (_) { /* Historical descriptions are optional, never authority for visibility. */ }
+            container.replaceChildren();
+            for (const item of items) {
+                const article = document.createElement("article");
+                article.className = "project-card";
+                article.dataset.contentId = item.project_id;
+                const status = document.createElement("span");
+                status.className = "project-status";
+                status.textContent = {stable:"Projet stable", developpement:"En développement", prevu:"Projet envisagé"}[item.state];
+                const title = document.createElement("h2");
+                title.textContent = item.name;
+                const role = document.createElement("p");
+                role.className = "project-role";
+                role.textContent = item.category;
+                const description = document.createElement("p");
+                description.textContent = item.description;
+                article.append(status, title, role, description);
+                if (item.platforms.length) {
+                    const platforms = document.createElement("p");
+                    platforms.className = "project-platforms";
+                    platforms.textContent = `Plateformes : ${item.platforms.join(" · ")}`;
+                    article.appendChild(platforms);
                 }
-            );
-
-
-        } catch (error) {
-
-            console.error(
-                "Chest0 Hub — projets :",
-                error
-            );
+                if (item.commercial_status === "commercialisation_prevue") {
+                    const notice = document.createElement("p");
+                    notice.textContent = "Commercialisation envisagée. Aucun achat ni téléchargement proposé à ce stade.";
+                    article.appendChild(notice);
+                }
+                for (const url of item.public_links) {
+                    const link = this.createExternalLink(url);
+                    link.className = "project-link";
+                    link.textContent = `Site officiel — ${item.short_name}`;
+                    article.appendChild(link);
+                }
+                const old = editorial.find(row => row.id === item.project_id);
+                if (old && typeof old.description === "string" && old.description !== item.description) {
+                    const details = document.createElement("details");
+                    details.className = "project-history";
+                    const summary = document.createElement("summary");
+                    summary.textContent = "Présentation historique";
+                    const note = document.createElement("p");
+                    note.textContent = "Texte antérieur conservé. Les indications actuelles figurent ci-dessus.";
+                    const text = document.createElement("p");
+                    text.textContent = old.description;
+                    details.append(summary, note, text);
+                    article.appendChild(details);
+                }
+                container.appendChild(article);
+            }
+            if (!items.length) container.textContent = "Aucun projet public présenté pour le moment.";
+        } catch (_) {
+            container.textContent = "La présentation des projets est momentanément indisponible. Réessayez plus tard.";
         }
     },
 
-
-    /*
-     * ========================================================
-     * PRODUITS
-     * ========================================================
-     */
+    publicProjects(data) {
+        const keys = ["project_id","name","short_name","description","category","type","platforms","commercial_status","public_links","state"];
+        if (!data || data.schema_version !== 1 || !Array.isArray(data.projects) || data.projects.length > 64 ||
+            Object.keys(data).sort().join() !== "projects,schema_version") throw new Error("Catalogue invalide");
+        const ids = new Set();
+        for (const row of data.projects) {
+            if (!row || Object.keys(row).sort().join() !== [...keys].sort().join()) throw new Error("Champs invalides");
+            for (const key of ["name","short_name","description","category","type"]) {
+                if (typeof row[key] !== "string" || !row[key].trim() || row[key].length > 500) throw new Error("Texte invalide");
+            }
+            if (typeof row.project_id !== "string" || !/^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/.test(row.project_id) ||
+                row.project_id.length > 64 || ids.has(row.project_id) || row.project_id === "chest0-cloud") throw new Error("Identité invalide");
+            ids.add(row.project_id);
+            if (!["stable","developpement","prevu"].includes(row.state) ||
+                !["application","produit","infrastructure","hub","service"].includes(row.type) ||
+                !["non_commercial","gratuit","commercialisation_prevue","commercialise"].includes(row.commercial_status)) throw new Error("État invalide");
+            if (!Array.isArray(row.platforms) || row.platforms.length > 16 || row.platforms.some(p => typeof p !== "string" || p.length > 100)) throw new Error("Plateformes invalides");
+            if (!Array.isArray(row.public_links) || row.public_links.length > 8) throw new Error("Liens invalides");
+            for (const link of row.public_links) {
+                const url = new URL(link);
+                if (typeof link !== "string" || link.length > 500 || url.protocol !== "https:" ||
+                    url.username || url.password || url.search || url.hash || link.includes("\\") ||
+                    !url.hostname.includes(".")) throw new Error("URL invalide");
+            }
+        }
+        return data.projects;
+    },
 
     async renderProducts(
         containerId
