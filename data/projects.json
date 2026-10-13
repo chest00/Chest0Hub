@@ -22,5 +22,13 @@
     "description": "Portail numérique personnel conçu pour centraliser l’univers Chest0 JM.S. : livres, contenus, réseaux sociaux, produits et projets. Chest0 Hub intègre une interface d’administration locale permettant de gérer simplement les contenus, les médias et l’écosystème local. Version actuelle : V1.3.0.",
     "url": "https://chest0.fr/",
     "enabled": true
+  },
+  {
+    "id": "chest0-photo-cleaner",
+    "name": "Chest0 Photo Cleaner",
+    "status": "Web/PWA — validation avant publication",
+    "description": "Détectez les doublons exacts de vos photos localement, sans téléversement ni suppression.",
+    "url": "https://chest0.fr/photo-cleaner/app/",
+    "enabled": true
   }
 ]

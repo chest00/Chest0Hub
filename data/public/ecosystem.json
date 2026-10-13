@@ -64,17 +64,18 @@
       "project_id": "chest0-photo-cleaner",
       "name": "Chest0 Photo Cleaner",
       "short_name": "Photo Cleaner",
-      "description": "Détection et nettoyage assisté des doublons et photos similaires.",
+      "description": "Version Web/PWA de détection locale des doublons exacts prête pour validation avant publication. Versions Desktop non commercialisées.",
       "category": "Photos",
       "type": "produit",
       "platforms": [
-        "macOS prévu",
-        "Windows prévu",
-        "Android ultérieur",
-        "Web/PWA à étudier"
+        "Web/PWA",
+        "macOS Desktop en préparation",
+        "Windows Desktop en préparation"
       ],
       "commercial_status": "commercialisation_prevue",
-      "public_links": [],
+      "public_links": [
+        "https://chest0.fr/photo-cleaner/app/"
+      ],
       "state": "developpement"
     },
     {

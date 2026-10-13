@@ -27,8 +27,8 @@ class PublicEcosystemTests(unittest.TestCase):
 
     def test_development_and_future_platforms(self):
         row=next(p for p in json.loads(export.encoded(ROOT))['projects'] if p['project_id']=='chest0-photo-cleaner')
-        self.assertEqual(row['state'],'developpement');self.assertEqual(row['public_links'],[])
-        self.assertEqual(row['platforms'],['macOS prévu','Windows prévu','Android ultérieur','Web/PWA à étudier'])
+        self.assertEqual(row['state'],'developpement');self.assertEqual(row['public_links'],['https://chest0.fr/photo-cleaner/app/'])
+        self.assertEqual(row['platforms'],['Web/PWA', 'macOS Desktop en préparation', 'Windows Desktop en préparation'])
         self.assertEqual(row['commercial_status'],'commercialisation_prevue')
     def test_false_visibility_excludes_previously_public_project(self):
         data=registry.load(ROOT/'config/projects.registry.json');data['projects'][0]['public_visible']=False
@@ -70,7 +70,7 @@ engine.loadJson=async name=>name==='projects.json'?editorial:data;
 (async()=>{
  await engine.renderProjects('grid');assert.equal(container.children.length,6);
  for(const id of ['chest0-social-studio','chest0-market-intelligence']){const card=container.children.find(e=>e.dataset.contentId===id);assert(card);assert(!card.children.some(e=>e.tag==='a'));}
- const photo=container.children.find(e=>e.dataset.contentId==='chest0-photo-cleaner');assert(photo);assert(!photo.children.some(e=>e.tag==='a'));
+ const photo=container.children.find(e=>e.dataset.contentId==='chest0-photo-cleaner');assert(photo);assert(photo.children.some(e=>e.tag==='a'));
  const hub=container.children.find(e=>e.dataset.contentId==='chest0-hub');assert(hub.children.some(e=>e.tag==='details'));assert(hub.children.some(e=>e.tag==='a'));
  data.projects[3].description='<img src=x onerror=bad>';data.projects[5].description='<script>bad</script>';await engine.renderProjects('grid');assert.equal(container.children[3].children[3].textContent,'<img src=x onerror=bad>');assert.equal(container.children[5].children[3].textContent,'<script>bad</script>');
  data.projects[0].name='<img src=x onerror=bad>';await engine.renderProjects('grid');assert.equal(container.children[0].children[1].textContent,'<img src=x onerror=bad>');

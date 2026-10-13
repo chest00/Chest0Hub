@@ -137,6 +137,13 @@ self.addEventListener(
                 request.url
             );
 
+        // CHEST0_PHOTO_CLEANER_SCOPE_EXCLUSION
+        // La PWA Photo Cleaner gere son propre perimetre.
+        if (requestUrl.pathname.startsWith("/photo-cleaner/app/")) {
+            return;
+        }
+
+
 
         if (
             requestUrl.origin !==

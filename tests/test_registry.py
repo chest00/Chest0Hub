@@ -28,7 +28,7 @@ class RegistryTests(unittest.TestCase):
         self.assertEqual(social['stable_commit'],'bf8550b50648a4ed4bddbde323788cabd47b2184')
         for key in ('chest0-photo-cleaner','chest0-market-intelligence'):
             row=rows[key];self.assertIsNone(row['stable_version']);self.assertTrue(row['public_visible'])
-            self.assertEqual(row['public_links'],[]);self.assertEqual(row['commercial_status'],'commercialisation_prevue')
+            self.assertEqual(row['public_links'],['https://chest0.fr/photo-cleaner/app/'] if key=='chest0-photo-cleaner' else []);self.assertEqual(row['commercial_status'],'commercialisation_prevue')
         self.assertFalse(rows['chest0-cloud']['public_visible'])
     def test_future_project(self):
         row=copy.deepcopy(self.data['projects'][0]);row.update(project_id='future-app',launch_id=None)
