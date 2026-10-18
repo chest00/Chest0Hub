@@ -18,6 +18,7 @@ def build_overview(registry, statuses):
             'name': project.get('name', ''),
             'state': project.get('state', 'indéterminé'),
             'stable_version': project.get('stable_version'),
+            'governance': project.get('governance', {}),
             'integration_levels': list(project.get('integration_levels', [])),
             'local_status': project.get('local_status', 'non_configure'),
             'runtime_state': status.get('state') if status else 'non_pilote',

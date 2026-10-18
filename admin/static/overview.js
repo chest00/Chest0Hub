@@ -25,7 +25,15 @@
         h.textContent = txt(item.name);
         card.append(h);
         line(card, "État du projet", item.state);
-        line(card, "Version stable", item.stable_version);
+        line(card, "Référence historique stable", item.stable_version);
+        const g = item.governance || {};
+        line(card, "Développement", g.development || "inconnu");
+        line(card, "Validation", g.validation || "non_verifiee");
+        line(card, "Disponibilité déclarée", g.availability || "inconnue");
+        line(card, "Provenance", g.source);
+        line(card, "Vérification documentaire", g.verified_on);
+        for (const [kind, version] of Object.entries(g.versions || {})) line(card, "Version " + kind, version);
+        for (const [cap, status] of Object.entries(g.capabilities || {})) line(card, "Capacité " + cap, status);
         line(card, "Présence locale", item.local_status);
         line(card, "Exécution", item.runtime_state);
         line(card, "Niveaux d'intégration", (item.integration_levels || []).join(", ") || "Aucun");

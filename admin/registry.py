@@ -68,6 +68,46 @@ def strings(value, maximum=16):
     if len(set(value))!=len(value):fail()
 
 
+CONTRACT_STATES = {'verified', 'unverified', 'planned', 'unsupported'}
+CONTRACT_CAPS = {'identification', 'status', 'version', 'access', 'open', 'launch',
+                 'stop', 'content_exchange', 'operations', 'documentation',
+                 'installed', 'interface', 'editorial_project', 'export'}
+DEVELOPMENT = {'conception', 'developpement', 'test', 'stable', 'suspendu', 'inconnu'}
+AVAILABILITY = {'locale', 'publique', 'future', 'indisponible', 'inconnue', 'suspendue'}
+
+
+def migration(row):
+    """Add conservative administrative metadata without rewriting legacy data."""
+    return {'contract_version': 1,
+            'development': 'developpement' if row['state']=='developpement' else
+                           'conception' if row['state']=='prevu' else 'inconnu',
+            'validation': 'non_verifiee', 'availability': 'inconnue',
+            'access_mode': 'non_verifie', 'source': 'Registre historique Hub ; qualification à confirmer.',
+            'verified_on': None,
+            'versions': {'installed': None, 'git': None, 'deployed': None, 'announced': row['stable_version']},
+            'capabilities': {key: 'unsupported' for key in CONTRACT_CAPS}}
+
+
+def validate_governance(value):
+    if not isinstance(value,dict) or set(value)!=set(migration({'state':'prevu','stable_version':None})):fail()
+    if type(value['contract_version']) is not int or value['contract_version']!=1:fail()
+    if value['development'] not in DEVELOPMENT or value['availability'] not in AVAILABILITY:fail()
+    if value['validation'] not in {'non_verifiee','documentee','tests_hub','validee'}:fail()
+    for key in ('access_mode','source'):text(value[key])
+    if value['verified_on'] is not None:
+        from datetime import date
+        try:date.fromisoformat(value['verified_on'])
+        except (ValueError,TypeError):fail()
+    versions=value['versions']
+    if not isinstance(versions,dict) or set(versions)!={'installed','git','deployed','announced'}:fail()
+    for version in versions.values():
+        if version is not None:text(version,100)
+    caps=value['capabilities']
+    if not isinstance(caps,dict) or set(caps)!=CONTRACT_CAPS:fail()
+    if any(state not in CONTRACT_STATES for state in caps.values()):fail()
+    if value['availability'] in {'future','suspendue'} and any(caps[k]=='verified' for k in ('launch','open','interface','export','content_exchange')):fail()
+
+
 def validate(payload):
     try:
         if not isinstance(payload,dict) or set(payload)!={'schema_version','projects'}:fail()
@@ -76,7 +116,8 @@ def validate(payload):
         if not isinstance(rows,list) or not 1<=len(rows)<=64:fail()
         ids=set()
         for row in rows:
-            if not isinstance(row,dict) or set(row)!=KEYS:fail()
+            if not isinstance(row,dict) or set(row) not in (KEYS, KEYS | {"governance"}):fail()
+            if 'governance' in row:validate_governance(row['governance'])
             pid=identifier(row['project_id'])
             if pid in ids:fail()
             ids.add(pid)
@@ -144,6 +185,9 @@ def availability(config_path):
             raw=item['root']
             if len(raw)>1024 or '\x00' in raw or '..' in Path(raw).parts:fail()
             root=Path(raw).expanduser()
+            if str(root).startswith('/Users/jmssosse/Desktop/Projet Chest0 AI Studio'):
+                result[pid]='chemin_exclu'
+                continue
             if not root.is_absolute():fail()
             if any(p.is_symlink() for p in (root,*root.parents)):
                 result[pid]='chemin_refuse'
@@ -159,6 +203,7 @@ def admin_view(path,config_path):
         for row in data['projects']:
             if not row['admin_visible']:continue
             item=copy.deepcopy(row)
+            item.setdefault('governance',migration(row))
             item['local_status']='natif' if row['project_id']=='chest0-hub' else local.get(row['project_id'],'non_configure')
             rows.append(item)
         return {'ok':True,'schema_version':1,'projects':rows,'levels':LEVELS}

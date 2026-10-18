@@ -123,6 +123,8 @@ def load_registry(config_path: str | Path, only: str | None = None) -> dict[str,
         if not isinstance(raw_root, str) or not raw_root.strip():
             raise EcosystemError(f"Racine invalide pour {spec['label']}.")
         root = Path(raw_root).expanduser()
+        if str(root).startswith('/Users/jmssosse/Desktop/Projet Chest0 AI Studio'):
+            raise EcosystemError("Chemin exclu du périmètre autorisé.")
         if not root.is_absolute() or '..' in root.parts or root.is_symlink():
             raise EcosystemError("Chemin local refusé.")
         root = root.resolve()

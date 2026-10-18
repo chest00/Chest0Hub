@@ -153,3 +153,10 @@ Les futurs livres, produits et projets pourront être ajoutés sans refonte glob
 - GitHub.
 - GitHub Pages.
 - Publication publique initiale.
+
+## v1.8.0 — Sprint 13 — 2026-10-18 (local, non publié)
+
+Registre administratif enrichi, contrat de capacités 1, migration conservatrice,
+fiches privées Éditions/Video/Accompagnement et supervision avec provenance.
+Six fiches publiques inchangées ; cinq lanceurs conservés avec refus du chemin
+exclu. Sauvegarde et restauration gardée par empreintes, tests consolidés.

@@ -32,7 +32,38 @@
         "public_web_app"
       ],
       "dependencies": [],
-      "notes": "Admin natif ; Sprint 10 clôturé, base du Sprint 11."
+      "notes": "Sprint 13 local ; version publique non vérifiée.",
+      "governance": {
+        "contract_version": 1,
+        "development": "stable",
+        "validation": "documentee",
+        "availability": "locale",
+        "access_mode": "non_verifie",
+        "source": "Registre Hub existant et référentiel global V3 du 18 octobre 2026 ; fonctionnement externe non retesté.",
+        "verified_on": "2026-10-18",
+        "versions": {
+          "installed": "v1.8.0",
+          "git": "84cb8c6649fe59a85a4c5bdd5c5b4608377c1519",
+          "deployed": null,
+          "announced": "v1.6.0"
+        },
+        "capabilities": {
+          "version": "unsupported",
+          "editorial_project": "unsupported",
+          "interface": "unsupported",
+          "operations": "unsupported",
+          "content_exchange": "unsupported",
+          "status": "verified",
+          "access": "unsupported",
+          "identification": "verified",
+          "installed": "unsupported",
+          "launch": "unsupported",
+          "export": "unsupported",
+          "open": "unsupported",
+          "stop": "unsupported",
+          "documentation": "unsupported"
+        }
+      }
     },
     {
       "project_id": "chest0-ai-studio",
@@ -62,7 +93,38 @@
         "launchable_local_app"
       ],
       "dependencies": [],
-      "notes": "Développement avancé ; import Quiz existant sous contrôle humain."
+      "notes": "Développement avancé ; import Quiz existant sous contrôle humain.",
+      "governance": {
+        "contract_version": 1,
+        "development": "developpement",
+        "validation": "documentee",
+        "availability": "inconnue",
+        "access_mode": "non_verifie",
+        "source": "Registre Hub existant et référentiel global V3 du 18 octobre 2026 ; fonctionnement externe non retesté.",
+        "verified_on": null,
+        "versions": {
+          "installed": null,
+          "git": null,
+          "deployed": null,
+          "announced": null
+        },
+        "capabilities": {
+          "version": "unsupported",
+          "editorial_project": "unsupported",
+          "interface": "unsupported",
+          "operations": "unsupported",
+          "content_exchange": "unsupported",
+          "status": "verified",
+          "access": "unsupported",
+          "identification": "verified",
+          "installed": "unsupported",
+          "launch": "unverified",
+          "export": "unsupported",
+          "open": "unverified",
+          "stop": "unverified",
+          "documentation": "unsupported"
+        }
+      }
     },
     {
       "project_id": "chest0-quiz-studio",
@@ -93,7 +155,38 @@
         "versioned_json_exchange"
       ],
       "dependencies": [],
-      "notes": "Développement très avancé ; version stable non renseignée."
+      "notes": "Développement très avancé ; version stable non renseignée.",
+      "governance": {
+        "contract_version": 1,
+        "development": "developpement",
+        "validation": "documentee",
+        "availability": "inconnue",
+        "access_mode": "non_verifie",
+        "source": "Registre Hub existant et référentiel global V3 du 18 octobre 2026 ; fonctionnement externe non retesté.",
+        "verified_on": null,
+        "versions": {
+          "installed": null,
+          "git": null,
+          "deployed": null,
+          "announced": null
+        },
+        "capabilities": {
+          "version": "unsupported",
+          "editorial_project": "unsupported",
+          "interface": "unsupported",
+          "operations": "unsupported",
+          "content_exchange": "unsupported",
+          "status": "verified",
+          "access": "unsupported",
+          "identification": "verified",
+          "installed": "unsupported",
+          "launch": "unverified",
+          "export": "unsupported",
+          "open": "unverified",
+          "stop": "unverified",
+          "documentation": "unsupported"
+        }
+      }
     },
     {
       "project_id": "chest0-social-studio",
@@ -125,7 +218,38 @@
         "launchable_local_app"
       ],
       "dependencies": [],
-      "notes": "Version stable fournie par le propriétaire ; aucune API interrogée."
+      "notes": "Version stable fournie par le propriétaire ; aucune API interrogée.",
+      "governance": {
+        "contract_version": 1,
+        "development": "inconnu",
+        "validation": "documentee",
+        "availability": "inconnue",
+        "access_mode": "non_verifie",
+        "source": "Registre Hub existant et référentiel global V3 du 18 octobre 2026 ; fonctionnement externe non retesté.",
+        "verified_on": null,
+        "versions": {
+          "installed": null,
+          "git": null,
+          "deployed": null,
+          "announced": "v1.0.0"
+        },
+        "capabilities": {
+          "version": "unsupported",
+          "editorial_project": "unsupported",
+          "interface": "unsupported",
+          "operations": "unsupported",
+          "content_exchange": "unsupported",
+          "status": "verified",
+          "access": "unsupported",
+          "identification": "verified",
+          "installed": "unsupported",
+          "launch": "unverified",
+          "export": "unsupported",
+          "open": "unverified",
+          "stop": "unverified",
+          "documentation": "unsupported"
+        }
+      }
     },
     {
       "project_id": "chest0-photo-cleaner",
@@ -156,7 +280,38 @@
       ],
       "capabilities": [],
       "dependencies": [],
-      "notes": "Intégration Web locale en préparation. URL cible non publiée. Aucun prix ni téléchargement Desktop."
+      "notes": "Intégration Web locale en préparation. URL cible non publiée. Aucun prix ni téléchargement Desktop.",
+      "governance": {
+        "contract_version": 1,
+        "development": "developpement",
+        "validation": "documentee",
+        "availability": "inconnue",
+        "access_mode": "non_verifie",
+        "source": "Registre Hub existant et référentiel global V3 du 18 octobre 2026 ; fonctionnement externe non retesté.",
+        "verified_on": null,
+        "versions": {
+          "installed": null,
+          "git": null,
+          "deployed": null,
+          "announced": null
+        },
+        "capabilities": {
+          "version": "unsupported",
+          "editorial_project": "unsupported",
+          "interface": "unsupported",
+          "operations": "unsupported",
+          "content_exchange": "unsupported",
+          "status": "verified",
+          "access": "unsupported",
+          "identification": "verified",
+          "installed": "unsupported",
+          "launch": "unsupported",
+          "export": "unsupported",
+          "open": "unsupported",
+          "stop": "unsupported",
+          "documentation": "unsupported"
+        }
+      }
     },
     {
       "project_id": "chest0-market-intelligence",
@@ -184,7 +339,38 @@
         "launchable_local_app"
       ],
       "dependencies": [],
-      "notes": "Présentation publique autorisée ; application financière privée. Fonctionnalités cibles en développement ; aucune disponibilité commerciale annoncée."
+      "notes": "Présentation publique autorisée ; application financière privée. Fonctionnalités cibles en développement ; aucune disponibilité commerciale annoncée.",
+      "governance": {
+        "contract_version": 1,
+        "development": "developpement",
+        "validation": "documentee",
+        "availability": "inconnue",
+        "access_mode": "non_verifie",
+        "source": "Registre Hub existant et référentiel global V3 du 18 octobre 2026 ; fonctionnement externe non retesté.",
+        "verified_on": null,
+        "versions": {
+          "installed": null,
+          "git": null,
+          "deployed": null,
+          "announced": null
+        },
+        "capabilities": {
+          "version": "unsupported",
+          "editorial_project": "unsupported",
+          "interface": "unsupported",
+          "operations": "unsupported",
+          "content_exchange": "unsupported",
+          "status": "verified",
+          "access": "unsupported",
+          "identification": "verified",
+          "installed": "unsupported",
+          "launch": "unverified",
+          "export": "unsupported",
+          "open": "unverified",
+          "stop": "unverified",
+          "documentation": "unsupported"
+        }
+      }
     },
     {
       "project_id": "mes-demarches-de-vie",
@@ -212,7 +398,38 @@
       "public_links": [],
       "capabilities": [],
       "dependencies": [],
-      "notes": "Référence locale ; aucune interconnexion automatique."
+      "notes": "Référence locale ; aucune interconnexion automatique.",
+      "governance": {
+        "contract_version": 1,
+        "development": "developpement",
+        "validation": "documentee",
+        "availability": "inconnue",
+        "access_mode": "non_verifie",
+        "source": "Registre Hub existant et référentiel global V3 du 18 octobre 2026 ; fonctionnement externe non retesté.",
+        "verified_on": null,
+        "versions": {
+          "installed": null,
+          "git": null,
+          "deployed": null,
+          "announced": null
+        },
+        "capabilities": {
+          "version": "unsupported",
+          "editorial_project": "unsupported",
+          "interface": "unsupported",
+          "operations": "unsupported",
+          "content_exchange": "unsupported",
+          "status": "verified",
+          "access": "unsupported",
+          "identification": "verified",
+          "installed": "unsupported",
+          "launch": "unsupported",
+          "export": "unsupported",
+          "open": "unsupported",
+          "stop": "unsupported",
+          "documentation": "unsupported"
+        }
+      }
     },
     {
       "project_id": "chest0-cloud",
@@ -237,7 +454,38 @@
       "public_links": [],
       "capabilities": [],
       "dependencies": [],
-      "notes": "Aucune exposition publique ni connexion créée."
+      "notes": "Aucune exposition publique ni connexion créée.",
+      "governance": {
+        "contract_version": 1,
+        "development": "inconnu",
+        "validation": "documentee",
+        "availability": "inconnue",
+        "access_mode": "non_verifie",
+        "source": "Registre Hub existant et référentiel global V3 du 18 octobre 2026 ; fonctionnement externe non retesté.",
+        "verified_on": null,
+        "versions": {
+          "installed": null,
+          "git": null,
+          "deployed": null,
+          "announced": null
+        },
+        "capabilities": {
+          "version": "unsupported",
+          "editorial_project": "unsupported",
+          "interface": "unsupported",
+          "operations": "unsupported",
+          "content_exchange": "unsupported",
+          "status": "verified",
+          "access": "unsupported",
+          "identification": "verified",
+          "installed": "unsupported",
+          "launch": "unsupported",
+          "export": "unsupported",
+          "open": "unsupported",
+          "stop": "unsupported",
+          "documentation": "unsupported"
+        }
+      }
     },
     {
       "project_id": "chest0-blog-studio",
@@ -267,7 +515,212 @@
         "launchable_local_app"
       ],
       "dependencies": [],
-      "notes": "Accès privé depuis Hub Admin. Aucun transfert automatique depuis le Hub."
+      "notes": "Accès privé depuis Hub Admin. Aucun transfert automatique depuis le Hub.",
+      "governance": {
+        "contract_version": 1,
+        "development": "developpement",
+        "validation": "documentee",
+        "availability": "inconnue",
+        "access_mode": "non_verifie",
+        "source": "Registre Hub existant et référentiel global V3 du 18 octobre 2026 ; fonctionnement externe non retesté.",
+        "verified_on": null,
+        "versions": {
+          "installed": null,
+          "git": null,
+          "deployed": null,
+          "announced": null
+        },
+        "capabilities": {
+          "version": "unsupported",
+          "editorial_project": "unsupported",
+          "interface": "unsupported",
+          "operations": "unsupported",
+          "content_exchange": "unsupported",
+          "status": "verified",
+          "access": "unsupported",
+          "identification": "verified",
+          "installed": "unsupported",
+          "launch": "unverified",
+          "export": "unsupported",
+          "open": "unverified",
+          "stop": "unverified",
+          "documentation": "unsupported"
+        }
+      }
+    },
+    {
+      "project_id": "chest0-editions-studio",
+      "name": "Chest0 Éditions Studio",
+      "short_name": "Chest0 Éditions Studio",
+      "description": "Projet de création, révision, préparation et export de livres assistés par IA.",
+      "category": "Création",
+      "state": "prevu",
+      "stable_version": null,
+      "stable_commit": null,
+      "type": "application",
+      "platforms": [],
+      "admin_visible": true,
+      "public_visible": false,
+      "commercial_status": "non_commercial",
+      "integration_levels": [
+        "A"
+      ],
+      "launch_id": null,
+      "repository": null,
+      "documentation": [],
+      "public_links": [],
+      "capabilities": [],
+      "dependencies": [
+        "chest0-blog-studio",
+        "chest0-video-studio",
+        "chest0-social-studio",
+        "chest0-ai-studio",
+        "chest0-quiz-studio"
+      ],
+      "notes": "Conception documentée ; exports envisagés Markdown, DOCX, EPUB, PDF ; préparation KDP sans publication automatique. Dépendances : intégrations envisagées uniquement.",
+      "governance": {
+        "contract_version": 1,
+        "development": "conception",
+        "validation": "documentee",
+        "availability": "future",
+        "access_mode": "futur_non_operationnel",
+        "source": "Référentiel global V3 et mission Sprint 13 du 18 octobre 2026.",
+        "verified_on": "2026-10-18",
+        "versions": {
+          "installed": null,
+          "git": null,
+          "deployed": null,
+          "announced": null
+        },
+        "capabilities": {
+          "version": "unsupported",
+          "editorial_project": "planned",
+          "interface": "planned",
+          "operations": "unsupported",
+          "content_exchange": "planned",
+          "status": "unsupported",
+          "access": "unsupported",
+          "identification": "unsupported",
+          "installed": "unsupported",
+          "launch": "planned",
+          "export": "planned",
+          "open": "planned",
+          "stop": "unsupported",
+          "documentation": "unsupported"
+        }
+      }
+    },
+    {
+      "project_id": "chest0-video-studio",
+      "name": "Chest0 Video Studio",
+      "short_name": "Chest0 Video Studio",
+      "description": "Application Video référencée ; intégration Hub préparée, non activée.",
+      "category": "Création",
+      "state": "prevu",
+      "stable_version": null,
+      "stable_commit": null,
+      "type": "application",
+      "platforms": [],
+      "admin_visible": true,
+      "public_visible": false,
+      "commercial_status": "non_commercial",
+      "integration_levels": [
+        "A"
+      ],
+      "launch_id": null,
+      "repository": null,
+      "documentation": [],
+      "public_links": [],
+      "capabilities": [],
+      "dependencies": [],
+      "notes": "Aucun lancement ni accès opérationnel certifié.",
+      "governance": {
+        "contract_version": 1,
+        "development": "developpement",
+        "validation": "documentee",
+        "availability": "inconnue",
+        "access_mode": "futur_non_operationnel",
+        "source": "Référentiel global V3 et mission Sprint 13 du 18 octobre 2026.",
+        "verified_on": "2026-10-18",
+        "versions": {
+          "installed": null,
+          "git": null,
+          "deployed": null,
+          "announced": null
+        },
+        "capabilities": {
+          "version": "unsupported",
+          "editorial_project": "unsupported",
+          "interface": "unsupported",
+          "operations": "unsupported",
+          "content_exchange": "unsupported",
+          "status": "unsupported",
+          "access": "unsupported",
+          "identification": "unsupported",
+          "installed": "unsupported",
+          "launch": "unsupported",
+          "export": "unsupported",
+          "open": "unsupported",
+          "stop": "unsupported",
+          "documentation": "unsupported"
+        }
+      }
+    },
+    {
+      "project_id": "chest0-accompagnement",
+      "name": "Chest0 Accompagnement",
+      "short_name": "Chest0 Accompagnement",
+      "description": "Projet suspendu, sans accès ni pilotage activé.",
+      "category": "Accompagnement",
+      "state": "prevu",
+      "stable_version": null,
+      "stable_commit": null,
+      "type": "application",
+      "platforms": [],
+      "admin_visible": true,
+      "public_visible": false,
+      "commercial_status": "non_commercial",
+      "integration_levels": [
+        "A"
+      ],
+      "launch_id": null,
+      "repository": null,
+      "documentation": [],
+      "public_links": [],
+      "capabilities": [],
+      "dependencies": [],
+      "notes": "Aucun lancement ni accès opérationnel certifié.",
+      "governance": {
+        "contract_version": 1,
+        "development": "suspendu",
+        "validation": "documentee",
+        "availability": "suspendue",
+        "access_mode": "futur_non_operationnel",
+        "source": "Référentiel global V3 et mission Sprint 13 du 18 octobre 2026.",
+        "verified_on": "2026-10-18",
+        "versions": {
+          "installed": null,
+          "git": null,
+          "deployed": null,
+          "announced": null
+        },
+        "capabilities": {
+          "version": "unsupported",
+          "editorial_project": "unsupported",
+          "interface": "unsupported",
+          "operations": "unsupported",
+          "content_exchange": "unsupported",
+          "status": "unsupported",
+          "access": "unsupported",
+          "identification": "unsupported",
+          "installed": "unsupported",
+          "launch": "unsupported",
+          "export": "unsupported",
+          "open": "unsupported",
+          "stop": "unsupported",
+          "documentation": "unsupported"
+        }
+      }
     }
   ]
 }

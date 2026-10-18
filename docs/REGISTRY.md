@@ -141,3 +141,29 @@ son état stable et macOS local. Market Intelligence présente un périmètre vi
 en développement, sans ordres réels en V1, promesse financière ou accès privé.
 Les intégrations futures Photo Cleaner et Video Studio restent hors périmètre ;
 Video Studio n’est pas une septième carte.
+
+## Sprint 13 — contrat administratif 1, Hub local v1.8.0
+
+Le schéma 1 accepte un champ optionnel `governance`, jamais exporté.
+Les anciennes fiches restent lisibles : `migration()` fournit en mémoire des
+valeurs prudentes, sans écriture ni déduction de disponibilité depuis un lanceur.
+Développement, validation et disponibilité sont indépendants. Les versions
+installed/git/deployed/announced sont distinctes ; null signifie inconnue.
+La référence stable historique n'est pas la version déployée.
+Les capacités utilisent verified/unverified/planned/unsupported. Verified atteste
+la preuve indiquée par source et verified_on ; une fiche documentée ne certifie
+pas le fonctionnement réel d'une application. Les dépendances Éditions sont
+prospectives ; aucun connecteur ni export éditorial n'est implémenté.
+
+Video reste préparé non activé : contrat d'entrée, port, environnement et santé
+à qualifier lors d'une mission dédiée avant modification de la liste fermée.
+Aucun dossier externe n'a été inspecté. Le chemin AI explicitement exclu est
+refusé avant accès au système de fichiers par le catalogue et les lanceurs.
+
+Mise à jour appliquée localement en un lot sauvegardé, sans installation externe.
+Contrôle reproductible : `python3 -B scripts/sprint13_update.py`.
+Retour arrière gardé : même commande avec `--restore`, uniquement si HEAD,
+branche, empreintes actuelles et sauvegardes correspondent. Les ajouts sont
+archivés dans backups/sprint13/retired, jamais supprimés. Les données historiques
+et config/ecosystem.local.json ne sont pas remplacées. Arrêter l'Admin et ne pas
+éditer le Hub pendant une restauration ; aucun verrou global multi-processus.
