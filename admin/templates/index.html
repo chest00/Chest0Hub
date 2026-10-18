@@ -120,6 +120,14 @@
         </section>
 
 
+        <section id="chest0-overview" class="ecosystem-panel" aria-labelledby="chest0-overview-title">
+            <p class="eyebrow">Pilotage privé · lecture seule</p>
+            <h2 id="chest0-overview-title">Vue globale des projets Chest0</h2>
+            <p>États indicatifs issus du registre privé et des contrôles locaux existants. Aucune publication ni commande n'est déclenchée.</p>
+            <button type="button" id="chest0-overview-refresh">Actualiser les états</button>
+            <div id="chest0-overview-list" class="ecosystem-grid" aria-live="polite">Chargement…</div>
+        </section>
+
         <nav
             id="admin-tabs"
             class="admin-tabs"
@@ -212,6 +220,7 @@
     </footer>
 
 
+    <script src="/static/overview.js" defer></script>
     <script
         src="/static/admin.js"
         defer

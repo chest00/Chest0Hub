@@ -131,7 +131,7 @@
       "project_id": "chest0-photo-cleaner",
       "name": "Chest0 Photo Cleaner",
       "short_name": "Photo Cleaner",
-      "description": "Version Web/PWA de détection locale des doublons exacts prête pour validation avant publication. Versions Desktop non commercialisées.",
+      "description": "Chest0 Photo Cleaner : détection locale des doublons exacts, sans téléversement ni suppression automatique. Édition gratuite Web/PWA et fonctionnalités Premium sous licence. Achat Gumroad non activé tant que le lien de vente et la vérification serveur ne sont pas configurés.",
       "category": "Photos",
       "state": "developpement",
       "stable_version": null,
@@ -173,13 +173,16 @@
       "public_visible": true,
       "commercial_status": "commercialisation_prevue",
       "integration_levels": [
-        "A"
+        "A",
+        "D"
       ],
-      "launch_id": null,
+      "launch_id": "chest0-market-intelligence",
       "repository": null,
       "documentation": [],
       "public_links": [],
-      "capabilities": [],
+      "capabilities": [
+        "launchable_local_app"
+      ],
       "dependencies": [],
       "notes": "Présentation publique autorisée ; application financière privée. Fonctionnalités cibles en développement ; aucune disponibilité commerciale annoncée."
     },
@@ -235,6 +238,36 @@
       "capabilities": [],
       "dependencies": [],
       "notes": "Aucune exposition publique ni connexion créée."
+    },
+    {
+      "project_id": "chest0-blog-studio",
+      "name": "Chest0 Blog Studio",
+      "short_name": "Blog Studio",
+      "description": "Création locale d’articles SEO et programmation Blogger sous autorisation explicite.",
+      "category": "Création",
+      "state": "developpement",
+      "stable_version": null,
+      "stable_commit": null,
+      "type": "application",
+      "platforms": [
+        "macOS local"
+      ],
+      "admin_visible": true,
+      "public_visible": false,
+      "commercial_status": "non_commercial",
+      "integration_levels": [
+        "A",
+        "D"
+      ],
+      "launch_id": "chest0-blog-studio",
+      "repository": null,
+      "documentation": [],
+      "public_links": [],
+      "capabilities": [
+        "launchable_local_app"
+      ],
+      "dependencies": [],
+      "notes": "Accès privé depuis Hub Admin. Aucun transfert automatique depuis le Hub."
     }
   ]
 }

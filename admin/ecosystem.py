@@ -22,6 +22,20 @@ APPLICATION_SPECS = {
         "version_file": "src/chest0_social_studio/web/app.py",
         "markers": ("run_dev.sh", "src/chest0_social_studio/workflow/production.py"),
     },
+    "chest0-market-intelligence": {
+        "label": "Chest0 Market Intelligence",
+        "port": 8770,
+        "entrypoint": "src.cockpit_final",
+        "version_file": "src/cockpit_final.py",
+        "markers": ("src/cockpit_final.py",),
+    },
+    "chest0-blog-studio": {
+        "label": "Chest0 Blog Studio",
+        "port": 8765,
+        "entrypoint": "scripts/launch_blog_studio.py",
+        "version_file": "app/__init__.py",
+        "markers": ("scripts/launch_blog_studio.py", "app/ui/local_web.py"),
+    },
     "chest0-quiz-studio": {
         "label": "Chest0 Quiz Studio",
         "port": 8501,
@@ -58,6 +72,10 @@ class ApplicationDefinition:
 
     @property
     def health_url(self) -> str:
+        if self.identifier == "chest0-market-intelligence":
+            return f"{self.url}/"
+        if self.identifier == "chest0-blog-studio":
+            return f"{self.url}/health"
         return f"{self.url}/api/health" if self.identifier == "chest0-social-studio" else f"{self.url}/_stcore/health"
 
     @property
@@ -66,6 +84,10 @@ class ApplicationDefinition:
 
     @property
     def command(self) -> tuple[str, ...]:
+        if self.identifier == "chest0-market-intelligence":
+            return (str(self.python), "-m", self.entrypoint)
+        if self.identifier == "chest0-blog-studio":
+            return (str(self.python), self.entrypoint)
         if self.identifier == "chest0-social-studio":
             return ("/bin/bash", str(self.root / "run_dev.sh"), "--no-browser", "--server.port", str(self.port))
         return (
@@ -86,7 +108,7 @@ def load_registry(config_path: str | Path, only: str | None = None) -> dict[str,
     if not isinstance(payload, dict) or set(payload) != {"applications"}:
         raise EcosystemError("Structure de configuration locale invalide.")
     configured = payload["applications"]
-    required = set(APPLICATION_SPECS) - {"chest0-social-studio"}
+    required = set(APPLICATION_SPECS) - {"chest0-social-studio", "chest0-blog-studio", "chest0-market-intelligence"}
     if not isinstance(configured, dict) or not required <= set(configured) or not set(configured) <= set(APPLICATION_SPECS):
         raise EcosystemError("La configuration doit définir exactement les applications autorisées.")
 
@@ -183,13 +205,58 @@ class EcosystemManager:
     def _healthy(application: ApplicationDefinition) -> bool:
         try:
             with urlopen(application.health_url, timeout=0.5) as response:
+                if application.identifier == "chest0-market-intelligence":
+                    # La page d'accueil doit identifier explicitement le cockpit.
+                    # Un autre service sur le même port ne doit pas être reconnu.
+                    page = response.read(131072).decode("utf-8", errors="replace").lower()
+                    return response.status == 200 and "chest0" in page and "market" in page
+                if application.identifier == "chest0-blog-studio":
+                    payload = json.loads(response.read(4096))
+                    return response.status == 200 and payload.get("service") == "Chest0 Blog Studio" and payload.get("status") == "ok"
                 expected = b"chest0-social-studio" if application.identifier == "chest0-social-studio" else b"ok"
                 return response.status == 200 and response.read(64).strip().lower() == expected
         except Exception:
             return False
 
+    def _verified_external_blog_pid(self, application: ApplicationDefinition) -> int | None:
+        """Return the sole listening PID only when executable, cwd and health all match."""
+        if application.identifier != "chest0-blog-studio" or not self._healthy(application):
+            return None
+        try:
+            found = subprocess.run(
+                ["lsof", "-nP", "-tiTCP:%d" % application.port, "-sTCP:LISTEN"],
+                capture_output=True, text=True, timeout=3, check=True,
+            )
+            pids = set(found.stdout.split())
+            if len(pids) != 1 or not next(iter(pids)).isdigit():
+                return None
+            pid = int(next(iter(pids)))
+            if pid <= 1 or pid == __import__("os").getpid():
+                return None
+            command = subprocess.run(
+                ["ps", "-p", str(pid), "-o", "command="],
+                capture_output=True, text=True, timeout=3, check=True,
+            ).stdout.strip()
+            cwd_output = subprocess.run(
+                ["lsof", "-a", "-p", str(pid), "-d", "cwd", "-Fn"],
+                capture_output=True, text=True, timeout=3, check=True,
+            ).stdout.splitlines()
+            cwd = [line[1:] for line in cwd_output if line.startswith("n")]
+            if len(cwd) != 1 or Path(cwd[0]).resolve() != application.root.resolve():
+                return None
+            # The process must explicitly be the known Blog Studio entrypoint.
+            if not (
+                "scripts/launch_blog_studio.py" in command
+                or ("-m app.ui.local_web" in command and str(application.python) in command)
+            ):
+                return None
+            return pid
+        except (OSError, ValueError, subprocess.SubprocessError):
+            return None
+
     def _public_status(self, application: ApplicationDefinition, state: str, owned: bool) -> dict:
         return {
+            "manageable": owned or (state == "déjà_actif" and self._verified_external_blog_pid(application) is not None),
             "id": application.identifier,
             "label": application.label,
             "version": read_version(application) or "indéterminée",
@@ -279,7 +346,22 @@ class EcosystemManager:
             process = self._processes.get(identifier)
             if process is None or process.poll() is not None:
                 self._processes.pop(identifier, None)
-                raise EcosystemError("Hub ne détient pas ce processus : arrêt refusé.")
+                if identifier != "chest0-blog-studio":
+                    raise EcosystemError("Hub ne détient pas ce processus : arrêt refusé.")
+                pid = self._verified_external_blog_pid(application)
+                if pid is None or self._verified_external_blog_pid(application) != pid:
+                    raise EcosystemError("Processus externe non vérifiable : arrêt refusé.")
+                import os
+                import signal
+                try:
+                    os.kill(pid, signal.SIGTERM)
+                except (OSError, ProcessLookupError) as exc:
+                    raise EcosystemError("Arrêt du processus externe impossible.") from exc
+                for _ in range(50):
+                    if not self._port_open(application.port):
+                        return self._public_status(application, "arrêté", False)
+                    time.sleep(0.1)
+                raise EcosystemError("Arrêt demandé, mais le port reste occupé. Aucun arrêt forcé.")
             process.terminate()
         try:
             process.wait(timeout=5)

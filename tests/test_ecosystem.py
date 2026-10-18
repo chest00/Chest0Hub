@@ -73,7 +73,18 @@ class EcosystemManagerTests(unittest.TestCase):
         self.assertEqual(registry["chest0-ai-studio"].port, 8502)
         for application in registry.values():
             self.assertIsInstance(application.command, tuple)
-            self.assertIn("--server.port", application.command)
+            if application.identifier == "chest0-blog-studio":
+                self.assertEqual(application.port, 8765)
+                self.assertEqual(application.command, (
+                    str(application.python), "scripts/launch_blog_studio.py"
+                ))
+                self.assertEqual(application.health_url, "http://127.0.0.1:8765/health")
+            elif application.identifier == "chest0-market-intelligence":
+                self.assertEqual(application.port, 8770)
+                self.assertEqual(application.command, (str(application.python), "-m", "src.cockpit_final"))
+                self.assertEqual(application.health_url, "http://127.0.0.1:8770/")
+            else:
+                self.assertIn("--server.port", application.command)
             self.assertNotIn("shell=True", " ".join(application.command))
 
     def test_missing_invalid_unknown_and_wrong_root_are_rejected(self):

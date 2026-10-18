@@ -28,7 +28,7 @@ class SocialAccessTests(unittest.TestCase):
             data=json.loads(fixture.config.read_text())
             data["applications"].pop("chest0-social-studio")
             fixture.config.write_text(json.dumps(data))
-            self.assertEqual(set(load_registry(fixture.config)), {"chest0-ai-studio", "chest0-quiz-studio"})
+            self.assertEqual(set(load_registry(fixture.config)), {"chest0-ai-studio", "chest0-quiz-studio"} | ({"chest0-blog-studio"} if "chest0-blog-studio" in data["applications"] else set()) | ({"chest0-market-intelligence"} if "chest0-market-intelligence" in data["applications"] else set()))
         finally:
             fixture.tearDown()
 

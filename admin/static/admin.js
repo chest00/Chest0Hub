@@ -3022,7 +3022,7 @@ function renderEcosystem(applications, registry = null) {
         const open = ecosystemButton("Ouvrir", () => window.open(application.url, "_blank", "noopener"));
         open.disabled = !["opérationnel", "déjà_actif"].includes(application.state);
         const stop = ecosystemButton("Arrêter", () => ecosystemAction("stop", application.id));
-        stop.disabled = !application.owned;
+        stop.disabled = !application.manageable;
         actions.append(start, open, stop);
         const actionHelp = document.createElement("p");
         actionHelp.className = "ecosystem-action-help";

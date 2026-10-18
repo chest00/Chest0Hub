@@ -8,6 +8,9 @@
     },
     "chest0-social-studio": {
       "root": "/path/to/Chest0SocialStudio"
+    },
+    "chest0-market-intelligence": {
+      "root": "/path/to/Chest0MarketIntelligence"
     }
   }
 }

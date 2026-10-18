@@ -21,6 +21,11 @@ except ModuleNotFoundError:
     from registry import admin_view
 
 
+try:
+    from admin.overview import build_overview
+except ModuleNotFoundError:
+    from overview import build_overview
+
 HOST = "127.0.0.1"
 PORT = 8090
 
@@ -244,6 +249,13 @@ class AdminHandler(BaseHTTPRequestHandler):
                     "csrfToken": CSRF_TOKEN,
                 }
             )
+            return
+
+        if path == "/api/ecosystem/overview":
+            self.send_json(build_overview(
+                admin_view(PROJECT_DIR / "config" / "projects.registry.json", ECOSYSTEM_CONFIG),
+                ECOSYSTEM_MANAGER.statuses(),
+            ))
             return
 
         if path == "/api/registry":

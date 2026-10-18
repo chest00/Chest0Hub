@@ -18,7 +18,7 @@ STATES = {'stable', 'developpement', 'prevu', 'prive'}
 TYPES = {'application', 'produit', 'infrastructure', 'hub', 'service'}
 CAPABILITIES = {'local_api', 'versioned_json_exchange', 'cli', 'launchable_local_app',
                 'public_web_app', 'product_page', 'analytics_source'}
-LAUNCH_IDS = {'chest0-social-studio', 'chest0-ai-studio', 'chest0-quiz-studio'}
+LAUNCH_IDS = {'chest0-ai-studio', 'chest0-blog-studio', 'chest0-market-intelligence', 'chest0-quiz-studio', 'chest0-social-studio'}
 KEYS = {'project_id', 'name', 'short_name', 'description', 'category', 'state',
         'stable_version', 'stable_commit', 'type', 'platforms', 'admin_visible',
         'public_visible', 'commercial_status', 'integration_levels', 'launch_id',
