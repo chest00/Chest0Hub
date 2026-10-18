@@ -28,7 +28,8 @@ class Sprint13Tests(unittest.TestCase):
         self.assertEqual(r.public_export(self.data),before)
         rows={x['project_id']:x for x in self.data['projects']}
         for pid in ('chest0-editions-studio','chest0-video-studio','chest0-accompagnement'):
-            self.assertFalse(rows[pid]['public_visible']);self.assertIsNone(rows[pid]['launch_id'])
+            self.assertFalse(rows[pid]['public_visible'])
+            self.assertEqual(rows[pid]['launch_id'], pid if pid=='chest0-video-studio' else None)
         g=rows['chest0-editions-studio']['governance']
         self.assertEqual(g['development'],'conception')
         self.assertEqual(g['capabilities']['export'],'planned')

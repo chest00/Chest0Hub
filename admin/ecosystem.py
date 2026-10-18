@@ -5,6 +5,8 @@ from __future__ import annotations
 import ast
 from dataclasses import dataclass
 import json
+import os
+import re
 from pathlib import Path
 import socket
 import subprocess
@@ -51,6 +53,96 @@ APPLICATION_SPECS = {
         "markers": ("app.py", "src/integration/quiz_exchange.py"),
     },
 }
+
+
+# Native GUI: intentionally outside the HTTP launcher allowlist.
+# No HTTP port, no remote discovery, no forced shutdown.
+PHOTO_ID = "chest0-photo-cleaner"
+PHOTO_ROOT = Path.home() / "Applications" / "Chest0PhotoCleaner"
+PHOTO_APP = PHOTO_ROOT / "dist" / "Chest0 Photo Cleaner.app"
+PHOTO_COMMIT = "dd49c045614ab5311a31754d6f6400b121595da8"
+
+
+def _photo_definition():
+    """Verify a fixed macOS .app bundle; do not inspect or change Photo Cleaner sources."""
+    root = PHOTO_ROOT
+    if root.is_symlink() or not root.is_dir():
+        return None
+    bundle = PHOTO_APP
+    executable = bundle / "Contents" / "MacOS" / "Chest0 Photo Cleaner"
+    plist = bundle / "Contents" / "Info.plist"
+    if (bundle.is_symlink() or not bundle.is_dir() or
+            executable.is_symlink() or not executable.is_file() or
+            not os.access(executable, os.X_OK) or not plist.is_file() or plist.is_symlink()):
+        return None
+    try:
+        head = subprocess.run(["git", "-C", str(root), "rev-parse", "HEAD"],
+                              capture_output=True, text=True, timeout=3, check=True).stdout.strip()
+        if head != PHOTO_COMMIT:
+            return None
+        import plistlib
+        with plist.open("rb") as stream:
+            info = plistlib.load(stream)
+        if info.get("CFBundleExecutable") != "Chest0 Photo Cleaner":
+            return None
+    except (OSError, ValueError, subprocess.SubprocessError):
+        return None
+    return bundle
+
+
+VIDEO_ID = "chest0-video-studio"
+VIDEO_ROOT = Path.home() / "Applications" / "Chest0VideoStudio"
+VIDEO_COMMIT = "b382dc29a43babbff81b51aa22a53aa43249c555"
+
+
+def _video_definition():
+    root = VIDEO_ROOT
+    if root.is_symlink() or not root.is_dir():
+        return None
+    # Never resolve or inspect excluded paths. This is a fixed application root.
+    required = ("run_gui.py", "pyproject.toml", "src/chest0_video_studio/gui.py", ".venv/bin/python")
+    if any(not (root / item).is_file() for item in required):
+        return None
+    # A venv Python executable is normally a symlink on macOS.
+    # Continue refusing symlinks for project source/manifest files.
+    if any((root / item).is_symlink() for item in required if item != ".venv/bin/python"):
+        return None
+    try:
+        config = (root / "pyproject.toml").read_text(encoding="utf-8")
+        entry = (root / "run_gui.py").read_text(encoding="utf-8")
+        if not re.search(r'(?m)^name\s*=\s*"chest0-video-studio"\s*$', config):
+            return None
+        if not re.search(r'(?m)^version\s*=\s*"0\.35\.0"\s*$', config):
+            return None
+        if 'from chest0_video_studio.gui import main' not in entry:
+            return None
+        head = subprocess.run(["git", "-C", str(root), "rev-parse", "HEAD"],
+                              capture_output=True, text=True, timeout=3, check=True).stdout.strip()
+        if head != VIDEO_COMMIT:
+            return None
+        dirty = subprocess.run(["git", "-C", str(root), "status", "--porcelain"],
+                               capture_output=True, text=True, timeout=3, check=True).stdout
+        # Autoriser seulement les deux fichiers de défilement produits par
+        # l'installation précédente, avec empreintes exactes (aucune tolérance globale).
+        allowed = {
+            "src/chest0_video_studio/ui.py": "98109fe70b45acc266e5ec2d3bec5bd38f430dce3cd340939f6db609ac296dfc",
+            "tests/test_scroll_layout.py": "eed3979621940054a0b54f38c2ae45ddc4792f4248b292fdfe6450f04b3c3460",
+        }
+        import hashlib
+        for line in dirty.splitlines():
+            if len(line) < 4 or line[:2] not in (" M", "??"):
+                return None
+            rel = line[3:]
+            if rel not in allowed:
+                return None
+            file = root / rel
+            if file.is_symlink() or not file.is_file():
+                return None
+            if hashlib.sha256(file.read_bytes()).hexdigest() != allowed[rel]:
+                return None
+    except (OSError, UnicodeError, subprocess.SubprocessError):
+        return None
+    return root
 
 
 class EcosystemError(RuntimeError):
@@ -186,6 +278,7 @@ class EcosystemManager:
         self._popen = popen
         self.health_timeout = health_timeout
         self._processes: dict[str, subprocess.Popen] = {}
+        self._photo_opened_by_hub = False
         self._lock = threading.RLock()
 
     def _registry(self) -> dict[str, ApplicationDefinition]:
@@ -277,6 +370,83 @@ class EcosystemManager:
             }.get(state, "Application indisponible."),
         }
 
+    def _video_status(self) -> dict:
+        root = _video_definition()
+        with self._lock:
+            process = self._processes.get(VIDEO_ID)
+            if process is not None and process.poll() is not None:
+                self._processes.pop(VIDEO_ID, None)
+                process = None
+        state = "lancé_non_vérifié" if process is not None else (
+            "prêt_non_testé" if root is not None else "configuration_absente"
+        )
+        return {
+            "id": VIDEO_ID, "label": "Chest0 Video Studio", "version": "0.35.0" if root else "indéterminée",
+            "head": VIDEO_COMMIT[:8] if root else None, "port": None, "url": None,
+            "state": state, "owned": process is not None, "manageable": False,
+            "mode": "native_gui", "can_start": root is not None and process is None,
+            "can_stop": False,
+            "message": {
+                "lancé_non_vérifié": "Processus graphique lancé ; fenêtre et travaux non vérifiés. Arrêt Hub interdit.",
+                "prêt_non_testé": "Lancement graphique disponible ; validation réelle sur Mac nécessaire.",
+                "configuration_absente": "Installation Video Studio non certifiée : lancement désactivé.",
+            }[state],
+        }
+
+    def _start_video(self) -> dict:
+        with self._lock:
+            existing = self._processes.get(VIDEO_ID)
+            if existing is not None and existing.poll() is None:
+                return self._video_status()
+            root = _video_definition()
+            if root is None:
+                raise EcosystemError("Video Studio non certifié : lancement refusé.")
+            environment = dict(os.environ)
+            environment["PYTHONPATH"] = str(root / "src")
+            environment["PYTHONDONTWRITEBYTECODE"] = "1"
+            try:
+                process = self._popen(
+                    [str(root / ".venv/bin/python"), "run_gui.py"],
+                    cwd=str(root), env=environment, stdin=subprocess.DEVNULL,
+                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                    start_new_session=True,
+                )
+            except OSError as exc:
+                raise EcosystemError("Lancement graphique impossible.") from exc
+            self._processes[VIDEO_ID] = process
+            return self._video_status()
+
+    def _photo_status(self) -> dict:
+        bundle = _photo_definition()
+        # `open -a` exits after submitting the launch request. No process ownership
+        # or running state is inferred, and the Hub never stops Photo Cleaner.
+        return {
+            "id": PHOTO_ID, "label": "Chest0 Photo Cleaner", "version": "non vérifiée",
+            "head": PHOTO_COMMIT[:8] if bundle else None,
+            "port": None, "url": None, "mode": "native_app",
+            "state": "prêt_non_testé" if bundle else "configuration_absente",
+            "owned": self._photo_opened_by_hub, "manageable": False, "can_start": bundle is not None,
+            "can_stop": bool(bundle and self._photo_opened_by_hub),
+            "message": ("Application macOS détectée ; ouverture à confirmer."
+                        if bundle else "Application compilée non certifiée."),
+        }
+
+    def _start_photo(self) -> dict:
+        bundle = _photo_definition()
+        if bundle is None:
+            raise EcosystemError("Photo Cleaner non certifié : lancement refusé.")
+        try:
+            result = subprocess.run(["/usr/bin/open", "-a", str(bundle)],
+                                    capture_output=True, timeout=12, check=False)
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            raise EcosystemError("Ouverture Photo Cleaner impossible.") from exc
+        if result.returncode:
+            raise EcosystemError("macOS a refusé l'ouverture de Photo Cleaner.")
+        self._photo_opened_by_hub = True
+        status = self._photo_status()
+        status["message"] = "Demande d'ouverture transmise à macOS ; fenêtre non vérifiée."
+        return status
+
     def statuses(self) -> list[dict]:
         registry = {}
         result = []
@@ -305,9 +475,15 @@ class EcosystemManager:
                 else:
                     state = "arrêté"
                 result.append(self._public_status(application, state, process is not None))
+        result.append(self._video_status())
+        result.append(self._photo_status())
         return result
 
     def start(self, identifier: str) -> dict:
+        if identifier == PHOTO_ID:
+            return self._start_photo()
+        if identifier == VIDEO_ID:
+            return self._start_video()
         application = self._application(identifier)
         with self._lock:
             process = self._processes.get(identifier)
@@ -343,6 +519,26 @@ class EcosystemManager:
         raise EcosystemError("L’application n’a pas répondu dans le délai prévu.")
 
     def stop(self, identifier: str) -> dict:
+        if identifier == PHOTO_ID:
+            if not self._photo_opened_by_hub:
+                raise EcosystemError("Photo Cleaner non ouvert depuis cette session Hub : fermeture refusée.")
+            bundle = _photo_definition()
+            if bundle is None:
+                raise EcosystemError("Application Photo Cleaner non certifiée.")
+            # Apple Event de fermeture normale, jamais de signal ni de kill.
+            # Le nom est fixe, issu du bundle certifié.
+            try:
+                result = subprocess.run(
+                    ["/usr/bin/osascript", "-e", 'tell application "Chest0 Photo Cleaner" to quit'],
+                    capture_output=True, timeout=15, check=False)
+            except (OSError, subprocess.TimeoutExpired) as exc:
+                raise EcosystemError("Fermeture normale indisponible.") from exc
+            if result.returncode:
+                raise EcosystemError("macOS a refusé la demande de fermeture normale.")
+            self._photo_opened_by_hub = False
+            return self._photo_status()
+        if identifier == VIDEO_ID:
+            raise EcosystemError("Arrêt Video Studio interdit : travaux potentiellement actifs.")
         application = self._application(identifier)
         with self._lock:
             process = self._processes.get(identifier)
@@ -379,6 +575,9 @@ class EcosystemManager:
         with self._lock:
             identifiers = list(self._processes)
         for identifier in identifiers:
+            if identifier == VIDEO_ID:
+                # Native GUI outlives Hub: never terminate video jobs.
+                continue
             try:
                 self.stop(identifier)
             except EcosystemError:

@@ -272,7 +272,7 @@
       "integration_levels": [
         "A"
       ],
-      "launch_id": null,
+      "launch_id": "chest0-photo-cleaner",
       "repository": null,
       "documentation": [],
       "public_links": [
@@ -614,7 +614,7 @@
       "project_id": "chest0-video-studio",
       "name": "Chest0 Video Studio",
       "short_name": "Chest0 Video Studio",
-      "description": "Application Video référencée ; intégration Hub préparée, non activée.",
+      "description": "Application graphique native Video Studio ; lancement local conditionnel, sans arrêt automatique.",
       "category": "Création",
       "state": "prevu",
       "stable_version": null,
@@ -627,24 +627,24 @@
       "integration_levels": [
         "A"
       ],
-      "launch_id": null,
+      "launch_id": "chest0-video-studio",
       "repository": null,
       "documentation": [],
       "public_links": [],
       "capabilities": [],
       "dependencies": [],
-      "notes": "Aucun lancement ni accès opérationnel certifié.",
+      "notes": "Lancement local contrôlé depuis le Hub ; état graphique et générations non vérifiés ; arrêt désactivé.",
       "governance": {
         "contract_version": 1,
         "development": "developpement",
         "validation": "documentee",
         "availability": "inconnue",
-        "access_mode": "futur_non_operationnel",
-        "source": "Référentiel global V3 et mission Sprint 13 du 18 octobre 2026.",
+        "access_mode": "gui_native_local_non_verifie",
+        "source": "Diagnostic local Video Studio et contrat run_gui.py du 18 octobre 2026.",
         "verified_on": "2026-10-18",
         "versions": {
-          "installed": null,
-          "git": null,
+          "installed": "0.35.0",
+          "git": "b382dc29",
           "deployed": null,
           "announced": null
         },
@@ -654,11 +654,11 @@
           "interface": "unsupported",
           "operations": "unsupported",
           "content_exchange": "unsupported",
-          "status": "unsupported",
+          "status": "unverified",
           "access": "unsupported",
           "identification": "unsupported",
           "installed": "unsupported",
-          "launch": "unsupported",
+          "launch": "unverified",
           "export": "unsupported",
           "open": "unsupported",
           "stop": "unsupported",

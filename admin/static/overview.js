@@ -36,6 +36,38 @@
         for (const [cap, status] of Object.entries(g.capabilities || {})) line(card, "Capacité " + cap, status);
         line(card, "Présence locale", item.local_status);
         line(card, "Exécution", item.runtime_state);
+        if (item.id === "chest0-video-studio") {
+          line(card, "Type", "Application graphique native — sans port HTTP");
+          line(card, "Sécurité", "Arrêt depuis le Hub désactivé ; générations non vérifiées");
+          if (item.runtime_state === "prêt_non_testé") {
+            const start = document.createElement("button");
+            start.type = "button";
+            start.textContent = "Lancer Video Studio (validation locale requise)";
+            start.addEventListener("click", async () => {
+              start.disabled = true;
+              try {
+                const status = await fetch("/api/status", {cache:"no-store",credentials:"same-origin"});
+                if (!status.ok) throw new Error("Authentification locale indisponible");
+                const auth = await status.json();
+                if (typeof auth.csrfToken !== "string") throw new Error("Protection CSRF absente");
+                const result = await fetch("/api/ecosystem/start", {
+                  method:"POST", credentials:"same-origin",
+                  headers:{"Content-Type":"application/json", "X-CSRF-Token":auth.csrfToken},
+                  body:JSON.stringify({applicationId:"chest0-video-studio"})
+                });
+                const body = await result.json();
+                if (!result.ok || !body.ok) throw new Error(body.error || "Lancement refusé");
+                await refresh();
+              } catch (error) {
+                const notice = document.createElement("p");
+                notice.textContent = "Video Studio : " + String(error.message || "Erreur de lancement");
+                card.append(notice);
+                start.disabled = false;
+              }
+            });
+            card.append(start);
+          }
+        }
         line(card, "Niveaux d'intégration", (item.integration_levels || []).join(", ") || "Aucun");
         target.append(card);
       }
