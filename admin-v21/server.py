@@ -3,7 +3,7 @@
 import hashlib, http.server, json, os, pathlib, secrets, subprocess, sys, threading, urllib.parse, webbrowser
 ROOT=pathlib.Path.home()/'Applications'/'Chest0Hub'
 APP=ROOT/'admin-v21'
-PORT=8765
+PORT=8091
 TOKEN=secrets.token_urlsafe(32)
 ALLOWED_ROOT=(pathlib.Path.home()/'Applications').resolve()
 SKIP={'Desktop','Projet Chest0 AI Studio'}

@@ -109,7 +109,7 @@ def _photo_definition():
 
 VIDEO_ID = "chest0-video-studio"
 VIDEO_ROOT = Path.home() / "Applications" / "Chest0VideoStudio"
-VIDEO_COMMIT = "b382dc29a43babbff81b51aa22a53aa43249c555"
+VIDEO_COMMIT = "6f1f21d34bc9346b3de19c04cae702a493ebd997"
 
 
 def _video_definition():

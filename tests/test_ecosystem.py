@@ -59,6 +59,8 @@ class EcosystemManagerTests(unittest.TestCase):
             version = app_root / spec["version_file"]
             version.parent.mkdir(parents=True, exist_ok=True)
             version.write_text('__version__ = "9.8.7"\n', encoding="utf-8")
+            if identifier == "chest0-games-studio":
+                (app_root / "installation.json").write_text(json.dumps({"nodeExecutable": "/opt/homebrew/bin/node", "port": 4188}), encoding="utf-8")
             roots[identifier] = {"root": str(app_root)}
         self.config = self.root / "ecosystem.local.json"
         self.config.write_text(json.dumps({"applications": roots}), encoding="utf-8")
@@ -83,6 +85,9 @@ class EcosystemManagerTests(unittest.TestCase):
                 self.assertEqual(application.port, 8770)
                 self.assertEqual(application.command, (str(application.python), "-m", "src.cockpit_final"))
                 self.assertEqual(application.health_url, "http://127.0.0.1:8770/")
+            elif application.identifier == "chest0-games-studio":
+                self.assertEqual(application.port, 4188)
+                self.assertEqual(application.command[0], "/opt/homebrew/bin/node")
             elif application.identifier == "chest0-editions-studio":
                 self.assertEqual(application.command[1:], ("-B", "app.py"))
                 self.assertEqual(application.health_url, "http://127.0.0.1:8766/health")

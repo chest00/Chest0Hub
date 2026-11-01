@@ -21,11 +21,11 @@ class RegistryTests(unittest.TestCase):
         self.config.write_text(json.dumps({'applications':{}}))
     def tearDown(self):self.temp.cleanup()
     def test_catalogue_and_stable_references(self):
-        self.assertEqual(len(self.data['projects']),13)
+        self.assertEqual(len(self.data['projects']),15)
         rows={p['project_id']:p for p in self.data['projects']}
         social=rows['chest0-social-studio']
-        self.assertEqual(social['stable_version'],'v1.0.0')
-        self.assertEqual(social['stable_commit'],'bf8550b50648a4ed4bddbde323788cabd47b2184')
+        self.assertEqual(social['stable_version'],'v1.1.0')
+        self.assertEqual(social['stable_commit'],'e41d604afe6265d36658b42a368a6a467bdfb60f')
         for key in ('chest0-photo-cleaner','chest0-market-intelligence'):
             row=rows[key];self.assertIsNone(row['stable_version']);self.assertTrue(row['public_visible'])
             self.assertEqual(row['public_links'],['https://chest0.fr/photo-cleaner/app/'] if key=='chest0-photo-cleaner' else []);self.assertEqual(row['commercial_status'],'commercialisation_prevue')
@@ -33,7 +33,7 @@ class RegistryTests(unittest.TestCase):
     def test_future_project(self):
         row=copy.deepcopy(self.data['projects'][0]);row.update(project_id='future-app',launch_id=None)
         self.data['projects'].append(row)
-        self.assertEqual(len(r.validate(self.data)['projects']),14)
+        self.assertEqual(len(r.validate(self.data)['projects']),16)
     def test_versions_unknown_fields_duplicates(self):
         for value in (0,2,True,'1'):
             with self.subTest(value=value),self.assertRaises(r.RegistryError):r.validate({**self.data,'schema_version':value})
@@ -105,13 +105,13 @@ class RegistryTests(unittest.TestCase):
                 if origin:headers['Origin']=origin
                 conn.request('GET',path,headers=headers);reply=conn.getresponse();body=reply.read();code=reply.status;conn.close();return code,body
             try:
-                code,body=get('/api/registry');self.assertEqual(code,200);self.assertEqual(len(json.loads(body)['projects']),13)
+                code,body=get('/api/registry');self.assertEqual(code,200);self.assertEqual(len(json.loads(body)['projects']),15)
                 self.assertEqual(get('/api/registry',host='evil.example')[0],403)
                 self.assertEqual(get('/api/registry',origin='https://evil.example')[0],403)
                 self.assertEqual(get('/config/projects.registry.json')[0],404)
                 row=copy.deepcopy(self.data['projects'][0]);row.update(project_id='future-test',name='Future test',launch_id=None)
                 self.data['projects'].append(row);catalogue.write_text(json.dumps(self.data))
-                self.assertEqual(len(json.loads(get('/api/registry')[1])['projects']),14)
+                self.assertEqual(len(json.loads(get('/api/registry')[1])['projects']),16)
                 self.assertNotIn('launch_id',json.dumps(r.public_export(self.data)))
                 catalogue.write_text('invalid');self.assertFalse(json.loads(get('/api/registry')[1])['ok'])
                 self.assertEqual(get('/api/status')[0],200)
@@ -148,9 +148,9 @@ const container=new Element();const ctx={document:{getElementById:()=>container,
 vm.createContext(ctx);vm.runInContext(functions,ctx);
 const registry=JSON.parse(fs.readFileSync('config/projects.registry.json','utf8'));registry.levels={A:'Référencée'};
 registry.projects[0].name='<img onerror=bad>';registry.projects[0].local_status='natif';
-ctx.renderEcosystem([],registry);assert.equal(container.children.length,13);assert.equal(container.children[0].children[0].textContent,'<img onerror=bad>');
+ctx.renderEcosystem([],registry);assert.equal(container.children.length,15);assert.equal(container.children[0].children[0].textContent,'<img onerror=bad>');
 ctx.renderEcosystem([{id:'chest0-social-studio',label:'Social',state:'arrêté',version:'1',port:8503,message:'Prêt',owned:false,url:'http://127.0.0.1:8503'}],registry);
-assert.equal(container.children.length,13);const buttons=container.children[registry.projects.findIndex(p=>p.project_id==='chest0-social-studio')].children[4].children;assert.equal(buttons[0].disabled,false);assert.equal(buttons[2].disabled,true);
+assert.equal(container.children.length,15);const buttons=container.children[registry.projects.findIndex(p=>p.project_id==='chest0-social-studio')].children[4].children;assert.equal(buttons[0].disabled,false);assert.equal(buttons[2].disabled,true);
 ctx.renderEcosystem([],null);assert(container.children[0].textContent.includes('indisponible'));
 '''],cwd=ROOT,capture_output=True,text=True)
         self.assertEqual(result.returncode,0,result.stderr)
@@ -160,12 +160,12 @@ class AssistantIntegrationTests(unittest.TestCase):
     def test_private_catalogue_and_public_exclusion(self):
         data=r.load(CAT);row=next(x for x in data['projects'] if x['project_id']=='chest0-assistant')
         self.assertFalse(row['public_visible']);self.assertEqual(row['launch_id'],'chest0-assistant')
-        self.assertEqual(row['stable_version'],'v1.8.0')
+        self.assertEqual(row['stable_version'],'v3.0.0')
         self.assertNotIn('chest0-assistant',json.dumps(r.public_export(data)))
     def test_real_capabilities(self):
         from admin.ecosystem import EcosystemManager
         value=EcosystemManager('unused').assistant_capabilities()
-        self.assertEqual(value['app_id'],'chest0-assistant');self.assertEqual(value['version'],'1.8.0');self.assertFalse(value['publication'])
+        self.assertEqual(value['app_id'],'chest0-assistant');self.assertEqual(value['version'],'3.0.0');self.assertFalse(value['publication'])
     def test_double_launch_keeps_one_owned_process(self):
         from unittest.mock import Mock
         from admin.ecosystem import EcosystemManager

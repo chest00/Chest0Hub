@@ -195,8 +195,8 @@
       "description": "Outil local d’automatisation de la création et de la préparation de contenus et vidéos pour les réseaux sociaux, avec validations humaines.",
       "category": "Création",
       "state": "stable",
-      "stable_version": "v1.0.0",
-      "stable_commit": "bf8550b50648a4ed4bddbde323788cabd47b2184",
+      "stable_version": "v1.1.0",
+      "stable_commit": "e41d604afe6265d36658b42a368a6a467bdfb60f",
       "type": "application",
       "platforms": [
         "macOS local"
@@ -225,11 +225,11 @@
         "validation": "documentee",
         "availability": "inconnue",
         "access_mode": "non_verifie",
-        "source": "Registre Hub existant et référentiel global V3 du 18 octobre 2026 ; fonctionnement externe non retesté.",
-        "verified_on": null,
+        "source": "Finalisation Social Studio 1.1.0 du 21 octobre 2026 ; dépôt propre vérifié le 1er novembre 2026.",
+        "verified_on": "2026-11-01",
         "versions": {
-          "installed": null,
-          "git": null,
+          "installed": "1.1.0",
+          "git": "e41d604a",
           "deployed": null,
           "announced": "v1.0.0"
         },
@@ -494,8 +494,8 @@
       "description": "Création locale d’articles SEO et programmation Blogger sous autorisation explicite.",
       "category": "Création",
       "state": "developpement",
-      "stable_version": null,
-      "stable_commit": null,
+      "stable_version": "v2026.10.21-final.1",
+      "stable_commit": "8cbb84042d1d56d24af2799eb025a2731e0c065c",
       "type": "application",
       "platforms": [
         "macOS local"
@@ -522,11 +522,11 @@
         "validation": "documentee",
         "availability": "inconnue",
         "access_mode": "non_verifie",
-        "source": "Registre Hub existant et référentiel global V3 du 18 octobre 2026 ; fonctionnement externe non retesté.",
-        "verified_on": null,
+        "source": "Clôture Blog Studio du 21 octobre 2026 (cycle Blogger réel programmé/annulé/supprimé) ; Git créé le 1er novembre 2026.",
+        "verified_on": "2026-11-01",
         "versions": {
-          "installed": null,
-          "git": null,
+          "installed": "2026.10.21-final.1",
+          "git": "8cbb8404",
           "deployed": null,
           "announced": null
         },
@@ -556,7 +556,7 @@
       "category": "Création",
       "state": "stable",
       "stable_version": "v2.9.0",
-      "stable_commit": null,
+      "stable_commit": "8ffe30e210c6ebe04ec1d9563d069e5835486b56",
       "type": "application",
       "platforms": [
         "macOS local"
@@ -584,10 +584,10 @@
         "availability": "locale",
         "access_mode": "interface_web_locale",
         "source": "Rapports locaux Éditions Studio v2.16 et finalisation consolidée du 20 octobre 2026.",
-        "verified_on": "2026-10-20",
+        "verified_on": "2026-11-01",
         "versions": {
-          "installed": "v2.9.0",
-          "git": null,
+          "installed": "2.9.0",
+          "git": "8ffe30e2",
           "deployed": null,
           "announced": null
         },
@@ -640,10 +640,10 @@
         "availability": "inconnue",
         "access_mode": "gui_native_local_non_verifie",
         "source": "Diagnostic local Video Studio et contrat run_gui.py du 18 octobre 2026.",
-        "verified_on": "2026-10-18",
+        "verified_on": "2026-11-01",
         "versions": {
           "installed": "0.35.0",
-          "git": "b382dc29",
+          "git": "6f1f21d3",
           "deployed": null,
           "announced": null
         },
@@ -664,6 +664,34 @@
           "documentation": "unsupported"
         }
       }
+    },
+    {
+      "project_id": "chest0-avatar-studio",
+      "name": "Chest0 Avatar Studio",
+      "short_name": "Avatar Studio",
+      "description": "Application macOS de présentateurs animés : personnages articulés, narration française, synchronisation labiale et export vertical.",
+      "category": "Création",
+      "state": "stable",
+      "stable_version": "v1.7.0",
+      "stable_commit": null,
+      "type": "application",
+      "platforms": [
+        "macOS",
+        "Web local"
+      ],
+      "admin_visible": true,
+      "public_visible": false,
+      "commercial_status": "gratuit",
+      "integration_levels": [
+        "A"
+      ],
+      "launch_id": null,
+      "repository": null,
+      "documentation": [],
+      "public_links": [],
+      "capabilities": [],
+      "dependencies": [],
+      "notes": "Bundle macOS installé 1.7.0, acceptation 32/32 documentée le 25 octobre 2026 ; non lancé depuis le Hub."
     },
     {
       "project_id": "chest0-accompagnement",
@@ -728,8 +756,8 @@
       "description": "Assistant personnel local à actions contrôlées.",
       "category": "IA locale",
       "state": "developpement",
-      "stable_version": "v1.8.0",
-      "stable_commit": null,
+      "stable_version": "v3.0.0",
+      "stable_commit": "686c2e392603dd2f9f8a293e14795c58edfc93c5",
       "type": "application",
       "platforms": [
         "macOS local"
@@ -778,7 +806,7 @@
       "public_links": [],
       "capabilities": [],
       "dependencies": [],
-      "notes": "Application locale detectee. Fonctionnement non certifie par le Hub."
+      "notes": "Build Web 0.4 publié sur chest0.fr/jeux/games-studio/ (commit Hub 1134fe9). Sources versionnées : v0.3.0 ; sources 0.4 à reconstituer. Installation Mac séparée : 0.1.0."
     }
   ]
 }
