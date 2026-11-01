@@ -255,7 +255,7 @@
       "project_id": "chest0-photo-cleaner",
       "name": "Chest0 Photo Cleaner",
       "short_name": "Photo Cleaner",
-      "description": "Chest0 Photo Cleaner : détection locale des doublons exacts, sans téléversement ni suppression automatique. Édition gratuite Web/PWA et fonctionnalités Premium sous licence. Achat Gumroad non activé tant que le lien de vente et la vérification serveur ne sont pas configurés.",
+      "description": "Version Web/PWA de détection locale des doublons exacts prête pour validation avant publication. Versions Desktop non commercialisées.",
       "category": "Photos",
       "state": "developpement",
       "stable_version": null,

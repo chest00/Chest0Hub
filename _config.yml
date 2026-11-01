@@ -1,6 +1,7 @@
 exclude:
   - admin
   - admin-v21
+  - plateforme
   - backups
   - docs
   - scripts
