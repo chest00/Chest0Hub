@@ -198,6 +198,27 @@
 
         </section>
 
+    <!-- CHEST0_BLOGSTUDIO_HUB_PANEL_V1 -->
+    <section id="chest0-blogstudio-panel" aria-labelledby="chest0-blogstudio-heading" style="margin:1.5rem 0;padding:1.25rem;border:1px solid #777;border-radius:12px">
+      <h2 id="chest0-blogstudio-heading">Chest0 Blog Studio</h2>
+      <p id="chest0-blogstudio-status" role="status">Statut non vérifié</p>
+      <p>Intégration locale en lecture seule. Aucune action Blogger n'est déclenchée.</p>
+      <p><a href="http://127.0.0.1:8765/" target="_blank" rel="noopener noreferrer">Ouvrir Blog Studio (local)</a></p>
+    </section>
+    <script>
+    (function(){
+      'use strict';
+      const out = document.getElementById('chest0-blogstudio-status');
+      fetch('/api/chest0-blogstudio/status', {cache:'no-store', credentials:'same-origin'})
+        .then(r => {if(!r.ok) throw Error('HTTP'); return r.json();})
+        .then(d => {
+          if(!d.ok || !d.snapshot || d.snapshot.contract !== 'chest0.blogstudio.status.v1') throw Error('Contract');
+          const c = d.snapshot.capabilities || {};
+          out.textContent = 'Connecteur : disponible. Lancement Hub : ' + (c.hub_launch || 'non vérifié') + '. Blogger : ' + (c.blogger_oauth || 'non vérifié') + '. Programmation distante : ' + (c.remote_schedule || 'non vérifié') + '.';
+        })
+        .catch(() => {out.textContent = 'Connecteur indisponible ou non vérifié';});
+    }());
+    </script>
     </main>
 
 

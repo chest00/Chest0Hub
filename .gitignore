@@ -6,3 +6,5 @@ tmp/
 backups/
 __pycache__/
 config/ecosystem.local.json
+.assistant-integration.lock
+.assistant-integration-backups/

@@ -83,6 +83,9 @@ class EcosystemManagerTests(unittest.TestCase):
                 self.assertEqual(application.port, 8770)
                 self.assertEqual(application.command, (str(application.python), "-m", "src.cockpit_final"))
                 self.assertEqual(application.health_url, "http://127.0.0.1:8770/")
+            elif application.identifier == "chest0-editions-studio":
+                self.assertEqual(application.command[1:], ("-B", "app.py"))
+                self.assertEqual(application.health_url, "http://127.0.0.1:8766/health")
             else:
                 self.assertIn("--server.port", application.command)
             self.assertNotIn("shell=True", " ".join(application.command))

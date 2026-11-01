@@ -552,60 +552,59 @@
       "project_id": "chest0-editions-studio",
       "name": "Chest0 Éditions Studio",
       "short_name": "Chest0 Éditions Studio",
-      "description": "Projet de création, révision, préparation et export de livres assistés par IA.",
+      "description": "Création, composition et export local de livres avec audit automatique intégré.",
       "category": "Création",
-      "state": "prevu",
-      "stable_version": null,
+      "state": "stable",
+      "stable_version": "v2.9.0",
       "stable_commit": null,
       "type": "application",
-      "platforms": [],
+      "platforms": [
+        "macOS local"
+      ],
       "admin_visible": true,
       "public_visible": false,
       "commercial_status": "non_commercial",
       "integration_levels": [
-        "A"
+        "A",
+        "D"
       ],
-      "launch_id": null,
+      "launch_id": "chest0-editions-studio",
       "repository": null,
       "documentation": [],
       "public_links": [],
-      "capabilities": [],
-      "dependencies": [
-        "chest0-blog-studio",
-        "chest0-video-studio",
-        "chest0-social-studio",
-        "chest0-ai-studio",
-        "chest0-quiz-studio"
+      "capabilities": [
+        "launchable_local_app"
       ],
-      "notes": "Conception documentée ; exports envisagés Markdown, DOCX, EPUB, PDF ; préparation KDP sans publication automatique. Dépendances : intégrations envisagées uniquement.",
+      "dependencies": [],
+      "notes": "Exports et audits validés par tests automatisés v2.16 ; lancement Hub à vérifier après installation. KDP non certifié.",
       "governance": {
         "contract_version": 1,
-        "development": "conception",
-        "validation": "documentee",
-        "availability": "future",
-        "access_mode": "futur_non_operationnel",
-        "source": "Référentiel global V3 et mission Sprint 13 du 18 octobre 2026.",
-        "verified_on": "2026-10-18",
+        "development": "stable",
+        "validation": "validee",
+        "availability": "locale",
+        "access_mode": "interface_web_locale",
+        "source": "Rapports locaux Éditions Studio v2.16 et finalisation consolidée du 20 octobre 2026.",
+        "verified_on": "2026-10-20",
         "versions": {
-          "installed": null,
+          "installed": "v2.9.0",
           "git": null,
           "deployed": null,
           "announced": null
         },
         "capabilities": {
           "version": "unsupported",
-          "editorial_project": "planned",
-          "interface": "planned",
+          "editorial_project": "verified",
+          "interface": "verified",
           "operations": "unsupported",
           "content_exchange": "planned",
-          "status": "unsupported",
-          "access": "unsupported",
-          "identification": "unsupported",
-          "installed": "unsupported",
-          "launch": "planned",
-          "export": "planned",
-          "open": "planned",
-          "stop": "unsupported",
+          "status": "verified",
+          "access": "unverified",
+          "identification": "verified",
+          "installed": "unverified",
+          "launch": "unverified",
+          "export": "verified",
+          "open": "unverified",
+          "stop": "unverified",
           "documentation": "unsupported"
         }
       }
@@ -721,6 +720,65 @@
           "documentation": "unsupported"
         }
       }
+    },
+    {
+      "project_id": "chest0-assistant",
+      "name": "Chest0 Assistant",
+      "short_name": "Assistant",
+      "description": "Assistant personnel local à actions contrôlées.",
+      "category": "IA locale",
+      "state": "developpement",
+      "stable_version": "v1.8.0",
+      "stable_commit": null,
+      "type": "application",
+      "platforms": [
+        "macOS local"
+      ],
+      "admin_visible": true,
+      "public_visible": false,
+      "commercial_status": "non_commercial",
+      "integration_levels": [
+        "A",
+        "D"
+      ],
+      "launch_id": "chest0-assistant",
+      "repository": null,
+      "documentation": [],
+      "public_links": [],
+      "capabilities": [
+        "cli",
+        "launchable_local_app"
+      ],
+      "dependencies": [],
+      "notes": "Proposition privée testée isolément ; activation soumise à accord spécifique."
+    },
+    {
+      "project_id": "chest0-games-studio",
+      "name": "Chest0 Games Studio",
+      "short_name": "Games Studio",
+      "description": "Plateforme locale de six jeux. Publication non effectuee.",
+      "category": "Jeux",
+      "state": "developpement",
+      "stable_version": null,
+      "stable_commit": null,
+      "type": "application",
+      "platforms": [
+        "macOS",
+        "Web local"
+      ],
+      "admin_visible": true,
+      "public_visible": false,
+      "commercial_status": "gratuit",
+      "integration_levels": [
+        "A"
+      ],
+      "launch_id": null,
+      "repository": null,
+      "documentation": [],
+      "public_links": [],
+      "capabilities": [],
+      "dependencies": [],
+      "notes": "Application locale detectee. Fonctionnement non certifie par le Hub."
     }
   ]
 }

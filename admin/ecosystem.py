@@ -17,11 +17,16 @@ from urllib.request import urlopen
 
 
 APPLICATION_SPECS = {
+    "chest0-games-studio": {"label": "Chest0 Games Studio", "port": 4188, "entrypoint": "current/runtime/server.mjs", "version_file": "installation.json", "markers": ("installation.json", "Ouvrir Chest0 Games Studio.command")},
+    "chest0-editions-studio": {
+        "label": "Chest0 Éditions Studio", "port": 8766, "entrypoint": "app.py",
+        "version_file": "app.py", "markers": ("app.py", "automatic_export_audit.py"),
+    },
     "chest0-social-studio": {
         "label": "Chest0 Social Studio",
         "port": 8503,
         "entrypoint": "run_dev.sh",
-        "version_file": "src/chest0_social_studio/web/app.py",
+        "version_file": "src/chest0_social_studio/__init__.py",
         "markers": ("run_dev.sh", "src/chest0_social_studio/workflow/production.py"),
     },
     "chest0-market-intelligence": {
@@ -54,6 +59,18 @@ APPLICATION_SPECS = {
     },
 }
 
+
+ASSISTANT_ID = "chest0-assistant"
+ASSISTANT_ROOT = Path.home() / "Applications" / "Chest0Assistant"
+
+def _assistant_definition():
+    root = ASSISTANT_ROOT
+    if root.is_symlink() or not root.is_dir(): return None
+    for name in ("bin/chest0-assistant", "chest0_assistant/__init__.py"):
+        p = root / name
+        if p.is_symlink() or not p.is_file(): return None
+    if not os.access(root / "bin/chest0-assistant", os.X_OK): return None
+    return root
 
 # Native GUI: intentionally outside the HTTP launcher allowlist.
 # No HTTP port, no remote discovery, no forced shutdown.
@@ -164,9 +181,10 @@ class ApplicationDefinition:
 
     @property
     def health_url(self) -> str:
+        if self.identifier == "chest0-games-studio": return f"{self.url}/__health"
         if self.identifier == "chest0-market-intelligence":
             return f"{self.url}/"
-        if self.identifier == "chest0-blog-studio":
+        if self.identifier in ("chest0-blog-studio", "chest0-editions-studio"):
             return f"{self.url}/health"
         return f"{self.url}/api/health" if self.identifier == "chest0-social-studio" else f"{self.url}/_stcore/health"
 
@@ -176,10 +194,17 @@ class ApplicationDefinition:
 
     @property
     def command(self) -> tuple[str, ...]:
+        if self.identifier == "chest0-games-studio":
+            info = json.loads((self.root / "installation.json").read_text(encoding="utf-8"))
+            node = info.get("nodeExecutable")
+            if node != "/opt/homebrew/bin/node" or info.get("port") != 4188: raise EcosystemError("Installation Games non certifiée.")
+            return (node, str(self.root / "current/runtime/server.mjs"), "--installation", str(self.root), "--no-open")
         if self.identifier == "chest0-market-intelligence":
             return (str(self.python), "-m", self.entrypoint)
         if self.identifier == "chest0-blog-studio":
             return (str(self.python), self.entrypoint)
+        if self.identifier == "chest0-editions-studio":
+            return (str(Path(__import__("sys").executable)), "-B", self.entrypoint)
         if self.identifier == "chest0-social-studio":
             return ("/bin/bash", str(self.root / "run_dev.sh"), "--no-browser", "--server.port", str(self.port))
         return (
@@ -200,7 +225,7 @@ def load_registry(config_path: str | Path, only: str | None = None) -> dict[str,
     if not isinstance(payload, dict) or set(payload) != {"applications"}:
         raise EcosystemError("Structure de configuration locale invalide.")
     configured = payload["applications"]
-    required = set(APPLICATION_SPECS) - {"chest0-social-studio", "chest0-blog-studio", "chest0-market-intelligence"}
+    required = set(APPLICATION_SPECS) - {"chest0-social-studio", "chest0-blog-studio", "chest0-market-intelligence", "chest0-editions-studio"}
     if not isinstance(configured, dict) or not required <= set(configured) or not set(configured) <= set(APPLICATION_SPECS):
         raise EcosystemError("La configuration doit définir exactement les applications autorisées.")
 
@@ -224,7 +249,7 @@ def load_registry(config_path: str | Path, only: str | None = None) -> dict[str,
             raise EcosystemError(f"Application indisponible : {spec['label']}.")
         if any(not (root / marker).is_file() for marker in spec["markers"]):
             raise EcosystemError(f"La racine ne correspond pas à {spec['label']}.")
-        if identifier != "chest0-social-studio" and not (root / ".venv" / "bin" / "python").is_file():
+        if identifier not in ("chest0-social-studio", "chest0-editions-studio", "chest0-games-studio") and not (root / ".venv" / "bin" / "python").is_file():
             raise EcosystemError(f"Environnement Python indisponible : {spec['label']}.")
         result[identifier] = ApplicationDefinition(
             identifier=identifier,
@@ -238,6 +263,9 @@ def load_registry(config_path: str | Path, only: str | None = None) -> dict[str,
 
 
 def read_version(application: ApplicationDefinition) -> str | None:
+    if application.identifier == "chest0-games-studio":
+        try: return str(json.loads((application.root / "installation.json").read_text(encoding="utf-8"))["version"])
+        except (OSError, ValueError, KeyError): return None
     """Lit une affectation littérale __version__ sans exécuter le fichier."""
     try:
         tree = ast.parse(
@@ -300,14 +328,19 @@ class EcosystemManager:
     def _healthy(application: ApplicationDefinition) -> bool:
         try:
             with urlopen(application.health_url, timeout=0.5) as response:
+                if application.identifier == "chest0-games-studio":
+                    payload = json.loads(response.read(4096))
+                    info = json.loads((application.root / "installation.json").read_text(encoding="utf-8"))
+                    return response.status == 200 and payload.get("appId") == info.get("appId") and payload.get("installId") == info.get("installId") and payload.get("releaseId") == info.get("releaseId")
                 if application.identifier == "chest0-market-intelligence":
                     # La page d'accueil doit identifier explicitement le cockpit.
                     # Un autre service sur le même port ne doit pas être reconnu.
                     page = response.read(131072).decode("utf-8", errors="replace").lower()
                     return response.status == 200 and "chest0" in page and "market" in page
-                if application.identifier == "chest0-blog-studio":
+                if application.identifier in ("chest0-blog-studio", "chest0-editions-studio"):
                     payload = json.loads(response.read(4096))
-                    return response.status == 200 and payload.get("service") == "Chest0 Blog Studio" and payload.get("status") == "ok"
+                    expected_service = "Chest0 Blog Studio" if application.identifier == "chest0-blog-studio" else "Chest0 Éditions Studio"
+                    return response.status == 200 and payload.get("service") == expected_service and payload.get("status") == "ok"
                 expected = b"chest0-social-studio" if application.identifier == "chest0-social-studio" else b"ok"
                 return response.status == 200 and response.read(64).strip().lower() == expected
         except Exception:
@@ -369,6 +402,49 @@ class EcosystemManager:
                 "erreur": "Le processus s’est arrêté de manière inattendue.",
             }.get(state, "Application indisponible."),
         }
+
+    def assistant_capabilities(self):
+        root = _assistant_definition()
+        if root is None: raise EcosystemError("Assistant absent")
+        try:
+            response = subprocess.run([str(root / "bin/chest0-assistant"), "capacites"],
+                capture_output=True, timeout=5, check=True)
+            if len(response.stdout) > 32768: raise ValueError()
+            data = json.loads(response.stdout)
+            if data.get("app_id") != ASSISTANT_ID or data.get("schema_version") != 1: raise ValueError()
+            if data.get('publication') is not False or not isinstance(data.get('actions'),list):raise ValueError()
+            return {k:data[k] for k in ('app_id','schema_version','version','actions','publication','ai_local_optional') if k in data}
+        except (OSError, ValueError, subprocess.SubprocessError) as exc:
+            raise EcosystemError("Capacités Assistant indisponibles") from exc
+
+    def _assistant_status(self):
+        root = _assistant_definition()
+        process = self._processes.get(ASSISTANT_ID)
+        running = process is not None and process.poll() is None
+        capabilities=None
+        if root:
+            try:capabilities=self.assistant_capabilities()
+            except EcosystemError:root=None
+        failed=process is not None and process.poll() not in (None,0)
+        return {"id":ASSISTANT_ID,"label":"Chest0 Assistant","version":capabilities.get("version","indéterminée") if capabilities else "indéterminée",
+            "head":None,"port":None,"url":None,"mode":"native_gui","owned":running,
+            "manageable":False,"can_start":root is not None and not running,"can_stop":False,
+            "state":"lancé_non_vérifié" if running else "erreur" if failed else "prêt_non_testé" if root else "configuration_absente",
+            "message":"Fenêtre à vérifier dans Assistant ; aucune publication depuis Hub."}
+
+    def _start_assistant(self):
+        with self._lock:
+            state=self._assistant_status()
+            if state['state']=='configuration_absente':raise EcosystemError('Installation Assistant indisponible ou incompatible.')
+            if not state["can_start"]:return state
+            root = _assistant_definition()
+            self.assistant_capabilities()
+            try:
+                self._processes[ASSISTANT_ID] = self._popen([str(root / "bin/chest0-assistant"), "interface"],
+                    cwd=str(root), stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL, start_new_session=True)
+            except OSError as exc: raise EcosystemError("Lancement Assistant impossible") from exc
+            return self._assistant_status()
 
     def _video_status(self) -> dict:
         root = _video_definition()
@@ -475,11 +551,13 @@ class EcosystemManager:
                 else:
                     state = "arrêté"
                 result.append(self._public_status(application, state, process is not None))
+        result.append(self._assistant_status())
         result.append(self._video_status())
         result.append(self._photo_status())
         return result
 
     def start(self, identifier: str) -> dict:
+        if identifier == ASSISTANT_ID: return self._start_assistant()
         if identifier == PHOTO_ID:
             return self._start_photo()
         if identifier == VIDEO_ID:
@@ -519,6 +597,7 @@ class EcosystemManager:
         raise EcosystemError("L’application n’a pas répondu dans le délai prévu.")
 
     def stop(self, identifier: str) -> dict:
+        if identifier == ASSISTANT_ID: raise EcosystemError("Fermez Assistant depuis sa fenêtre.")
         if identifier == PHOTO_ID:
             if not self._photo_opened_by_hub:
                 raise EcosystemError("Photo Cleaner non ouvert depuis cette session Hub : fermeture refusée.")
@@ -575,7 +654,7 @@ class EcosystemManager:
         with self._lock:
             identifiers = list(self._processes)
         for identifier in identifiers:
-            if identifier == VIDEO_ID:
+            if identifier in (VIDEO_ID, ASSISTANT_ID):
                 # Native GUI outlives Hub: never terminate video jobs.
                 continue
             try:

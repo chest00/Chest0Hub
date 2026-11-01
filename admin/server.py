@@ -251,6 +251,11 @@ class AdminHandler(BaseHTTPRequestHandler):
             )
             return
 
+        if path == "/api/ecosystem/assistant-capabilities":
+            try:self.send_json({"ok":True,"capabilities":ECOSYSTEM_MANAGER.assistant_capabilities()})
+            except EcosystemError:self.send_json({"ok":False,"error":"Capacités Assistant indisponibles."},status=503)
+            return
+
         if path == "/api/ecosystem/overview":
             self.send_json(build_overview(
                 admin_view(PROJECT_DIR / "config" / "projects.registry.json", ECOSYSTEM_CONFIG),
@@ -260,6 +265,26 @@ class AdminHandler(BaseHTTPRequestHandler):
 
         if path == "/api/registry":
             self.send_json(admin_view(PROJECT_DIR / "config" / "projects.registry.json", ECOSYSTEM_CONFIG))
+            return
+
+        # CHEST0_BLOGSTUDIO_HUB_PANEL_V1
+        if path == "/api/chest0-blogstudio/status":
+            from subprocess import run, TimeoutExpired
+            from sys import executable
+            bridge = Path.home() / "Applications/Chest0BlogStudio/integrations/chest0_hub_readonly_v1/chest0_bridge.py"
+            project = Path.home() / "Applications/Chest0BlogStudio"
+            if not bridge.is_file() or bridge.is_symlink() or not project.is_dir():
+                self.send_json({"ok": False, "state": "unverified", "reason": "bridge_unavailable"})
+                return
+            try:
+                result = run([executable, "-I", str(bridge), "--project", str(project)],
+                             capture_output=True, text=True, timeout=5, check=False)
+                data = json.loads(result.stdout) if result.returncode == 0 else None
+                if not isinstance(data, dict) or data.get("contract") != "chest0.blogstudio.status.v1":
+                    raise ValueError("invalid_contract")
+                self.send_json({"ok": True, "snapshot": data})
+            except (TimeoutExpired, ValueError, OSError, json.JSONDecodeError):
+                self.send_json({"ok": False, "state": "unverified", "reason": "bridge_unavailable"})
             return
 
         if path == "/api/ecosystem/status":

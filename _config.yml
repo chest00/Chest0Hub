@@ -1,5 +1,6 @@
 exclude:
   - admin
+  - admin-v21
   - backups
   - docs
   - scripts

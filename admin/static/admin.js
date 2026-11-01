@@ -3018,15 +3018,30 @@ function renderEcosystem(applications, registry = null) {
         actions.className = "ecosystem-actions";
 
         const start = ecosystemButton("Lancer", () => ecosystemAction("start", application.id));
-        start.disabled = !["arrêté", "erreur"].includes(application.state);
+        start.disabled = application.id === "chest0-assistant" ? application.can_start !== true : !["arrêté", "erreur"].includes(application.state);
         const open = ecosystemButton("Ouvrir", () => window.open(application.url, "_blank", "noopener"));
         open.disabled = !["opérationnel", "déjà_actif"].includes(application.state);
         const stop = ecosystemButton("Arrêter", () => ecosystemAction("stop", application.id));
         stop.disabled = !application.manageable;
-        actions.append(start, open, stop);
+        if (application.id === "chest0-assistant") {
+            open.hidden = true;
+            stop.hidden = true;
+            const capabilities = ecosystemButton("Capacités", async () => {
+                try {
+                    const response = await fetch("/api/ecosystem/assistant-capabilities", {credentials:"same-origin",cache:"no-store"});
+                    const data = await response.json();
+                    if (!response.ok || data.ok !== true) throw new Error();
+                    explanation.textContent = "Assistant " + data.capabilities.version + " · " + data.capabilities.actions.join(", ") + " · publication désactivée";
+                } catch (_) { explanation.textContent = "Capacités Assistant indisponibles."; }
+            });
+            actions.append(start, capabilities);
+        } else { actions.append(start, open, stop); }
         const actionHelp = document.createElement("p");
         actionHelp.className = "ecosystem-action-help";
         actionHelp.textContent = "Lancer démarre l’application en arrière-plan · Ouvrir l’affiche dans le navigateur · Arrêter ferme uniquement le processus lancé par Hub.";
+        if (application.id === "chest0-assistant") {
+            actionHelp.textContent = "Lancer ouvre la fenêtre macOS. Fermez Assistant depuis sa propre fenêtre ; Hub ne force aucun arrêt.";
+        }
         card.append(heading, state, details, explanation, actions, actionHelp);
         container.appendChild(card);
     });

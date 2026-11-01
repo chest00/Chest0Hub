@@ -29,17 +29,17 @@ class Sprint13Tests(unittest.TestCase):
         rows={x['project_id']:x for x in self.data['projects']}
         for pid in ('chest0-editions-studio','chest0-video-studio','chest0-accompagnement'):
             self.assertFalse(rows[pid]['public_visible'])
-            self.assertEqual(rows[pid]['launch_id'], pid if pid=='chest0-video-studio' else None)
+            self.assertEqual(rows[pid]['launch_id'], pid if pid in ('chest0-video-studio','chest0-editions-studio') else None)
         g=rows['chest0-editions-studio']['governance']
-        self.assertEqual(g['development'],'conception')
-        self.assertEqual(g['capabilities']['export'],'planned')
+        self.assertEqual(g['development'],'stable')
+        self.assertEqual(g['capabilities']['export'],'verified')
         self.assertNotIn('governance',json.dumps(r.public_export(self.data)))
 
     def test_contract_rejects_unknown_and_false_operational(self):
         for key,value in [('contract_version',2),('development','imaginary'),('verified_on','bad'),('availability','unknown')]:
             data=copy.deepcopy(self.data);data['projects'][0]['governance'][key]=value
             with self.subTest(key=key),self.assertRaises(r.RegistryError):r.validate(data)
-        data=copy.deepcopy(self.data);g=data['projects'][-3]['governance'];g['capabilities']['launch']='verified'
+        data=copy.deepcopy(self.data);g=next(row for row in data['projects'] if row['project_id']=='chest0-accompagnement')['governance'];g['capabilities']['launch']='verified'
         with self.assertRaises(r.RegistryError):r.validate(data)
 
     def test_excluded_path_not_inspected(self):
