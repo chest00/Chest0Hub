@@ -20,6 +20,10 @@
         "url": "pages/projets.html"
     },
     {
+        "label": "Jeux gratuits",
+        "url": "jeux/games-studio/"
+    },
+    {
         "label": "À propos",
         "url": "pages/apropos.html"
     },
