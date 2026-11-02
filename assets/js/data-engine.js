@@ -1086,6 +1086,32 @@ const Chest0Data = {
                     }
 
 
+                    if (
+                        this.isValidUrl(
+                            item.audioUrl
+                        )
+                    ) {
+
+                        const audioLink =
+                            this.createExternalLink(
+                                item.audioUrl
+                            );
+
+
+                        audioLink.className =
+                            "product-button";
+
+
+                        audioLink.textContent =
+                            "Livre audio";
+
+
+                        content.appendChild(
+                            audioLink
+                        );
+                    }
+
+
                     article.appendChild(
                         content
                     );
