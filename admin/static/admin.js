@@ -3035,6 +3035,12 @@ function renderEcosystem(applications, registry = null) {
                 } catch (_) { explanation.textContent = "Capacités Assistant indisponibles."; }
             });
             actions.append(start, capabilities);
+        } else if (application.id === "chest0-social-studio") {
+            // Montage rapide : Chest0 Clip servi par Social Studio (images + transitions + musique → vidéo).
+            const clip = ecosystemButton("Montage rapide", () => window.open(`${application.url}/clip`, "_blank", "noopener"));
+            clip.disabled = open.disabled;
+            clip.title = "Créer une vidéo avec mes images (Chest0 Clip)";
+            actions.append(start, open, clip, stop);
         } else { actions.append(start, open, stop); }
         const actionHelp = document.createElement("p");
         actionHelp.className = "ecosystem-action-help";
