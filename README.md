@@ -51,8 +51,9 @@ https://chest0.fr/
 - `outils/equilibre-quotidien/index.html` : Mon équilibre quotidien ;
 - `outils/journal-sommeil/index.html` : Mon journal du sommeil ;
 - `outils/pauses-actives/index.html` : Mon planning de pauses actives.
+- `outils/chest0-clip/index.html` : Chest0 Clip (images → vidéo pour réseaux sociaux ; source : `Chest0SocialStudio/src/chest0_social_studio/web/clip.html`).
 
-Ces onze pages publiques sont accessibles depuis l’accueil et référencées dans
+Ces douze pages publiques sont accessibles depuis l’accueil et référencées dans
 `sitemap.xml`. La page technique `404.html` est exclue du sitemap.
 
 ### Outils gratuits et Blog/RSS

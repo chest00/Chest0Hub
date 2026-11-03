@@ -900,7 +900,7 @@ class Chest0HubTests(unittest.TestCase):
         for url in expected_urls:
             with self.subTest(url=url):
                 self.assertIn(f"<loc>{url}</loc>", sitemap)
-        self.assertEqual(sitemap.count("<url>"), 11)
+        self.assertEqual(sitemap.count("<url>"), 12)
         self.assertIn(
             "Sitemap: https://chest0.fr/sitemap.xml",
             robots
@@ -1060,6 +1060,22 @@ class Chest0HubTests(unittest.TestCase):
             self.assertNotIn(forbidden, script)
         self.assertIn("window.print()", script)
 
+
+    def test_29_chest0_clip_public_tool(self):
+        page = (ROOT / "outils/chest0-clip/index.html").read_text(encoding="utf-8")
+        self.assertIn('rel="canonical" href="https://chest0.fr/outils/chest0-clip/"', page)
+        self.assertIn('href="chest0-clip/"', (ROOT / "outils/index.html").read_text(encoding="utf-8"))
+        self.assertIn("<loc>https://chest0.fr/outils/chest0-clip/</loc>", (ROOT / "sitemap.xml").read_text(encoding="utf-8"))
+        service_worker = (ROOT / "sw.js").read_text(encoding="utf-8")
+        for path in ("outils/chest0-clip/", "assets/css/chest0-clip.css", "assets/js/chest0-clip.js"):
+            self.assertIn(f'"./{path}"', service_worker)
+            self.assertTrue((ROOT / path).exists(), path)
+        self.assertIn("Vos images et vos musiques ne sont envoyées nulle part", page)
+        script = (ROOT / "assets/js/chest0-clip.js").read_text(encoding="utf-8")
+        # Hors Social Studio, aucune requête réseau : l'envoi n'est actif que sur /clip.
+        self.assertIn("location.pathname === '/clip'", script)
+        self.assertNotIn("sendBeacon", script)
+        self.assertNotIn("XMLHttpRequest", script)
 
     def test_27_sleep_journal_is_local_private_and_public(self):
         page = ROOT / "outils" / "journal-sommeil" / "index.html"

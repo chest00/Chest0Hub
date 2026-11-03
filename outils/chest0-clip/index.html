@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chest0 Clip — créer une vidéo TikTok, Reels ou Shorts avec ses images | Chest0 Hub</title>
+<meta name="description" content="Outil gratuit pour transformer vos images en vidéo TikTok, YouTube Shorts, Reels ou Pinterest : transitions automatiques, musique libre de droits, sous-titres. Sans compte, vos images restent sur votre appareil.">
+<link rel="canonical" href="https://chest0.fr/outils/chest0-clip/">
+<meta property="og:title" content="Chest0 Clip — vos images deviennent une vidéo">
+<meta property="og:description" content="Créez gratuitement une vidéo pour TikTok, Reels, Shorts ou Pinterest à partir de vos images, avec transitions, musique libre de droits et sous-titres.">
+<meta property="og:type" content="website"><meta property="og:url" content="https://chest0.fr/outils/chest0-clip/"><meta property="og:site_name" content="Chest0 Hub"><meta property="og:locale" content="fr_FR">
+<meta property="og:image" content="https://chest0.fr/assets/images/avatar/img-1248-3cd365c1.jpeg">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="Chest0 Clip — vos images deviennent une vidéo"><meta name="twitter:description" content="Outil gratuit : images, transitions, musique libre de droits et sous-titres pour TikTok, Reels, Shorts et Pinterest."><meta name="twitter:image" content="https://chest0.fr/assets/images/avatar/img-1248-3cd365c1.jpeg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Chest0 Clip","description":"Outil gratuit de création de vidéos à partir d’images : transitions automatiques, musique libre de droits, sous-titres et formats TikTok, YouTube Shorts, Reels, Pinterest. Traitement local dans le navigateur.","url":"https://chest0.fr/outils/chest0-clip/","applicationCategory":"MultimediaApplication","operatingSystem":"Web","isAccessibleForFree":true,"inLanguage":"fr","publisher":{"@type":"Organization","name":"Chest0 Hub","url":"https://chest0.fr/"}}</script>
+<link rel="stylesheet" href="../../assets/css/chest0-clip.css">
+</head>
+<body>
+<header>
+  <div class="logo"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z"/></svg></div>
+  <div><h1>Chest0 Clip</h1><p>Créez gratuitement une vidéo TikTok, Reels, Shorts ou Pinterest à partir de vos images</p></div>
+  <a class="sbtn back" href="../">← Outils gratuits</a>
+  <a class="sbtn back" id="backSocial" href="/" hidden>← Social Studio</a>
+</header>
+
+<main>
+<section id="left">
+  <div class="card">
+    <h2><span class="num">1</span>Vos images</h2>
+    <label class="drop" id="drop">
+      <input type="file" id="fileImages" accept="image/*" multiple hidden>
+      <strong>Glissez vos images ici</strong>
+      <span>ou cliquez pour les choisir · elles sont rangées par nom de fichier</span>
+    </label>
+    <div class="summary" id="summary" hidden>
+      <span id="countText"></span>
+      <span><button class="sbtn" id="clearAll">Tout retirer</button></span>
+    </div>
+    <ol class="thumbs" id="list"></ol>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">2</span>Format de la vidéo</h2>
+    <div class="formats" id="formats"></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">3</span>Rythme et affichage</h2>
+    <div class="field">
+      <label for="imgDur">Durée de chaque image <output id="oImg"></output></label>
+      <input type="range" id="imgDur" min="1" max="10" step="0.5">
+    </div>
+    <div class="field">
+      <label for="transDur">Durée de la transition <output id="oTr"></output></label>
+      <input type="range" id="transDur" min="0.2" max="2" step="0.1">
+    </div>
+    <div class="field">
+      <label for="transition">Style de transition</label>
+      <select id="transition"></select>
+    </div>
+    <div class="field">
+      <label>Adaptation des images à l'écran</label>
+      <div class="opts">
+        <button class="opt" data-fit="blur"><b>Image entière</b><span>Fond flou autour · rien n'est coupé (idéal avec bulles de texte)</span></button>
+        <button class="opt" data-fit="cover"><b>Plein écran</b><span>Remplit tout l'écran · les bords peuvent être coupés</span></button>
+      </div>
+    </div>
+    <label class="check"><input type="checkbox" id="kenburns"> Léger zoom animé sur chaque image</label>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">4</span>Musique</h2>
+    <div class="mhead">Ambiances intégrées <small>sans droits d'auteur</small></div>
+    <div class="music grid2" id="musicList"></div>
+    <div class="mhead">Ma bibliothèque musicale <small id="libCount"></small></div>
+    <p class="note" id="libHelp" style="margin:0 0 8px"></p>
+    <div class="libtools">
+      <button class="sbtn" id="libFolder"></button>
+      <button class="sbtn" id="libAdd">Ajouter un fichier…</button>
+      <button class="sbtn" id="libRefresh" hidden>Actualiser la liste</button>
+    </div>
+    <div class="music liblist" id="libList"></div>
+    <input type="file" id="fileMusic" accept="audio/*,.mp3,.m4a,.wav,.aac,.ogg,.flac" multiple hidden>
+    <input type="file" id="folderMusic" webkitdirectory multiple hidden>
+    <div class="field">
+      <label for="volume">Volume de la musique <output id="oVol"></output></label>
+      <input type="range" id="volume" min="0" max="1" step="0.05">
+    </div>
+    <p class="note">Les ambiances intégrées sont composées par le programme lui-même : aucun droit d'auteur, utilisables partout. La musique s'arrête en fondu à la fin de la vidéo et repart du début si elle est trop courte.<br>
+    Autres musiques libres de droits : <a href="https://pixabay.com/fr/music/" target="_blank" rel="noopener">Pixabay Musique</a> · <a href="https://studio.youtube.com" target="_blank" rel="noopener">Bibliothèque audio YouTube</a> (dans YouTube Studio) · <a href="https://freemusicarchive.org" target="_blank" rel="noopener">Free Music Archive</a> — vérifiez la licence de chaque morceau.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">5</span>Sous-titres <small>facultatif</small></h2>
+    <label class="check"><input type="checkbox" id="subs"> Ajouter un texte sur les images</label>
+    <div class="field" id="subOpts" style="margin-top:12px">
+      <label for="subPos">Position du texte</label>
+      <select id="subPos">
+        <option value="bottom">En bas</option>
+        <option value="middle">Au milieu</option>
+        <option value="top">En haut</option>
+      </select>
+      <p class="note">Écrivez le texte dans la case sous chaque image (étape 1). Case vide = pas de texte sur cette image. Touche Entrée = retour à la ligne.</p>
+    </div>
+  </div>
+</section>
+
+<aside>
+  <div class="card sticky">
+    <div class="stage">
+      <canvas id="stage"></canvas>
+      <div class="empty" id="empty">Ajoutez des images :<br>l'aperçu apparaîtra ici</div>
+    </div>
+    <div class="controls">
+      <button class="sbtn" id="play" style="min-width:96px">▶ Aperçu</button>
+      <input type="range" id="scrub" min="0" max="1000" value="0" aria-label="Position dans la vidéo">
+      <span id="time">0:00 / 0:00</span>
+    </div>
+    <button class="primary" id="export">Créer la vidéo</button>
+    <div class="progress" id="progress" hidden><div></div></div>
+    <p class="status" id="status"></p>
+    <div id="result" hidden>
+      <video id="out" controls playsinline></video>
+      <a class="primary" id="dl" download>Télécharger à nouveau</a>
+      <div id="sendBox" hidden>
+        <h2 style="margin:18px 0 6px">Envoyer dans Mes vidéos</h2>
+        <p class="note" style="margin:0 0 10px">Social Studio range la vidéo dans sa bibliothèque. Vous la validez puis la diffusez comme d'habitude.</p>
+        <div class="field"><label for="sTitle">Titre</label><input id="sTitle" class="txt" maxlength="300" placeholder="Ex. 3 réflexes pour mieux dormir"></div>
+        <div class="field"><label for="sCat">Catégorie</label><select id="sCat"><option>Bien-être</option><option>Nutrition</option><option>Culture</option><option>Nature</option><option>Motivation</option><option>Autre</option></select></div>
+        <div class="field"><label for="sDesc">Description <small>(facultatif)</small></label><textarea id="sDesc" rows="3" maxlength="5000"></textarea></div>
+        <div class="field"><label for="sTags">Hashtags <small>(séparés par des espaces)</small></label><input id="sTags" class="txt" placeholder="#bienetre #sommeil"></div>
+        <button class="primary" id="sendBtn">Envoyer dans Mes vidéos</button>
+        <p class="status" id="sendStatus"></p>
+      </div>
+    </div>
+  </div>
+</aside>
+</main>
+<section class="about">
+  <div class="card">
+    <h2>Un outil gratuit, sans compte et sans envoi de vos images</h2>
+    <p>Chest0 Clip transforme une série d'images en vidéo prête à publier : transitions automatiques, image entière sur fond flou pour ne rien couper (idéal pour les images avec bulles de texte), musique, sous-titres facultatifs et formats adaptés à TikTok, YouTube Shorts, Reels Instagram et Facebook, Pinterest et YouTube classique.</p>
+    <h3>Confidentialité</h3>
+    <p>Tout se passe dans votre navigateur. Vos images et vos musiques ne sont envoyées nulle part : la vidéo est fabriquée sur votre appareil puis enregistrée dans vos téléchargements. Seuls vos réglages (durées, format…) sont mémorisés dans ce navigateur pour la prochaine visite.</p>
+    <h3>Musique</h3>
+    <p>Les 9 ambiances proposées sont composées par l'outil lui-même : elles sont libres de droits et utilisables partout. Vous pouvez aussi choisir vos propres morceaux ; vérifiez alors la licence de chacun avant publication.</p>
+    <h3>Conseils</h3>
+    <ul>
+      <li>Sur Mac, utilisez <strong>Safari</strong> : il produit un fichier .mp4 (vidéo H.264 et son AAC) accepté par toutes les plateformes. Sur Chrome, le son peut être enregistré dans un format refusé par certaines plateformes.</li>
+      <li>La création se fait en temps réel : une vidéo de 30 secondes prend environ 30 secondes. Laissez la fenêtre visible jusqu'à la fin.</li>
+      <li>YouTube Shorts et les Reels acceptent 3 minutes au maximum.</li>
+    </ul>
+  </div>
+</section>
+<footer class="foot"><a href="../../index.html">Chest0 Hub</a> · <a href="../">Outils gratuits</a> · <a href="../../pages/contact.html">Contact</a></footer>
+
+<script src="../../assets/js/chest0-clip.js"></script>
+</body>
+</html>
