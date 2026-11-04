@@ -87,6 +87,7 @@ select{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);bor
 .dllist a{display:flex;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;color:var(--ink);text-decoration:none;font-size:14px}
 .dllist a:hover{border-color:var(--accent)}
 .dllist a span{color:var(--muted)}
+.field>label#beatRow{justify-content:flex-start;gap:10px;font-weight:400;font-size:14px;margin:10px 0 0}
 .libtools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
 .liblist{max-height:290px;overflow:auto}
 .liblist:empty{display:none}
