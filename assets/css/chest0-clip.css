@@ -69,6 +69,24 @@ select{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);bor
 .mhead small{font-weight:400;color:var(--muted);font-size:12px;margin-left:6px}
 .grid2{grid-template-columns:1fr 1fr}
 @media (max-width:640px){.grid2{grid-template-columns:1fr}}
+.seg3{display:flex;gap:6px;margin:8px 0;flex-wrap:wrap}
+.seg3 .sbtn.sel{border-color:var(--accent);background:#fdf3ee;color:var(--accent-2);font-weight:600}
+.phrases{display:grid;gap:6px;max-height:300px;overflow:auto}
+.phrase{text-align:left;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;font-size:13.5px;line-height:1.35}
+.phrase:hover{border-color:var(--accent)}
+.phrase b{display:block;font-weight:600}
+.phrase span{color:var(--muted)}
+.also{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:12px;font-size:13.5px;color:var(--muted)}
+.also label{display:flex;gap:6px;align-items:center;cursor:pointer;color:var(--ink)}
+.also input{width:16px;height:16px;accent-color:var(--accent)}
+.logorow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.logorow select{width:auto;padding:6px 8px;font-size:13px}
+#logoThumb{height:28px;max-width:70px;object-fit:contain;border-radius:4px;background:var(--soft)}
+.check input:disabled+*,.check:has(input:disabled){opacity:.5}
+.dllist{display:grid;gap:6px;margin-bottom:6px}
+.dllist a{display:flex;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;color:var(--ink);text-decoration:none;font-size:14px}
+.dllist a:hover{border-color:var(--accent)}
+.dllist a span{color:var(--muted)}
 .libtools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
 .liblist{max-height:290px;overflow:auto}
 .liblist:empty{display:none}

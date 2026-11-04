@@ -1070,7 +1070,7 @@ class Chest0HubTests(unittest.TestCase):
         for path in ("outils/chest0-clip/", "assets/css/chest0-clip.css", "assets/js/chest0-clip.js"):
             self.assertIn(f'"./{path}"', service_worker)
             self.assertTrue((ROOT / path).exists(), path)
-        self.assertIn("Vos images et vos musiques ne sont envoyées nulle part", page)
+        self.assertIn("ne sont envoyés nulle part", page)
         script = (ROOT / "assets/js/chest0-clip.js").read_text(encoding="utf-8")
         # Hors Social Studio, aucune requête réseau : l'envoi n'est actif que sur /clip.
         self.assertIn("location.pathname === '/clip'", script)

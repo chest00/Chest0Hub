@@ -33,13 +33,16 @@ const STYLE_META = [
 ];
 // Ouvert depuis Social Studio (http://127.0.0.1:8503/clip) : envoi direct dans « Mes vidéos ».
 const SOCIAL = location.protocol.startsWith('http') && location.pathname === '/clip';
-let lastBlob = null;
+let results = [];          // vidéos créées : {fmt, label, blob, url, name, aac}
 const FONT = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif';
 
-const S = {format:'vertical', fit:'blur', imgDur:3, transDur:0.8, transition:'auto', kenburns:true, subs:false, subPos:'bottom', volume:0.8, music:'lofi'};
+const S = {format:'vertical', also:[], fit:'blur', imgDur:3, beatSync:false, transDur:0.8, transition:'auto', kenburns:true, logo:false, logoPos:'tr', subs:false, subPos:'bottom', volume:0.8, music:'lofi', bookCursor:{}};
 try { Object.assign(S, JSON.parse(localStorage.getItem('chest0clip') || '{}')); } catch (e) {}
 if (S.music === 'file' || (S.music !== 'none' && !isLibId(S.music) && !['lofi','pop','zen','electro','cinema','acoustic','motiv','nature','tropic'].includes(S.music))) S.music = 'lofi';
 if (!FORMATS.some(f => f.id === S.format)) S.format = 'vertical';
+if (!Array.isArray(S.also)) S.also = [];
+S.also = S.also.filter(id => FORMATS.some(f => f.id === id));
+if (!S.bookCursor || typeof S.bookCursor !== 'object') S.bookCursor = {};
 function isLibId(v) { return typeof v === 'string' && v.startsWith('lib:'); }
 const save = () => { try { localStorage.setItem('chest0clip', JSON.stringify(S)); } catch (e) {} };
 
@@ -56,8 +59,13 @@ const ensureAC = () => { if (!ac) ac = new (window.AudioContext || window.webkit
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const ease = p => p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
 const fmtTime = s => { s = Math.max(0, Math.round(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
-const transT = () => S.transition === 'cut' ? 0 : Math.min(S.transDur, S.imgDur * 0.8);
-const total = () => images.length * S.imgDur;
+// Durée d'un temps musical quand le calage est actif (ambiances intégrées rythmées uniquement)
+const beatLen = () => (S.beatSync && STYLES[S.music] && S.music !== 'zen') ? STYLES[S.music].bar / 4 : 0;
+const imgD = () => { const b = beatLen(); return b ? Math.max(1, Math.round(S.imgDur / b)) * b : S.imgDur; };
+const transT = () => S.transition === 'cut' ? 0 : Math.min(S.transDur, imgD() * 0.8);
+const total = () => images.length * imgD();
+// Décalage de la musique pour que le milieu de chaque transition tombe sur un temps
+const musicOffset = () => { const b = beatLen(); return b ? (transT() / 2) % b : 0; };
 function setStatus(msg, kind = '') { const el = $('#status'); el.textContent = msg; el.className = 'status ' + kind; }
 
 /* ---------- Préparation des images ---------- */
@@ -72,7 +80,7 @@ function prepare(it) {
   const pos = prepared.indexOf(it);
   if (pos >= 0) prepared.splice(pos, 1);
   prepared.push(it);
-  while (prepared.length > 6) { const old = prepared.shift(); old.fg = old.bg = null; old.key = null; }
+  while (prepared.length > 6) { const old = prepared.shift(); old.fg = old.bg = old.capCanvas = null; old.key = old.capKey = null; }
   if (it.key === key) return;
   const iw = it.img.naturalWidth, ih = it.img.naturalHeight;
   const s = S.fit === 'blur' ? Math.min(W / iw, H / ih) * 0.94 : Math.max(W / iw, H / ih);
@@ -86,7 +94,8 @@ function prepare(it) {
     const mid = mkCanvas(W / 12, H / 12); const gm = mid.getContext('2d'); gm.imageSmoothingQuality = 'high'; gm.drawImage(tiny, 0, 0, mid.width, mid.height);
     const bg = mkCanvas(W / 5, H / 5); const gb = bg.getContext('2d'); gb.imageSmoothingQuality = 'high'; gb.drawImage(mid, 0, 0, bg.width, bg.height);
     gb.fillStyle = 'rgba(0,0,0,.30)'; gb.fillRect(0, 0, bg.width, bg.height);
-    it.bg = bg;
+    const full = mkCanvas(W, H), gf = full.getContext('2d'); gf.imageSmoothingQuality = 'high'; gf.drawImage(bg, 0, 0, W, H);
+    it.bg = full;
   }
   it.key = key;
 }
@@ -106,11 +115,13 @@ function wrap(g, text, maxW) {
   }
   return out;
 }
-function drawCaption(g, text) {
+function drawCaption(g, text, alpha = 1) {
+  if (alpha <= 0) return;
+  g.save(); g.globalAlpha *= alpha;
   const base = Math.min(W, H); let fs = Math.round(base * 0.058); const maxW = W * 0.82;
   g.font = `700 ${fs}px ${FONT}`; let lines = wrap(g, text, maxW);
   while (lines.length > 5 && fs > base * 0.032) { fs = Math.round(fs * 0.88); g.font = `700 ${fs}px ${FONT}`; lines = wrap(g, text, maxW); }
-  if (!lines.length) return;
+  if (!lines.length) { g.restore(); return; }
   const lh = fs * 1.24, pad = fs * 0.55;
   const tw = Math.min(W * 0.92, Math.max(...lines.map(l => g.measureText(l).width)));
   const bw = tw + pad * 2, bh = lines.length * lh + pad;
@@ -123,28 +134,46 @@ function drawCaption(g, text) {
   g.fillStyle = 'rgba(0,0,0,.62)'; roundRect(g, x, y, bw, bh, fs * 0.38); g.fill();
   g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle';
   lines.forEach((l, k) => g.fillText(l, W / 2, y + pad / 2 + lh * (k + 0.5)));
+  g.restore();
 }
-function drawLayer(g, i, u) {
+function drawLayer(g, i, u, capA = 1) {
   const it = images[i]; prepare(it);
   g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
-  if (it.bg) { g.imageSmoothingQuality = 'high'; g.drawImage(it.bg, 0, 0, W, H); }
+  if (it.bg) g.drawImage(it.bg, 0, 0);
+  g.imageSmoothingQuality = 'low';   // l'image est déjà à la bonne taille : un lissage simple suffit pour le léger zoom
   let z = 1;
   if (S.kenburns) { const e = ease(u); z = i % 2 === 0 ? 1 + 0.05 * e : 1.05 - 0.05 * e; }
   const w = it.baseW * z, h = it.baseH * z;
   g.drawImage(it.fg, (W - w) / 2, (H - h) / 2, w, h);
-  if (S.subs && it.caption.trim()) drawCaption(g, it.caption);
+  if (S.subs && it.caption.trim()) {
+    const key = it.caption + '|' + W + 'x' + H + '|' + S.subPos;
+    if (it.capKey !== key) { it.capCanvas = mkCanvas(W, H); drawCaption(it.capCanvas.getContext('2d'), it.caption); it.capKey = key; }
+    if (capA > 0) { g.save(); g.globalAlpha *= capA; g.drawImage(it.capCanvas, 0, 0); g.restore(); }
+  }
+}
+// Logo : posé au-dessus de tout, immobile pendant les transitions
+let logoImg = null;
+function drawLogo(g) {
+  if (!S.logo || !logoImg || !logoImg.naturalWidth) return;
+  const box = Math.min(W, H) * 0.17, k = Math.min(box / logoImg.naturalWidth, box / logoImg.naturalHeight);
+  const w = logoImg.naturalWidth * k, h = logoImg.naturalHeight * k, vertical = H > W * 1.3;
+  const x = S.logoPos.endsWith('l') ? W * 0.045 : W - w - W * 0.045;
+  const y = S.logoPos.startsWith('t') ? H * (vertical ? 0.065 : 0.045) : H - h - H * (vertical ? 0.2 : 0.045);
+  g.save(); g.globalAlpha = 0.92; g.drawImage(logoImg, x, y, w, h); g.restore();
 }
 function renderFrame(t) {
   const n = images.length;
   if (!n) { ctx.fillStyle = '#141416'; ctx.fillRect(0, 0, W, H); return; }
-  const d = S.imgDur, T = transT(), D = n * d;
+  const d = imgD(), T = transT(), D = n * d;
   t = clamp(t, 0, D - 1e-3);
   const i = Math.min(n - 1, Math.floor(t / d)), local = t - i * d;
   const u = k => { const st = k > 0 ? k * d - T : 0, span = k > 0 ? d + T : d; return clamp((t - st) / span); };
+  // Le texte d'une image apparaît en douceur une fois la transition terminée (sauf la 1re : visible tout de suite)
+  const capA = k => k === 0 ? 1 : clamp((t - k * d) / 0.35);
   if (i < n - 1 && T > 0 && local > d - T) {
     const p = ease((local - (d - T)) / T);
     const type = S.transition === 'auto' ? AUTO[i % AUTO.length] : S.transition;
-    drawLayer(xA, i, u(i)); drawLayer(xB, i + 1, u(i + 1));
+    drawLayer(xA, i, u(i), capA(i)); drawLayer(xB, i + 1, u(i + 1), capA(i + 1));
     ctx.globalAlpha = 1;
     if (type === 'slide') { ctx.drawImage(cA, -p * W, 0); ctx.drawImage(cB, (1 - p) * W, 0); }
     else if (type === 'zoom') {
@@ -155,9 +184,10 @@ function renderFrame(t) {
       ctx.fillStyle = `rgba(0,0,0,${p < .5 ? p * 2 : (1 - p) * 2})`; ctx.fillRect(0, 0, W, H);
     } else { ctx.drawImage(cA, 0, 0); ctx.globalAlpha = p; ctx.drawImage(cB, 0, 0); ctx.globalAlpha = 1; }
   } else {
-    drawLayer(ctx, i, u(i));
+    drawLayer(ctx, i, u(i), capA(i));
     if (i < n - 1 && local < 0.5) prepare(images[i + 1]);   // prépare l'image suivante à l'avance
   }
+  drawLogo(ctx);
 }
 
 /* ---------- Musique générée ---------- */
@@ -372,7 +402,7 @@ function addLocalTracks(files) {
   renderMusicList();
 }
 
-async function renderTrack(id, D) {
+async function renderTrack(id, D, offset = 0) {
   const sr = 44100, N = Math.max(1, Math.ceil(D * sr)), fadeN = Math.max(1, Math.round(Math.min(2.5, D * .25) * sr));
   if (isLib(id)) {
     const userBuf = await trackBuffer(trackOf(id));
@@ -382,21 +412,28 @@ async function renderTrack(id, D) {
     const s = oac.createBufferSource(); s.buffer = userBuf; s.loop = true; s.connect(master); master.connect(oac.destination); s.start(0);
     return oac.startRendering();
   }
-  const st = await styleSource(id), src = st.buf;
+  const st = await styleSource(id), src = st.buf, off = Math.round(offset * sr);
   const out = ensureAC().createBuffer(2, N, sr), a = Math.round(st.loopStart * sr), L = Math.round(st.loopLen * sr);
+  const inN = Math.min(N, Math.round(0.04 * sr));
   for (let c = 0; c < 2; c++) {
     const s = src.getChannelData(c), d = out.getChannelData(c);
-    for (let i = 0; i < N; i++) { const j = i < a ? i : a + (i - a) % L; d[i] = i > N - fadeN ? s[j] * (N - i) / fadeN : s[j]; }
+    for (let i = 0; i < N; i++) {
+      const m = i + off, j = m < a ? m : a + (m - a) % L;
+      let v = i > N - fadeN ? s[j] * (N - i) / fadeN : s[j];
+      if (off && i < inN) v *= i / inN;
+      d[i] = v;
+    }
   }
   return out;
 }
 let musicCache = {key: '', buf: null};
 async function getMusic(D) {
   if (S.music === 'none' || (isLib(S.music) && !trackOf(S.music)) || (!isLib(S.music) && !STYLES[S.music])) return null;
-  const key = S.music + '|' + D.toFixed(3);
+  const off = isLib(S.music) ? 0 : musicOffset();
+  const key = S.music + '|' + D.toFixed(3) + '|' + off.toFixed(3);
   if (musicCache.key === key) return musicCache.buf;
   setStatus('Préparation de la musique…');
-  const buf = await renderTrack(S.music, D);
+  const buf = await renderTrack(S.music, D, off);
   musicCache = {key, buf}; setStatus('');
   return buf;
 }
@@ -452,7 +489,7 @@ function pause() {
   if (previewSrc) { try { previewSrc.stop(); } catch (e) {} }
   previewSrc = null; previewGain = null; $('#play').textContent = '▶ Aperçu';
 }
-function seekToImage(i) { pause(); const d = S.imgDur; pos = i * d + (d - transT()) / 2; renderFrame(pos); updateTime(); }
+function seekToImage(i) { pause(); const d = imgD(); pos = i * d + (d - transT()) / 2 + 0.3; renderFrame(pos); updateTime(); }
 
 /* ---------- Création de la vidéo ---------- */
 const IS_SAFARI = /^((?!chrome|chromium|android|crios|fxios|edg).)*safari/i.test(navigator.userAgent);
@@ -462,28 +499,170 @@ function pickMime() {
     ...(IS_SAFARI ? ['video/mp4'] : []), 'video/mp4;codecs=avc1.640028,opus', 'video/mp4;codecs=avc1,opus', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm'];
   return list.find(m => { try { return MediaRecorder.isTypeSupported(m); } catch (e) { return false; } }) || '';
 }
-let job = null, lastUrl = null;
+let job = null;
 document.addEventListener('visibilitychange', () => { if (job && document.hidden) job.hidden = true; });
 function lock(on) {
   $('#left').classList.toggle('locked', on); $('#play').disabled = on; $('#scrub').disabled = on;
   const b = $('#export'); b.textContent = on ? 'Annuler' : 'Créer la vidéo'; b.classList.toggle('cancel', on);
   $('#progress').hidden = !on;
 }
-async function exportVideo() {
-  if (job) { job.cancel = true; return; }
-  if (!images.length) return;
-  if (typeof MediaRecorder === 'undefined' || !canvas.captureStream) { setStatus("Ce navigateur ne sait pas enregistrer de vidéo : ouvrez Chest0 Clip avec Safari.", 'err'); return; }
-  pause(); stopListen(); renderMusicList();
-  ensureAC(); await ac.resume();
+const fmtOf = id => FORMATS.find(f => f.id === id);
+const exportList = () => [S.format, ...S.also.filter(id => id !== S.format)];
+function setSize(id) { const f = fmtOf(id); W = f.w; H = f.h; for (const c of [canvas, cA, cB]) { c.width = W; c.height = H; } }
+// Pause qui laisse respirer la page, même si la fenêtre est en arrière-plan (pas de ralentissement des minuteries)
+const breathe = () => new Promise(r => { const ch = new MessageChannel(); ch.port1.onmessage = () => r(); ch.port2.postMessage(0); });
+const copyBytes = d => d ? new Uint8Array(d.buffer ? d.buffer.slice(d.byteOffset, d.byteOffset + d.byteLength) : d.slice(0)) : null;
+
+/* ---------- Fabrication du fichier MP4 (sans dépendance externe) ----------
+   Assemble les images codées en H.264 et le son codé en AAC (ou Opus) dans un fichier
+   .mp4 standard, avec l'index au début (lecture immédiate sur les plateformes). */
+const MP4 = (() => {
+  const te = new TextEncoder();
+  const bytes = a => a instanceof Uint8Array ? a : new Uint8Array(a);
+  const flat = parts => { parts = parts.map(bytes); let n = 0; for (const p of parts) n += p.length; const out = new Uint8Array(n); let o = 0; for (const p of parts) { out.set(p, o); o += p.length; } return out; };
+  const u16 = n => [n >>> 8 & 255, n & 255], u24 = n => [n >>> 16 & 255, n >>> 8 & 255, n & 255], u32 = n => [n >>> 24 & 255, n >>> 16 & 255, n >>> 8 & 255, n & 255];
+  const u32s = list => { const b = new Uint8Array(list.length * 4), v = new DataView(b.buffer); list.forEach((x, i) => v.setUint32(i * 4, x)); return b; };
+  const box = (type, ...parts) => { const body = flat(parts); return flat([u32(body.length + 8), te.encode(type), body]); };
+  const full = (type, version, flags, ...parts) => box(type, [version, ...u24(flags)], ...parts);
+  const zeros = n => new Uint8Array(n);
+  const MATRIX = [0x10000, 0, 0, 0, 0x10000, 0, 0, 0, 0x40000000].flatMap(u32);
+  const descr = (tag, body) => { body = bytes(body); const l = body.length; return flat([[tag, 0x80 | (l >> 21 & 127), 0x80 | (l >> 14 & 127), 0x80 | (l >> 7 & 127), l & 127], body]); };
+  function trak(t, offsets) {
+    const v = t.type === 'video', deltas = t.samples.map(x => x.delta), dur = deltas.reduce((a, b) => a + b, 0);
+    const runs = []; for (const d of deltas) { const r = runs[runs.length - 1]; if (r && r[1] === d) r[0]++; else runs.push([1, d]); }
+    const stbl = [full('stsd', 0, 0, u32(1), t.entry), full('stts', 0, 0, u32(runs.length), u32s(runs.flat()))];
+    if (v) { const keys = []; t.samples.forEach((x, i) => { if (x.key) keys.push(i + 1); }); stbl.push(full('stss', 0, 0, u32(keys.length), u32s(keys))); }
+    stbl.push(full('stsc', 0, 0, u32(1), u32(1), u32(1), u32(1)),
+              full('stsz', 0, 0, u32(0), u32(t.samples.length), u32s(t.samples.map(x => x.data.length))),
+              full('stco', 0, 0, u32(offsets.length), u32s(offsets)));
+    return box('trak',
+      full('tkhd', 0, 3, u32(0), u32(0), u32(t.id), u32(0), u32(Math.round(dur / t.timescale * 1000)), zeros(8), u16(0), u16(0), u16(v ? 0 : 0x100), u16(0), MATRIX,
+           u32(v ? t.width * 65536 : 0), u32(v ? t.height * 65536 : 0)),
+      box('mdia',
+        full('mdhd', 0, 0, u32(0), u32(0), u32(t.timescale), u32(dur), u16(0x55c4), u16(0)),
+        full('hdlr', 0, 0, u32(0), te.encode(v ? 'vide' : 'soun'), zeros(12), te.encode(v ? 'VideoHandler\0' : 'SoundHandler\0')),
+        box('minf', v ? full('vmhd', 0, 1, zeros(8)) : full('smhd', 0, 0, zeros(4)),
+          box('dinf', full('dref', 0, 0, u32(1), full('url ', 0, 1))), box('stbl', ...stbl))));
+  }
+  return function mux({width, height, video, audio}) {
+    const tracks = [{id: 1, type: 'video', timescale: 90000, width, height,
+      entry: box('avc1', zeros(6), u16(1), zeros(16), u16(width), u16(height), u32(0x480000), u32(0x480000), u32(0), u16(1), zeros(32), u16(0x18), u16(0xffff), box('avcC', video.desc)),
+      samples: video.chunks.map(c => ({data: c.data, ts: c.ts, key: c.key, delta: Math.max(1, Math.round(c.dur * 0.09))}))}];
+    if (audio) {
+      const sr = audio.sampleRate, ch = audio.channels;
+      const head = [zeros(6), u16(1), zeros(8), u16(ch), u16(16), u16(0), u16(0), u32(sr * 65536)];
+      let entry;
+      if (audio.kind === 'aac') {
+        const fi = [96000, 88200, 64000, 48000, 44100, 32000, 24000, 22050, 16000, 12000, 11025, 8000].indexOf(sr);
+        const asc = audio.desc && audio.desc.length ? audio.desc : new Uint8Array([(2 << 3) | (fi >> 1), ((fi & 1) << 7) | (ch << 3)]);
+        const dcd = descr(4, flat([[0x40, 0x15, 0, 0, 0], u32(audio.bitrate), u32(audio.bitrate), descr(5, asc)]));
+        entry = box('mp4a', ...head, full('esds', 0, 0, descr(3, flat([u16(2), [0], dcd, descr(6, [2])]))));
+      } else {
+        entry = box('Opus', ...head, box('dOps', [0, ch], u16(audio.preSkip), u32(48000), u16(0), [0]));
+      }
+      tracks.push({id: 2, type: 'audio', timescale: sr, entry,
+        samples: audio.chunks.map(c => ({data: c.data, ts: c.ts, delta: Math.max(1, Math.round(c.dur * sr / 1e6))}))});
+    }
+    // Échantillons rangés par ordre chronologique (son et image entrelacés)
+    const order = tracks.flatMap(t => t.samples.map(x => ({t: t.id, x}))).sort((a, b) => a.x.ts - b.x.ts || a.t - b.t);
+    const ftyp = box('ftyp', te.encode('isom'), u32(0x200), te.encode('isomiso2avc1mp41'));
+    const durMs = Math.max(...tracks.map(t => Math.round(t.samples.reduce((a, x) => a + x.delta, 0) / t.timescale * 1000)));
+    const moov = offs => box('moov', full('mvhd', 0, 0, u32(0), u32(0), u32(1000), u32(durMs), u32(0x10000), u16(0x100), zeros(10), MATRIX, zeros(24), u32(tracks.length + 1)),
+                             ...tracks.map(t => trak(t, offs[t.id])));
+    const size = moov({1: video.chunks.map(() => 0), 2: audio ? audio.chunks.map(() => 0) : []}).length;
+    const offs = {1: [], 2: []}; let o = ftyp.length + size + 8;
+    for (const s of order) { offs[s.t].push(o); o += s.x.data.length; }
+    const head = moov(offs); if (head.length !== size) throw new Error('mp4-index');
+    return new Blob([ftyp, head, flat([u32(o - ftyp.length - size), te.encode('mdat')]), ...order.map(s => s.x.data)], {type: 'video/mp4'});
+  };
+})();
+
+/* ---------- Création rapide : chaque image de la vidéo est calculée puis codée directement ---------- */
+let fastCache;
+async function fastSupport() {
+  if (fastCache !== undefined) return fastCache;
+  fastCache = null;
+  if (typeof VideoEncoder === 'undefined' || typeof VideoFrame === 'undefined' || typeof AudioEncoder === 'undefined' || typeof AudioData === 'undefined') return null;
+  let codec = null;
+  for (const c of ['avc1.640028', 'avc1.4d0028', 'avc1.420028']) {
+    try { if ((await VideoEncoder.isConfigSupported({codec: c, width: 1080, height: 1920, bitrate: 8e6, framerate: 30, avc: {format: 'avc'}})).supported) { codec = c; break; } } catch (e) {}
+  }
+  if (!codec) return null;
+  let audio = null;
+  for (const [c, kind, sr] of [['mp4a.40.2', 'aac', 44100], ['mp4a.40.2', 'aac', 48000], ['opus', 'opus', 48000]]) {
+    const cfg = {codec: c, sampleRate: sr, numberOfChannels: 2, bitrate: 192000}; if (kind === 'aac') cfg.aac = {format: 'aac'};
+    try { if ((await AudioEncoder.isConfigSupported(cfg)).supported) { audio = {cfg, kind}; break; } } catch (e) {}
+  }
+  if (!audio) return null;
+  // Hors Social Studio, un son AAC est indispensable : si le navigateur l'enregistre mieux en direct, on garde le direct.
+  if (audio.kind !== 'aac' && !SOCIAL && /mp4a/.test(pickMime())) return null;
+  return fastCache = {codec, audio};
+}
+async function resample(buf, sr) {
+  if (buf.sampleRate === sr) return buf;
+  const oac = new OfflineAudioContext(2, Math.ceil(buf.duration * sr), sr), s = oac.createBufferSource();
+  s.buffer = buf; s.connect(oac.destination); s.start(0); return oac.startRendering();
+}
+async function encodeFast(sup, music, me, onProgress) {
+  const fps = 30, D = total(), frames = Math.max(1, Math.round(D * fps)), frameUs = 1e6 / fps;
+  let failure = null;
+  // --- image ---
+  const vChunks = []; let vDesc = null;
+  const ve = new VideoEncoder({
+    output: (c, meta) => { if (!vDesc && meta && meta.decoderConfig && meta.decoderConfig.description) vDesc = copyBytes(meta.decoderConfig.description);
+      const b = new Uint8Array(c.byteLength); c.copyTo(b); vChunks.push({data: b, ts: c.timestamp, dur: c.duration || frameUs, key: c.type === 'key'}); },
+    error: e => { failure = e; }});
+  ve.configure({codec: sup.codec, width: W, height: H, bitrate: 8e6, framerate: fps, avc: {format: 'avc'}});
+  for (let f = 0; f < frames; f++) {
+    if (me.cancel || failure) break;
+    renderFrame(f / fps);
+    const vf = new VideoFrame(canvas, {timestamp: Math.round(f * frameUs), duration: Math.round(frameUs)});
+    ve.encode(vf, {keyFrame: f % (fps * 2) === 0}); vf.close();
+    while (ve.encodeQueueSize > 4 && !failure) await breathe();
+    if (f % 6 === 0) { onProgress(f / frames * 0.92); await breathe(); }
+  }
+  if (!failure && !me.cancel) await ve.flush();
+  try { ve.close(); } catch (e) {}
+  if (me.cancel) return null;
+  if (failure) throw failure;
+  if (!vDesc || !vChunks.length) throw new Error('video');
+  for (let i = 1; i < vChunks.length; i++) if (vChunks[i].ts < vChunks[i - 1].ts) throw new Error('reorder');
+  // --- son (musique, ou silence pour garder une piste son) ---
+  const cfg = sup.audio.cfg, sr = cfg.sampleRate, N = Math.max(1, Math.ceil(D * sr));
+  const src = music ? await resample(music, sr) : null;
+  const aChunks = []; let aDesc = null;
+  const ae = new AudioEncoder({
+    output: (c, meta) => { if (!aDesc && meta && meta.decoderConfig && meta.decoderConfig.description) aDesc = copyBytes(meta.decoderConfig.description);
+      const b = new Uint8Array(c.byteLength); c.copyTo(b); aChunks.push({data: b, ts: c.timestamp, dur: c.duration}); },
+    error: e => { failure = e; }});
+  ae.configure(cfg);
+  const step = sr, vol = S.volume;
+  for (let o = 0; o < N && !failure; o += step) {
+    const n = Math.min(step, N - o), data = new Float32Array(n * 2);
+    if (src) for (let c = 0; c < 2; c++) { const chData = src.getChannelData(Math.min(c, src.numberOfChannels - 1)); for (let i = 0; i < n; i++) data[c * n + i] = (chData[o + i] || 0) * vol; }
+    const ad = new AudioData({format: 'f32-planar', sampleRate: sr, numberOfFrames: n, numberOfChannels: 2, timestamp: Math.round(o * 1e6 / sr), data});
+    ae.encode(ad); ad.close();
+  }
+  if (!failure) await ae.flush();
+  try { ae.close(); } catch (e) {}
+  if (failure) throw failure;
+  const frameLen = sup.audio.kind === 'aac' ? 1024 : 960;
+  aChunks.forEach(c => { if (!c.dur) c.dur = frameLen * 1e6 / sr; });
+  let preSkip = 312;
+  if (sup.audio.kind === 'opus' && aDesc && aDesc.length >= 12 && String.fromCharCode(...aDesc.slice(0, 8)) === 'OpusHead') preSkip = aDesc[10] | aDesc[11] << 8;
+  onProgress(0.97);
+  return MP4({width: W, height: H, video: {desc: vDesc, chunks: vChunks},
+              audio: {kind: sup.audio.kind, desc: aDesc, sampleRate: sr, channels: 2, bitrate: cfg.bitrate, preSkip, chunks: aChunks}});
+}
+
+/* ---------- Création en temps réel (navigateurs sans codage direct) ---------- */
+async function recordRealtime(music, me, onProgress) {
+  if (typeof MediaRecorder === 'undefined' || !canvas.captureStream) throw new Error('norecorder');
   const D = total(), mime = pickMime();
-  job = {cancel: false, hidden: document.hidden}; const me = job;
-  lock(true); $('#result').hidden = true; $('#progress div').style.width = '0';
-  let buf = null; try { buf = await getMusic(D); } catch (e) { buf = null; }
-  setStatus('Création en cours… Laissez cette fenêtre visible jusqu\'à la fin.');
   const vStream = canvas.captureStream(30);
-  const dest = ac.createMediaStreamDestination(), g = ac.createGain(); g.gain.value = buf ? S.volume : 0; g.connect(dest);
+  const dest = ac.createMediaStreamDestination(), g = ac.createGain(); g.gain.value = music ? S.volume : 0; g.connect(dest);
   let src;
-  if (buf) { src = ac.createBufferSource(); src.buffer = buf; } else { src = ac.createOscillator(); }   // piste son muette si pas de musique
+  if (music) { src = ac.createBufferSource(); src.buffer = music; } else { src = ac.createOscillator(); }   // piste son muette si pas de musique
   src.connect(g);
   const stream = new MediaStream([...vStream.getVideoTracks(), ...dest.stream.getAudioTracks()]);
   const opts = {videoBitsPerSecond: 12000000, audioBitsPerSecond: 192000}; if (mime) opts.mimeType = mime;
@@ -497,8 +676,7 @@ async function exportVideo() {
     const loop = () => {
       const t = ac.currentTime - t0;
       if (me.cancel) return resolve();
-      renderFrame(Math.max(0, t));
-      $('#progress div').style.width = clamp(t / D) * 100 + '%';
+      renderFrame(Math.max(0, t)); onProgress(clamp(t / D));
       if (t >= D + .15) return resolve();
       requestAnimationFrame(loop);
     };
@@ -507,31 +685,75 @@ async function exportVideo() {
   rec.stop(); try { src.stop(); } catch (e) {}
   await stopped;
   vStream.getTracks().forEach(t => t.stop()); g.disconnect();
-  job = null; lock(false); pos = 0; renderFrame(0); updateTime();
-  if (me.cancel) { setStatus('Création annulée.'); return; }
-  const type = rec.mimeType || mime || 'video/webm', ext = type.includes('mp4') ? 'mp4' : 'webm';
-  const blob = new Blob(chunks, {type: type.split(';')[0]});
-  if (lastUrl) URL.revokeObjectURL(lastUrl);
-  lastUrl = URL.createObjectURL(blob);
+  if (me.cancel) return null;
+  const type = rec.mimeType || mime || 'video/webm';
+  return {blob: new Blob(chunks, {type: type.split(';')[0]}), ext: type.includes('mp4') ? 'mp4' : 'webm', aac: /mp4a/.test(type) || (type.startsWith('video/mp4') && IS_SAFARI)};
+}
+
+async function exportVideo() {
+  if (job) { job.cancel = true; return; }
+  if (!images.length) return;
+  pause(); stopListen(); renderMusicList();
+  ensureAC(); await ac.resume();
+  const list = exportList(), main = S.format;
+  job = {cancel: false, hidden: document.hidden, realtime: false}; const me = job;
+  lock(true); $('#result').hidden = true; $('#progress div').style.width = '0';
+  results.forEach(r => URL.revokeObjectURL(r.url)); results = [];
+  let music = null; try { music = await getMusic(total()); } catch (e) { music = null; }
+  let sup = await fastSupport();
   const now = new Date(), stamp = now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + '-' + String(now.getHours()).padStart(2, '0') + String(now.getMinutes()).padStart(2, '0');
-  const name = `chest0-clip-${S.format}-${stamp}.${ext}`;
-  lastBlob = blob;
-  $('#out').src = lastUrl; const a = $('#dl'); a.href = lastUrl; a.download = name; $('#result').hidden = false;
-  let msg;
+  let problem = '';
+  try {
+    for (let k = 0; k < list.length && !me.cancel; k++) {
+      const f = fmtOf(list[k]); setSize(f.id);
+      const label = list.length > 1 ? ` (${k + 1}/${list.length} : ${f.label})` : '';
+      const progress = x => { $('#progress div').style.width = ((k + x) / list.length * 100) + '%'; };
+      let out = null;
+      if (sup) {
+        setStatus('Création en cours' + label + '… Vous pouvez continuer à utiliser votre Mac pendant ce temps.');
+        try { const blob = await encodeFast(sup, music, me, progress); if (blob) out = {blob, ext: 'mp4', aac: sup.audio.kind === 'aac'}; }
+        catch (e) { sup = null; fastCache = null; }
+      }
+      if (!out && !sup && !me.cancel) {
+        me.realtime = true;
+        setStatus('Création en cours' + label + '… Laissez cette fenêtre visible jusqu\'à la fin.');
+        out = await recordRealtime(music, me, progress);
+      }
+      if (out) results.push({fmt: f.id, label: f.label, ...out, url: URL.createObjectURL(out.blob), name: `chest0-clip-${f.id}-${stamp}.${out.ext}`});
+    }
+  } catch (e) {
+    problem = e && e.message === 'norecorder' ? "Ce navigateur ne sait pas créer de vidéo : ouvrez Chest0 Clip avec Safari ou Chrome." : 'La création a échoué. Réessayez ; si cela se reproduit, fermez puis rouvrez la page.';
+  }
+  setSize(main);
+  job = null; lock(false); pos = 0; renderFrame(0); updateTime();
+  if (me.cancel) { setStatus('Création annulée.'); results.forEach(r => URL.revokeObjectURL(r.url)); results = []; return; }
+  if (!results.length) { setStatus(problem || 'La création a échoué.', 'err'); return; }
+  showResults(me, problem);
+}
+function showResults(me, problem) {
+  const box = $('#dlList'); box.innerHTML = '';
+  for (const r of results) {
+    const a = document.createElement('a'); a.href = r.url; a.download = r.name;
+    a.innerHTML = '<b></b><span></span>';
+    a.querySelector('b').textContent = (SOCIAL ? 'Télécharger sur mon Mac · ' : 'Télécharger · ') + r.label;
+    a.querySelector('span').textContent = (r.blob.size / 1048576).toFixed(1) + ' Mo';
+    box.appendChild(a);
+  }
+  $('#out').src = results[0].url; $('#result').hidden = false;
+  const many = results.length > 1, size = (results.reduce((a, r) => a + r.blob.size, 0) / 1048576).toFixed(1);
+  const late = problem ? ' ' + problem : '', hidden = me.realtime && me.hidden ? ' La fenêtre a été masquée pendant la création : si une vidéo saccade, recommencez sans changer de fenêtre.' : '';
   if (SOCIAL) {
-    a.textContent = 'Télécharger aussi sur mon Mac';
     $('#sendBox').hidden = false; $('#sendBtn').disabled = false; $('#sendStatus').textContent = '';
-    msg = `Vidéo prête (${(blob.size / 1048576).toFixed(1)} Mo). Donnez-lui un titre puis envoyez-la dans Mes vidéos.`;
-    setStatus(msg + (me.hidden ? ' La fenêtre a été masquée pendant la création : si la vidéo saccade, recommencez.' : ''), me.hidden ? 'err' : 'ok');
+    $('#sendBtn').textContent = many ? `Envoyer les ${results.length} formats dans Mes vidéos` : 'Envoyer dans Mes vidéos';
+    setStatus((many ? `${results.length} vidéos prêtes (${size} Mo). ` : `Vidéo prête (${size} Mo). `) + 'Donnez-lui un titre puis envoyez-la dans Mes vidéos.' + late + hidden, late || hidden ? 'err' : 'ok');
     $('#sTitle').focus();
     return;
   }
-  a.click();
-  msg = `Vidéo prête : ${name} (${(blob.size / 1048576).toFixed(1)} Mo), envoyée dans vos Téléchargements.`;
-  const fullCompat = /mp4a/.test(mime) || (mime === 'video/mp4' && IS_SAFARI);
-  if (!fullCompat) msg += ' Attention : ce navigateur ne produit pas le format le plus compatible (vidéo H.264 + son AAC). Pour TikTok et Instagram, ouvrez Chest0 Clip avec Safari.';
-  if (me.hidden) msg += ' La fenêtre a été masquée pendant la création : si la vidéo saccade, recommencez sans changer de fenêtre.';
-  setStatus(msg, fullCompat && !me.hidden ? 'ok' : 'err');
+  results.forEach((r, k) => setTimeout(() => box.children[k].click(), k * 700));
+  let msg = many ? `${results.length} vidéos prêtes (${size} Mo), envoyées dans vos Téléchargements.` : `Vidéo prête : ${results[0].name} (${size} Mo), envoyée dans vos Téléchargements.`;
+  const compat = results.every(r => r.aac && r.ext === 'mp4');
+  if (!compat) msg += ' Attention : ce navigateur ne produit pas le format le plus compatible (vidéo H.264 + son AAC). Pour TikTok et Instagram, ouvrez Chest0 Clip avec Safari.';
+  setStatus(msg + late + hidden, compat && !late && !hidden ? 'ok' : 'err');
 }
 
 /* ---------- Interface ---------- */
@@ -589,8 +811,15 @@ function renderFormats() {
     const b = document.createElement('button'); b.className = 'fmt' + (S.format === f.id ? ' sel' : '');
     const r = 24 / Math.max(f.w, f.h);
     b.innerHTML = `<span class="shape"><i style="width:${Math.round(f.w * r)}px;height:${Math.round(f.h * r)}px"></i></span><span><b>${f.label}</b><span>${f.hint}</span></span>`;
-    b.addEventListener('click', () => { S.format = f.id; save(); applyFormat(); renderFormats(); });
+    b.addEventListener('click', () => { S.format = f.id; S.also = S.also.filter(id => id !== f.id); save(); applyFormat(); renderFormats(); });
     box.appendChild(b);
+  }
+  const also = $('#alsoBox'); also.innerHTML = '<span>Créer aussi :</span>';
+  for (const f of FORMATS) {
+    if (f.id === S.format) continue;
+    const l = document.createElement('label'), c = document.createElement('input'); c.type = 'checkbox'; c.checked = S.also.includes(f.id);
+    c.addEventListener('change', () => { S.also = c.checked ? [...S.also, f.id] : S.also.filter(id => id !== f.id); save(); refresh(); });
+    l.append(c, document.createTextNode(f.label)); also.appendChild(l);
   }
 }
 function applyFormat() {
@@ -604,7 +833,7 @@ function musicItem(m, box, extra) {
   d.querySelector('b').textContent = m.name; d.querySelector('.mtext span').textContent = m.desc;
   d.addEventListener('click', e => {
     if (e.target.closest('button')) { listen(m.id); return; }
-    pause(); S.music = m.id; save(); renderMusicList();
+    pause(); S.music = m.id; save(); renderMusicList(); syncControls(); refresh();
   });
   box.appendChild(d);
 }
@@ -619,7 +848,14 @@ function renderMusicList() {
   $('#libCount').textContent = tracks.length ? `${tracks.length} morceau${tracks.length > 1 ? 'x' : ''}` : '';
 }
 function syncControls() {
-  $('#imgDur').value = S.imgDur; $('#oImg').textContent = S.imgDur.toLocaleString('fr-FR') + ' s';
+  const fr = v => v.toLocaleString('fr-FR', {maximumFractionDigits: 2}) + ' s';
+  $('#imgDur').value = S.imgDur; $('#oImg').textContent = imgD() !== S.imgDur ? `${fr(imgD())} (calé sur le rythme)` : fr(S.imgDur);
+  const beatOk = !!STYLES[S.music] && S.music !== 'zen';
+  $('#beatSync').checked = S.beatSync; $('#beatSync').disabled = !beatOk;
+  $('#beatRow').title = beatOk ? '' : 'Disponible avec les ambiances intégrées rythmées (pas avec Zen, Ma bibliothèque ou Sans musique)';
+  $('#logoOn').checked = S.logo; $('#logoPos').value = S.logoPos; $('#logoPos').hidden = !S.logo || !logoImg;
+  $('#logoThumb').hidden = !logoImg; if (logoImg) $('#logoThumb').src = logoImg.src;
+  $('#logoPick').textContent = logoImg ? 'Changer…' : 'Choisir mon logo…';
   $('#transDur').value = S.transDur; $('#oTr').textContent = S.transition === 'cut' ? 'sans effet' : transT().toLocaleString('fr-FR', {maximumFractionDigits: 1}) + ' s';
   $('#transDur').disabled = S.transition === 'cut';
   $('#transition').value = S.transition; $('#kenburns').checked = S.kenburns;
@@ -635,6 +871,26 @@ $('#imgDur').addEventListener('input', e => onSet('imgDur', +e.target.value));
 $('#transDur').addEventListener('input', e => onSet('transDur', +e.target.value));
 $('#transition').addEventListener('change', e => onSet('transition', e.target.value));
 $('#kenburns').addEventListener('change', e => onSet('kenburns', e.target.checked));
+$('#beatSync').addEventListener('change', e => onSet('beatSync', e.target.checked));
+$('#logoOn').addEventListener('change', e => { if (e.target.checked && !logoImg) { e.target.checked = false; $('#fileLogo').click(); return; } onSet('logo', e.target.checked); });
+$('#logoPos').addEventListener('change', e => onSet('logoPos', e.target.value));
+$('#logoPick').addEventListener('click', () => $('#fileLogo').click());
+$('#fileLogo').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  const url = URL.createObjectURL(f), img = new Image(); img.src = url;
+  try {
+    await img.decode();
+    // Logo réduit (600 px max) et mémorisé dans ce navigateur pour les prochaines fois
+    const k = Math.min(1, 600 / Math.max(img.naturalWidth || 600, img.naturalHeight || 600));
+    const c = mkCanvas((img.naturalWidth || 600) * k, (img.naturalHeight || 600) * k); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    const data = c.toDataURL('image/png'), li = new Image(); li.src = data; await li.decode();
+    logoImg = li; let kept = true;
+    try { localStorage.setItem('chest0clip-logo', data); } catch (err) { kept = false; }
+    S.logo = true; save(); syncControls(); refresh();
+    setStatus(kept ? 'Logo enregistré : il sera proposé automatiquement les prochaines fois.' : 'Logo ajouté pour cette séance (ce navigateur ne permet pas de le mémoriser).', 'ok');
+  } catch (err) { setStatus(`Impossible d'ouvrir « ${f.name} » : utilisez une image PNG ou JPG.`, 'err'); }
+  finally { URL.revokeObjectURL(url); }
+});
 document.querySelectorAll('[data-fit]').forEach(b => b.addEventListener('click', () => onSet('fit', b.dataset.fit)));
 $('#subs').addEventListener('change', e => onSet('subs', e.target.checked, true));
 $('#subPos').addEventListener('change', e => onSet('subPos', e.target.value));
@@ -666,31 +922,113 @@ document.addEventListener('keydown', e => {
 
 async function sendToLibrary() {
   const box = $('#sendStatus'), btn = $('#sendBtn'), title = $('#sTitle').value.trim();
-  if (!lastBlob) return;
+  if (!results.length) return;
   if (!title) { box.textContent = 'Écrivez un titre pour retrouver la vidéo dans Mes vidéos.'; box.className = 'status err'; $('#sTitle').focus(); return; }
-  btn.disabled = true; box.className = 'status'; box.textContent = 'Envoi et mise au format des plateformes… (quelques secondes à une minute)';
+  btn.disabled = true; box.className = 'status';
   try {
     const st = await (await fetch('/api/status', {cache: 'no-store'})).json();
-    const meta = {title, category: $('#sCat').value, description: $('#sDesc').value, hashtags: $('#sTags').value.split(/\s+/).filter(Boolean)};
-    const r = await fetch('/api/clip/import', {method: 'POST', cache: 'no-store', body: lastBlob,
-      headers: {'Content-Type': 'video/mp4', 'X-Chest0-CSRF': st.csrf, 'X-Chest0-Clip': encodeURIComponent(JSON.stringify(meta))}});
-    const data = await r.json().catch(() => ({}));
-    if (!r.ok) throw new Error(data.error || 'Envoi impossible.');
+    for (let k = 0; k < results.length; k++) {
+      const r = results[k]; if (r.sent) continue;
+      box.textContent = `Envoi et mise au format des plateformes${results.length > 1 ? ` (${k + 1}/${results.length} : ${r.label})` : ''}… (quelques secondes à une minute)`;
+      const meta = {title: results.length > 1 ? `${title} · ${r.label}` : title, category: $('#sCat').value, description: $('#sDesc').value, hashtags: $('#sTags').value.split(/\s+/).filter(Boolean)};
+      const resp = await fetch('/api/clip/import', {method: 'POST', cache: 'no-store', body: r.blob,
+        headers: {'Content-Type': 'video/mp4', 'X-Chest0-CSRF': st.csrf, 'X-Chest0-Clip': encodeURIComponent(JSON.stringify(meta))}});
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok) throw new Error(data.error || 'Envoi impossible.');
+      r.sent = true;
+    }
     box.className = 'status ok';
-    box.innerHTML = 'Envoyée ! Elle est dans Mes vidéos : regardez-la, validez-la puis diffusez-la. <a href="/#mes-videos">Ouvrir Mes vidéos</a>';
+    box.innerHTML = (results.length > 1 ? `Les ${results.length} formats sont envoyés !` : 'Envoyée !') + ' Ils sont dans Mes vidéos : regardez, validez puis diffusez. <a href="/#mes-videos">Ouvrir Mes vidéos</a>';
   } catch (e) {
     btn.disabled = false; box.className = 'status err';
-    box.textContent = (e.message || 'Envoi impossible.') + ' Vérifiez que Social Studio est toujours ouvert.';
+    box.textContent = (e.message || 'Envoi impossible.') + ' Vérifiez que Social Studio est toujours ouvert, puis cliquez à nouveau (les formats déjà envoyés ne sont pas renvoyés).';
   }
 }
-if (SOCIAL) { $('#backSocial').hidden = false; $('#sendBtn').addEventListener('click', sendToLibrary); document.title = 'Montage rapide · Chest0 Social Studio'; }
+/* ---------- Phrases de mes livres (Social Studio uniquement) ---------- */
+let books = [];
+const bookOf = () => books.find(b => b.id === S.book) || books[0];
+function nextEmpty(from) { for (let i = from; i < images.length; i++) if (!images[i].caption.trim()) return i; return -1; }
+function placeCaptions(texts) {
+  if (!images.length) { setStatus("Ajoutez d'abord vos images (étape 1).", 'err'); return; }
+  let i = nextEmpty(0);
+  if (i < 0) { setStatus('Toutes les images ont déjà un texte : videz une case pour en placer un nouveau.', 'err'); return; }
+  const placed = [];
+  for (const t of texts) { if (i < 0) break; images[i].caption = t; placed.push(i); i = nextEmpty(i + 1); }
+  setStatus(placed.length < texts.length ? 'Il manque une image sans texte pour la réponse : ajoutez une image ou videz une case.' : '', placed.length < texts.length ? 'err' : '');
+  renderList(); seekToImage(placed[0]);
+}
+function renderPhrases() {
+  const b = bookOf(), box = $('#phraseList'); box.innerHTML = ''; if (!b) return;
+  const hasPairs = !!(b.pairs && b.pairs.length);
+  const kind = S.bookKind === 'pairs' && !hasPairs ? 'ideas' : S.bookKind;
+  document.querySelectorAll('#bookKinds .sbtn').forEach(x => { x.classList.toggle('sel', x.dataset.kind === kind); x.hidden = x.dataset.kind === 'pairs' && !hasPairs; });
+  const items = kind === 'pairs' ? b.pairs.map(p => [p.situation, p.reply]) : (b[kind] || []).map(t => [t]);
+  for (const texts of items) {
+    const el = document.createElement('button'); el.className = 'phrase';
+    if (texts.length === 2) { const t = document.createElement('b'); t.textContent = texts[0]; const r = document.createElement('span'); r.textContent = texts[1]; el.append(t, r); }
+    else el.textContent = texts[0];
+    el.addEventListener('click', () => { pause(); placeCaptions(texts); });
+    box.appendChild(el);
+  }
+}
+async function loadBooks() {
+  try {
+    const r = await fetch('/api/clip/phrases', {cache: 'no-store'}); if (!r.ok) return;
+    books = (await r.json()).books || []; if (!books.length) return;
+    if (!books.some(b => b.id === S.book)) S.book = books[0].id;
+    if (!['hooks', 'pairs', 'ideas'].includes(S.bookKind)) S.bookKind = 'pairs';
+    // Livres regroupés par thème dans la liste
+    $('#bookSel').innerHTML = ''; const groups = {};
+    for (const b of books) {
+      const label = /^Intelligence relationnelle/.test(b.series) ? 'Intelligence relationnelle' : b.series;
+      if (!groups[label]) { groups[label] = document.createElement('optgroup'); groups[label].label = label; $('#bookSel').appendChild(groups[label]); }
+      const o = document.createElement('option'); o.value = b.id; o.textContent = /^Intelligence/.test(b.series) ? `${b.title} (${b.series.split('— ')[1] || ''})` : b.title; groups[label].appendChild(o);
+    }
+    $('#bookSel').value = S.book; $('#bookBox').hidden = false; renderPhrases();
+  } catch (e) {}
+}
+function bookTemplate() {
+  const b = bookOf(); if (!b) return;
+  const n = images.length;
+  if (n < 2) { setStatus("Ajoutez au moins 2 images (étape 1) : la première reçoit l'accroche, la dernière la mention du livre.", 'err'); return; }
+  if (images.some(it => it.caption.trim()) && !confirm('Remplacer les textes déjà écrits sur les images ?')) return;
+  const cur = S.bookCursor[b.id] || 0, pairs = b.pairs || [], ideas = b.ideas || [], hooks = b.hooks || [];
+  const texts = [hooks.length ? hooks[cur % hooks.length] : b.title];
+  // Chaque phrase n'est utilisée qu'une fois par vidéo : les images en trop restent sans texte
+  let pi = (cur * 2) % Math.max(1, pairs.length), ii = (cur * 3) % Math.max(1, ideas.length), room = n - 2, pLeft = pairs.length, iLeft = ideas.length;
+  while (room > 0) {
+    if (pLeft && room >= 2) { const p = pairs[pi++ % pairs.length]; texts.push(p.situation, p.reply); room -= 2; pLeft--; }
+    else if (iLeft) { texts.push(ideas[ii++ % ideas.length]); room -= 1; iLeft--; }
+    else break;
+  }
+  images.forEach(it => { it.caption = ''; });
+  texts.slice(0, n - 1).forEach((t, k) => { images[k].caption = t; });
+  images[n - 1].caption = b.mention + (b.cta ? '\n' + b.cta : '');
+  S.bookCursor[b.id] = cur + 1; S.subs = true; save();
+  syncControls(); renderList(); seekToImage(0);
+  setStatus('Textes placés sur vos images : vérifiez-les dans les cases sous chaque image, puis créez la vidéo. Un nouveau clic propose d’autres phrases.', 'ok');
+}
+$('#bookTemplate').addEventListener('click', () => { pause(); bookTemplate(); });
+$('#bookSel').addEventListener('change', e => { S.book = e.target.value; save(); renderPhrases(); });
+document.querySelectorAll('#bookKinds .sbtn').forEach(x => x.addEventListener('click', () => { S.bookKind = x.dataset.kind; save(); renderPhrases(); }));
+$('#addMention').addEventListener('click', () => {
+  const b = bookOf(); if (!b) return;
+  if (!images.length) { setStatus("Ajoutez d'abord vos images (étape 1).", 'err'); return; }
+  const last = images[images.length - 1], text = b.mention + (b.cta ? '\n' + b.cta : '');
+  if (!last.caption.includes(b.mention)) last.caption = last.caption.trim() ? last.caption.trim() + '\n' + text : text;
+  pause(); renderList(); seekToImage(images.length - 1);
+});
+
+if (SOCIAL) { loadBooks(); $('#backSocial').hidden = false; $('#sendBtn').addEventListener('click', sendToLibrary); document.title = 'Montage rapide · Chest0 Social Studio'; }
 
 if (SOCIAL) { $('#libFolder').textContent = 'Ouvrir mon dossier de musiques'; $('#libRefresh').hidden = false; }
 else { $('#libFolder').textContent = 'Choisir mon dossier de musiques…';
   $('#libHelp').textContent = 'Choisissez le dossier où vous rangez vos musiques libres de droits : tous ses morceaux apparaissent ici pour cette séance.'; }
 if (isLib(S.music) && !SOCIAL) S.music = 'lofi';
+try { const saved = localStorage.getItem('chest0clip-logo'); if (saved) { const li = new Image(); li.onload = () => { logoImg = li; syncControls(); refresh(); }; li.src = saved; } } catch (e) {}
+if (S.logo) S.logo = true;
 syncControls(); renderFormats(); renderMusicList(); applyFormat();
 if (SOCIAL) loadServerLibrary();
 if (STYLES[S.music]) setTimeout(() => styleSource(S.music).catch(() => {}), 400);   // prépare l'ambiance choisie à l'avance
-window.__clip = {addFiles, images: () => images, S, exportVideo, renderTrack};
+window.__clip = {renderFrame,addFiles, images: () => images, S, exportVideo, renderTrack, results: () => results, fastSupport, imgD, total};
 })();
