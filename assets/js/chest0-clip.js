@@ -153,6 +153,11 @@ function drawLayer(g, i, u, capA = 1) {
 }
 // Logo : posé au-dessus de tout, immobile pendant les transitions
 let logoImg = null;
+async function logoFromData(data) {
+  const bin = atob(data.split(',')[1]), u = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+  const li = new Image(); li.src = URL.createObjectURL(new Blob([u], {type: 'image/png'})); await li.decode(); return li;
+}
 function drawLogo(g) {
   if (!S.logo || !logoImg || !logoImg.naturalWidth) return;
   const box = Math.min(W, H) * 0.17, k = Math.min(box / logoImg.naturalWidth, box / logoImg.naturalHeight);
@@ -883,7 +888,8 @@ $('#fileLogo').addEventListener('change', async e => {
     // Logo réduit (600 px max) et mémorisé dans ce navigateur pour les prochaines fois
     const k = Math.min(1, 600 / Math.max(img.naturalWidth || 600, img.naturalHeight || 600));
     const c = mkCanvas((img.naturalWidth || 600) * k, (img.naturalHeight || 600) * k); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-    const data = c.toDataURL('image/png'), li = new Image(); li.src = data; await li.decode();
+    // Affichage via une adresse « blob: » (autorisée par la sécurité de Social Studio) ; mémorisation en texte
+    const data = c.toDataURL('image/png'), li = await logoFromData(data);
     logoImg = li; let kept = true;
     try { localStorage.setItem('chest0clip-logo', data); } catch (err) { kept = false; }
     S.logo = true; save(); syncControls(); refresh();
@@ -1025,7 +1031,7 @@ if (SOCIAL) { $('#libFolder').textContent = 'Ouvrir mon dossier de musiques'; $(
 else { $('#libFolder').textContent = 'Choisir mon dossier de musiques…';
   $('#libHelp').textContent = 'Choisissez le dossier où vous rangez vos musiques libres de droits : tous ses morceaux apparaissent ici pour cette séance.'; }
 if (isLib(S.music) && !SOCIAL) S.music = 'lofi';
-try { const saved = localStorage.getItem('chest0clip-logo'); if (saved) { const li = new Image(); li.onload = () => { logoImg = li; syncControls(); refresh(); }; li.src = saved; } } catch (e) {}
+try { const saved = localStorage.getItem('chest0clip-logo'); if (saved) logoFromData(saved).then(li => { logoImg = li; syncControls(); refresh(); }).catch(() => {}); } catch (e) {}
 if (S.logo) S.logo = true;
 syncControls(); renderFormats(); renderMusicList(); applyFormat();
 if (SOCIAL) loadServerLibrary();
