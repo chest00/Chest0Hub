@@ -1077,7 +1077,9 @@ const Chest0Data = {
 
 
                         link.textContent =
-                            "Voir sur Amazon";
+                            typeof item.amazonLabel === "string" && item.amazonLabel.trim()
+                                ? item.amazonLabel.trim()
+                                : "Voir sur Amazon";
 
 
                         content.appendChild(

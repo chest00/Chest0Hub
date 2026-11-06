@@ -12,6 +12,15 @@
       "enabled": true
     },
     {
+      "id": "les-limites-du-respect",
+      "title": "LES LIMITES DU RESPECT",
+      "description": "📅 En précommande — disponible à partir du 1er décembre 2026. Tome 2 de la série Intelligence relationnelle : dire oui à un engagement précis ou non sans culpabiliser, répartir les responsabilités, partager un lieu ou de l'argent sans malentendu et construire des accords qui tiennent. 24 chapitres, scènes concrètes et exercices corrigés.",
+      "amazonUrl": "https://www.amazon.fr/dp/B0HQNVJ4J2",
+      "cover": "assets/images/books/les-limites-du-respect-25ee8e82.jpeg",
+      "enabled": true,
+      "amazonLabel": "Précommander sur Amazon"
+    },
+    {
       "id": "le 10 aout 2026",
       "title": "LES ÉLIXIRS ÉTINCELLE VITALE",
       "description": "Dans ce guide pratique, découvrez quarante recettes originales élaborées à partir d'ingrédients issus de traditions ancestrales provenant d'Asie, d'Europe, d'Afrique, d'Océanie et des Amériques.",
