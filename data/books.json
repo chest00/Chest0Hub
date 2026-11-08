@@ -9,7 +9,8 @@
       "amazonUrl": "https://www.amazon.fr/dp/B0HQ1F7Q17",
       "audioUrl": "https://fitfrenzy00.gumroad.com/l/zreidh",
       "cover": "assets/images/books/art-de-la-repartie-e87de8e2.jpeg",
-      "enabled": true
+      "enabled": true,
+      "koboUrl": "https://www.kobo.com/fr/fr/audiobook/l-art-de-la-repartie-4"
     },
     {
       "id": "les-limites-du-respect",

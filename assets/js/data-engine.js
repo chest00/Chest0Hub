@@ -1105,11 +1105,36 @@ const Chest0Data = {
 
 
                         audioLink.textContent =
-                            "Livre audio";
+                            this.isValidUrl(item.koboUrl)
+                                ? "Livre audio — Gumroad"
+                                : "Livre audio";
 
 
                         content.appendChild(
                             audioLink
+                        );
+                    }
+
+
+                    if (
+                        this.isValidUrl(
+                            item.koboUrl
+                        )
+                    ) {
+
+                        const koboLink =
+                            this.createExternalLink(
+                                item.koboUrl
+                            );
+
+                        koboLink.className =
+                            "product-button";
+
+                        koboLink.textContent =
+                            "Livre audio — Kobo";
+
+                        content.appendChild(
+                            koboLink
                         );
                     }
 
