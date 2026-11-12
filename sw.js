@@ -6,7 +6,7 @@ const CACHE_PREFIX =
 
 
 const CACHE_VERSION =
-    `${CACHE_PREFIX}v1.3.0` + "-ecosystem-sprint11";
+    `${CACHE_PREFIX}v1.3.0` + "-serie-ir";
 
 
 const APP_SHELL = [
@@ -36,6 +36,7 @@ const APP_SHELL = [
     "./assets/css/style.css",
 
     "./assets/js/app.js",
+    "./assets/js/serie.js",
     "./assets/js/data-engine.js",
 
     "./assets/icons/chest0-mark.svg",

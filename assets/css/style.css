@@ -1627,3 +1627,82 @@ body.menu-open {
     outline: 3px solid currentColor; outline-offset: 4px;
 }
 #projects-page-grid[aria-live] { align-items: start; }
+
+
+/* ==================================================
+   VITRINE SÉRIE « INTELLIGENCE RELATIONNELLE »
+   ================================================== */
+
+.serie-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.serie-tome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 22px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-medium);
+    background: var(--surface);
+    text-align: center;
+}
+
+.serie-tome img {
+    width: 100%;
+    max-width: 190px;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: var(--shadow-soft);
+    transition: transform var(--transition);
+}
+
+.serie-tome a:hover img {
+    transform: translateY(-3px);
+}
+
+.serie-num {
+    margin: 14px 0 0;
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.serie-tome h3 {
+    margin: 0;
+    font-size: 1.08rem;
+}
+
+.serie-statut {
+    margin: 0 0 8px;
+    min-height: 1.2em;
+    color: var(--text-secondary);
+    font-size: 0.86rem;
+}
+
+.serie-statut.est-disponible {
+    color: #8fe3b0;
+}
+
+.serie-tome .secondary-cta {
+    margin-top: auto;
+}
+
+.serie-actions {
+    margin: 22px 0 0;
+    text-align: center;
+}
+
+@media (max-width: 760px) {
+    .serie-grid {
+        grid-template-columns: 1fr;
+    }
+    .serie-tome img {
+        max-width: 160px;
+    }
+}
