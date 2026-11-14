@@ -1706,3 +1706,38 @@ body.menu-open {
         max-width: 160px;
     }
 }
+
+
+/* Programme partenaire (affiliation Gumroad) */
+.partner-section {
+    padding-top: 10px;
+}
+
+.partner-card {
+    max-width: 860px;
+    padding: clamp(26px, 5vw, 46px);
+    border: 1px solid var(--accent);
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(212, 168, 72, 0.10), rgba(212, 168, 72, 0.02));
+}
+
+.partner-card h2 {
+    margin: 10px 0 16px;
+    font-size: clamp(1.7rem, 4vw, 2.5rem);
+}
+
+.partner-card p {
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.partner-points {
+    margin: 18px 0 28px;
+    padding-left: 1.2em;
+    color: var(--text-secondary);
+    line-height: 1.9;
+}
+
+.footer-partner {
+    font-weight: 700;
+}
