@@ -1,0 +1,13 @@
+/* Retours visuels Chest0 Games Studio — couche ajoutée, sans dépendance au moteur */
+.fx-toggle{position:fixed;right:14px;bottom:14px;z-index:20;border:1px solid #2b3647;background:#151d2a;color:#e9edf3;border-radius:999px;padding:8px 14px;font:inherit;font-size:13px;cursor:pointer}
+.fx-toggle:focus-visible{outline:3px solid #a4f4cb;outline-offset:3px}
+.fx-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:19}
+.fx-pop{position:absolute;pointer-events:none;font-weight:700;font-size:15px;color:#a4f4cb;animation:fx-pop .9s ease-out forwards;white-space:nowrap}
+.fx-bump{animation:fx-bump .35s ease-out}
+.result.fx-won{animation:fx-won .7s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 0 2px #a4f4cb,0 0 40px rgba(164,244,203,.25)}
+.result.fx-lost{animation:fx-shake .45s ease-in-out}
+@keyframes fx-pop{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-34px)}}
+@keyframes fx-bump{0%{transform:scale(1)}40%{transform:scale(1.25);color:#a4f4cb}100%{transform:scale(1)}}
+@keyframes fx-won{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+@keyframes fx-shake{0%,100%{transform:none}20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(2px)}}
+@media (prefers-reduced-motion:reduce){.fx-pop,.fx-bump,.result.fx-won,.result.fx-lost{animation:none}}
