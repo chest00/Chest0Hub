@@ -1,11 +1,11 @@
 [
   {
     "id": "Pack Vitalité",
-    "name": "Pack Vitalité Totale",
+    "name": "Pack Vitalité Totale · 7 jours pour retrouver votre énergie",
     "platform": "Gumroad",
-    "description": "Un pack numérique réunissant des conseils autour de l’alimentation, de l’activité physique et des habitudes quotidiennes, conçu pour vous aider à organiser simplement votre démarche de bien-être.",
+    "description": "7 jours pour boire mieux, bouger chaque jour et prendre soin de vous : un guide de 7 élixirs naturels, un programme de 7 séances de 15 à 20 minutes sans matériel, un tableau de suivi automatique et une vidéo de démarrage.",
     "url": "https://fitfrenzy00.gumroad.com/l/PackVitaliteTotale",
-    "image": "assets/images/products/template-gumroad-bedc3ce6.png",
+    "image": "assets/images/products/pack-vitalite-totale-cover.jpg",
     "featured": true,
     "enabled": true
   },

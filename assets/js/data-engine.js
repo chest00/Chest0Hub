@@ -710,6 +710,7 @@ const Chest0Data = {
                         const productImageDimensions = {
                             "assets/images/products/image-principale-hero-d60f3b0b.png": [1448, 1086],
                             "assets/images/products/template-gumroad-bedc3ce6.png": [445, 634],
+                            "assets/images/products/pack-vitalite-totale-cover.jpg": [1280, 720],
                         };
 
                         const dimensions = productImageDimensions[item.image];

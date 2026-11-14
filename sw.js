@@ -6,7 +6,7 @@ const CACHE_PREFIX =
 
 
 const CACHE_VERSION =
-    `${CACHE_PREFIX}v1.3.0` + "-guide-offert";
+    `${CACHE_PREFIX}v1.3.0` + "-pack-vitalite";
 
 
 const APP_SHELL = [
