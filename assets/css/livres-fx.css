@@ -1,0 +1,16 @@
+/* Animations des livres (vitrine de la série et page Livres) */
+.fx-cover-wrap{position:relative;display:inline-block;perspective:900px;width:100%;max-width:190px}
+.book-card .fx-cover-wrap{max-width:none}
+.fx-cover-wrap img{display:block;transform-style:preserve-3d;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s ease;will-change:transform}
+.fx-cover-wrap .fx-glare{position:absolute;inset:0;border-radius:6px;pointer-events:none;opacity:0;transition:opacity .3s ease;background:radial-gradient(240px circle at var(--gx,50%) var(--gy,30%),rgba(255,255,255,.28),transparent 60%)}
+.fx-cover-wrap.is-tilting .fx-glare{opacity:1}
+.fx-pill{position:absolute;top:10px;right:-8px;z-index:2;padding:5px 12px;border-radius:99px;font-size:.78rem;font-weight:800;letter-spacing:.02em;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.fx-pill.countdown{background:#09090d;color:var(--accent,#d7b56d);border:1px solid rgba(215,181,109,.6)}
+.fx-pill.nouveau{background:var(--accent,#d7b56d);color:#09090d;overflow:hidden}
+.fx-pill.nouveau::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);animation:fx-shine 2.8s ease-in-out infinite}
+.reveal .serie-tome{opacity:0;transform:translateY(16px)}
+.reveal.is-visible .serie-tome{animation:fx-up .6s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0)*120ms)}
+.books-grid .book-card.fx-in{animation:fx-up .55s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0)*80ms)}
+@keyframes fx-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes fx-shine{0%,60%{left:-60%}100%{left:130%}}
+@media (prefers-reduced-motion:reduce){.reveal .serie-tome{opacity:1;transform:none}.reveal.is-visible .serie-tome,.books-grid .book-card.fx-in,.fx-pill.nouveau::after{animation:none}.fx-cover-wrap img{transition:none}}

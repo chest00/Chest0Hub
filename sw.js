@@ -6,7 +6,7 @@ const CACHE_PREFIX =
 
 
 const CACHE_VERSION =
-    `${CACHE_PREFIX}v1.3.0` + "-animations-outils";
+    `${CACHE_PREFIX}v1.3.0` + "-livres-fx";
 
 
 const APP_SHELL = [
@@ -28,6 +28,8 @@ const APP_SHELL = [
     "./assets/css/pauses-actives.css",
     "./assets/js/pauses-actives.js",
     "./assets/css/tools.css",
+    "./assets/css/livres-fx.css",
+    "./assets/js/livres-fx.js",
     "./assets/css/tools-fx.css",
     "./assets/js/tools-fx.js",
     "./assets/js/equilibre-quotidien.js",
