@@ -1,0 +1,95 @@
+/* ==================================================
+   ANIMATIONS INTERACTIVES — accueil (noir, or, blanc)
+   Chargé uniquement par index.html, après style.css.
+   ================================================== */
+
+/* Logo animé : le C se trace, puis le 0 doré, puis un reflet passe */
+.hero-logo-anim {
+    display: block;
+    width: 92px;
+    height: 92px;
+    margin: 0 auto 20px;
+    border-radius: 24px;
+    box-shadow: var(--shadow-soft);
+    overflow: visible;
+    cursor: default;
+}
+.hero-logo-anim .logo-c,
+.hero-logo-anim .logo-o {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+}
+.hero-logo-anim .logo-c { animation: c0-draw 1.1s cubic-bezier(.65, 0, .35, 1) .15s forwards; }
+.hero-logo-anim .logo-o { animation: c0-draw .9s cubic-bezier(.65, 0, .35, 1) .95s forwards; transform-origin: 300px 256px; transform-box: view-box; }
+.hero-logo-anim .logo-shine { animation: c0-shine 1.4s ease-in-out 1.9s both; }
+.hero-logo-anim:hover .logo-o { animation: c0-draw .9s cubic-bezier(.65, 0, .35, 1) .95s forwards, c0-spin 1.2s cubic-bezier(.65, 0, .35, 1); }
+
+@keyframes c0-draw { to { stroke-dashoffset: 0; } }
+@keyframes c0-shine { from { transform: translateX(-620px); } to { transform: translateX(620px); } }
+@keyframes c0-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+@media (max-width: 700px) {
+    .hero-logo-anim { width: 78px; height: 78px; }
+}
+
+/* Cartes : halo doré qui suit le pointeur (souris uniquement) */
+@media (hover: hover) and (pointer: fine) {
+    .hub-card,
+    .social-card {
+        position: relative;
+        overflow: hidden;
+    }
+    .hub-card::before,
+    .social-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(
+            260px circle at var(--mx, 50%) var(--my, 50%),
+            rgba(215, 181, 109, 0.16),
+            transparent 65%
+        );
+        opacity: 0;
+        transition: opacity 250ms ease;
+        pointer-events: none;
+    }
+    .hub-card:hover::before,
+    .social-card:hover::before { opacity: 1; }
+
+    .hub-card .card-icon { transition: transform 250ms ease; }
+    .hub-card:hover .card-icon { transform: translateY(-2px) rotate(-4deg); }
+}
+
+/* Apparition en cascade des cartes quand la section devient visible */
+.reveal .hub-card,
+.reveal .social-card {
+    opacity: 0;
+    transform: translateY(14px);
+}
+.reveal.is-visible .hub-card,
+.reveal.is-visible .social-card {
+    animation: card-in 520ms cubic-bezier(.2, .7, .2, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+}
+@keyframes card-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+}
+/* Une fois apparues, les cartes retrouvent leur effet de survol d'origine */
+.reveal.is-visible .hub-card.is-in,
+.reveal.is-visible .social-card.is-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+}
+.reveal.is-visible .hub-card.is-in:hover,
+.reveal.is-visible .social-card.is-in:hover { transform: translateY(-3px); }
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-logo-anim .logo-c,
+    .hero-logo-anim .logo-o { stroke-dashoffset: 0; animation: none; }
+    .hero-logo-anim .logo-shine { display: none; }
+    .reveal .hub-card,
+    .reveal .social-card { opacity: 1; transform: none; animation: none; }
+}

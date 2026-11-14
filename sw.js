@@ -6,7 +6,7 @@ const CACHE_PREFIX =
 
 
 const CACHE_VERSION =
-    `${CACHE_PREFIX}v1.3.0` + "-serie-ir";
+    `${CACHE_PREFIX}v1.3.0` + "-animations";
 
 
 const APP_SHELL = [
@@ -34,9 +34,11 @@ const APP_SHELL = [
     "./pages/contact.html",
 
     "./assets/css/style.css",
+    "./assets/css/animations.css",
 
     "./assets/js/app.js",
     "./assets/js/serie.js",
+    "./assets/js/animations.js",
     "./assets/js/data-engine.js",
 
     "./assets/icons/chest0-mark.svg",
