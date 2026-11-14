@@ -1741,3 +1741,53 @@ body.menu-open {
 .footer-partner {
     font-weight: 700;
 }
+
+
+/* Guide offert (newsletter Gumroad) */
+.lead-card {
+    display: flex;
+    gap: clamp(22px, 4vw, 44px);
+    align-items: center;
+    max-width: 920px;
+    padding: clamp(24px, 4vw, 40px);
+    border-radius: 24px;
+    background: linear-gradient(135deg, #5A3417, #2B2118);
+    border: 1px solid rgba(235, 203, 156, 0.35);
+}
+
+.lead-cover {
+    flex: 0 0 auto;
+    width: clamp(120px, 22vw, 180px);
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    transform: rotate(-3deg);
+}
+
+.lead-text h2 {
+    margin: 8px 0 12px;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+}
+
+.lead-text p {
+    color: #E9DCC6;
+    line-height: 1.75;
+}
+
+.lead-text .primary-cta {
+    margin-top: 18px;
+}
+
+.lead-note {
+    margin-top: 12px;
+    font-size: 0.8rem;
+    opacity: 0.75;
+}
+
+@media (max-width: 640px) {
+    .lead-card {
+        flex-direction: column;
+        text-align: left;
+        align-items: flex-start;
+    }
+}
