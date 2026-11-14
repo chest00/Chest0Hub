@@ -900,7 +900,7 @@ class Chest0HubTests(unittest.TestCase):
         for url in expected_urls:
             with self.subTest(url=url):
                 self.assertIn(f"<loc>{url}</loc>", sitemap)
-        self.assertEqual(sitemap.count("<url>"), 12)
+        self.assertEqual(sitemap.count("<url>"), 24)
         self.assertIn(
             "Sitemap: https://chest0.fr/sitemap.xml",
             robots

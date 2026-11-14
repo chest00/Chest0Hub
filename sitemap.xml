@@ -2,38 +2,98 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://chest0.fr/</loc>
-  </url>
-  <url>
-    <loc>https://chest0.fr/pages/apropos.html</loc>
-  </url>
-  <url>
-    <loc>https://chest0.fr/pages/blog.html</loc>
-  </url>
-  <url>
-    <loc>https://chest0.fr/pages/contact.html</loc>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://chest0.fr/pages/livres.html</loc>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://chest0.fr/pages/produits.html</loc>
+    <lastmod>2026-10-30</lastmod>
   </url>
   <url>
-    <loc>https://chest0.fr/pages/projets.html</loc>
+    <loc>https://chest0.fr/pages/blog.html</loc>
+    <lastmod>2026-10-30</lastmod>
   </url>
   <url>
     <loc>https://chest0.fr/outils/</loc>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://chest0.fr/outils/equilibre-quotidien/</loc>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://chest0.fr/outils/journal-sommeil/</loc>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://chest0.fr/outils/pauses-actives/</loc>
+    <lastmod>2026-11-14</lastmod>
   </url>
   <url>
     <loc>https://chest0.fr/outils/chest0-clip/</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://chest0.fr/jeux/games-studio/</loc>
+    <lastmod>2026-11-14</lastmod>
+  </url>
+  <url>
+    <loc>https://chest0.fr/jeux/games-studio/fiches/circuit.html</loc>
+    <lastmod>2026-10-30</lastmod>
+  </url>
+  <url>
+    <loc>https://chest0.fr/jeux/games-studio/fiches/gravity.html</loc>
+    <lastmod>2026-10-30</lastmod>
+  </url>
+  <url>
+    <loc>https://chest0.fr/jeux/games-studio/fiches/fusion.html</loc>
+    <lastmod>2026-10-30</lastmod>
+  </url>
+  <url>
+    <loc>https://chest0.fr/jeux/games-studio/fiches/skyline.html</loc>
+    <lastmod>2026-10-30</lastmod>
+  </url>
+  <url>
+    <loc>https://chest0.fr/jeux/games-studio/fiches/pulse.html</loc>
+    <lastmod>2026-10-30</lastmod>
+  </url>
+  <url>
+    <loc>https://chest0.fr/jeux/games-studio/fiches/memory.html</loc>
+    <lastmod>2026-10-30</lastmod>
+  </url>
+  <url>
+    <loc>https://chest0.fr/jeux/games-studio/guides/logique.html</loc>
+    <lastmod>2026-10-30</lastmod>
+  </url>
+  <url>
+    <loc>https://chest0.fr/jeux/games-studio/guides/circuit.html</loc>
+    <lastmod>2026-10-30</lastmod>
+  </url>
+  <url>
+    <loc>https://chest0.fr/jeux/games-studio/guides/gravity.html</loc>
+    <lastmod>2026-10-30</lastmod>
+  </url>
+  <url>
+    <loc>https://chest0.fr/jeux/games-studio/guides/scores.html</loc>
+    <lastmod>2026-10-30</lastmod>
+  </url>
+  <url>
+    <loc>https://chest0.fr/jeux/games-studio/guides/sauvegardes.html</loc>
+    <lastmod>2026-10-30</lastmod>
+  </url>
+  <url>
+    <loc>https://chest0.fr/pages/projets.html</loc>
+    <lastmod>2026-11-01</lastmod>
+  </url>
+  <url>
+    <loc>https://chest0.fr/pages/apropos.html</loc>
+    <lastmod>2026-10-30</lastmod>
+  </url>
+  <url>
+    <loc>https://chest0.fr/pages/contact.html</loc>
+    <lastmod>2026-10-30</lastmod>
   </url>
 </urlset>
