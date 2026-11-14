@@ -1,0 +1,31 @@
+/* Micro-interactions des outils gratuits (couche ajoutée, sans modifier les outils) */
+.fx-progress{position:sticky;top:0;z-index:5;padding:.7rem 0 .8rem;background:var(--background,#09090d)}
+.fx-progress-text{display:flex;justify-content:space-between;font-size:.85rem;opacity:.85;margin-bottom:.4rem}
+.fx-progress-track{height:6px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}
+.fx-progress-bar{height:100%;width:0;border-radius:inherit;background:var(--accent,#d7b56d);transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.fx-progress.is-done .fx-progress-text strong{color:var(--accent,#d7b56d)}
+.answer{transition:background .2s ease,transform .2s ease,box-shadow .2s ease}
+.answer:hover{background:rgba(255,255,255,.08)}
+.answer.is-picked{background:rgba(215,181,109,.14);box-shadow:inset 0 0 0 1px rgba(215,181,109,.55)}
+.answer.is-picked.fx-pop{animation:fx-pick .32s ease-out}
+.fx-stagger>*{animation:fx-in .5s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0)*70ms)}
+.axis-result span{display:inline-block;width:auto;padding:.15rem .6rem;border-radius:99px;font-size:.88rem;white-space:nowrap}
+.axis-result[data-level="ok"] span{background:rgba(76,195,138,.16);color:#8fe0b8}
+.axis-result[data-level="mid"] span{background:rgba(215,181,109,.16);color:#f0d69b}
+.axis-result[data-level="low"] span{background:rgba(255,255,255,.08)}
+.fx-dots{display:flex;gap:6px;margin:.5rem 0 0}
+.fx-dots i{width:22px;height:8px;border-radius:99px;background:rgba(255,255,255,.12);transition:background .35s ease,transform .35s ease}
+.fx-dots i.on{background:var(--accent,#d7b56d)}
+.fx-dots i.new{animation:fx-dot .5s ease-out}
+.fx-flash{animation:fx-flash 1.2s ease-out}
+@media (hover:hover) and (pointer:fine){
+  .tool-card{position:relative;overflow:hidden;transition:transform .25s ease,border-color .25s ease}
+  .tool-card:hover{transform:translateY(-3px);border-color:rgba(215,181,109,.38)}
+  .tool-card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .25s ease;background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(215,181,109,.14),transparent 65%)}
+  .tool-card:hover::before{opacity:1}
+}
+@keyframes fx-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes fx-pick{0%{transform:scale(1)}45%{transform:scale(1.02)}100%{transform:scale(1)}}
+@keyframes fx-dot{0%{transform:scaleX(.3)}60%{transform:scaleX(1.15)}100%{transform:none}}
+@keyframes fx-flash{0%{color:var(--accent,#d7b56d)}100%{color:inherit}}
+@media (prefers-reduced-motion:reduce){.fx-stagger>*,.answer.is-picked.fx-pop,.fx-dots i.new,.fx-flash{animation:none}.fx-progress-bar,.answer,.tool-card{transition:none}}
