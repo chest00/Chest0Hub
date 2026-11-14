@@ -255,9 +255,9 @@
       "project_id": "chest0-photo-cleaner",
       "name": "Chest0 Photo Cleaner",
       "short_name": "Photo Cleaner",
-      "description": "Version Web/PWA de détection locale des doublons exacts prête pour validation avant publication. Versions Desktop non commercialisées.",
+      "description": "Détection locale des doublons exacts de vos photos, directement dans le navigateur. Comparaison gratuite, licence Premium à 9,90 € TTC.",
       "category": "Photos",
-      "state": "developpement",
+      "state": "stable",
       "stable_version": null,
       "stable_commit": null,
       "type": "produit",
@@ -268,7 +268,7 @@
       ],
       "admin_visible": true,
       "public_visible": true,
-      "commercial_status": "commercialisation_prevue",
+      "commercial_status": "commercialise",
       "integration_levels": [
         "A"
       ],
@@ -276,11 +276,11 @@
       "repository": null,
       "documentation": [],
       "public_links": [
-        "https://chest0.fr/photo-cleaner/app/"
+        "https://chest0-photo-license-verify.jmssosse.workers.dev/product.html"
       ],
       "capabilities": [],
       "dependencies": [],
-      "notes": "Intégration Web locale en préparation. URL cible non publiée. Aucun prix ni téléchargement Desktop.",
+      "notes": "Version Web en vente sous licence Premium (Gumroad, 9,90 € TTC). Versions Desktop non commercialisées.",
       "governance": {
         "contract_version": 1,
         "development": "developpement",

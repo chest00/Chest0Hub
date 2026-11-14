@@ -26,9 +26,9 @@
   {
     "id": "chest0-photo-cleaner",
     "name": "Chest0 Photo Cleaner",
-    "status": "Web/PWA — validation avant publication",
+    "status": "Web — en vente (licence Premium)",
     "description": "Détectez les doublons exacts de vos photos localement, sans téléversement ni suppression.",
-    "url": "https://chest0.fr/photo-cleaner/app/",
+    "url": "https://chest0-photo-license-verify.jmssosse.workers.dev/product.html",
     "enabled": true
   }
 ]

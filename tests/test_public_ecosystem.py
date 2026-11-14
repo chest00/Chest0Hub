@@ -27,9 +27,9 @@ class PublicEcosystemTests(unittest.TestCase):
 
     def test_development_and_future_platforms(self):
         row=next(p for p in json.loads(export.encoded(ROOT))['projects'] if p['project_id']=='chest0-photo-cleaner')
-        self.assertEqual(row['state'],'developpement');self.assertEqual(row['public_links'],['https://chest0.fr/photo-cleaner/app/'])
+        self.assertEqual(row['state'],'stable');self.assertEqual(row['public_links'],['https://chest0-photo-license-verify.jmssosse.workers.dev/product.html'])
         self.assertEqual(row['platforms'],['Web/PWA', 'macOS Desktop en préparation', 'Windows Desktop en préparation'])
-        self.assertEqual(row['commercial_status'],'commercialisation_prevue')
+        self.assertEqual(row['commercial_status'],'commercialise')
     def test_false_visibility_excludes_previously_public_project(self):
         data=registry.load(ROOT/'config/projects.registry.json');data['projects'][0]['public_visible']=False
         self.assertNotIn('chest0-hub',{p['project_id'] for p in registry.public_export(data)['projects']})
