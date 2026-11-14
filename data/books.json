@@ -53,6 +53,46 @@
       "amazonUrl": "https://www.amazon.fr/dp/B0GPK511WX",
       "cover": "assets/images/books/digital-book-detox-7415db45.jpeg",
       "enabled": true
+    },
+    {
+      "id": "cuisine-vibrante",
+      "title": "CUISINE VIBRANTE",
+      "description": "Nourrir ton corps, ton énergie et ton âme : une approche consciente de l'alimentation pour retrouver une relation apaisée avec la nourriture, ralentir et transformer chaque repas en moment de présence.",
+      "amazonUrl": "https://www.amazon.fr/dp/B0GPNMT7TQ",
+      "cover": "assets/images/books/cuisine-vibrante.webp",
+      "enabled": true
+    },
+    {
+      "id": "21-jours-corps-esprit",
+      "title": "21 JOURS POUR RÉVEILLER TON CORPS ET TON ESPRIT",
+      "description": "Méthode complète par l'alimentation et le sport : un programme progressif de 21 jours, avec des actions concrètes chaque jour, pour retrouver énergie, clarté mentale et vitalité physique, même avec un emploi du temps chargé.",
+      "amazonUrl": "https://www.amazon.fr/dp/B0G1N9SMSB",
+      "cover": "assets/images/books/21-jours-corps-esprit.webp",
+      "enabled": true
+    },
+    {
+      "id": "bien-etre-mental-physique",
+      "title": "BIEN-ÊTRE MENTAL ET PHYSIQUE VIA L'ALIMENTATION ET LE SPORT",
+      "description": "Une méthode globale et accessible pour retrouver l'équilibre entre le corps et l'esprit grâce à deux piliers : l'alimentation consciente et le mouvement. Ni régime, ni programme extrême : des principes concrets, applicables au quotidien.",
+      "amazonUrl": "https://www.amazon.fr/dp/B0GG77RDFY",
+      "cover": "assets/images/books/bien-etre-mental-physique.webp",
+      "enabled": true
+    },
+    {
+      "id": "elixirs-naturels-immunite",
+      "title": "ÉLIXIRS NATURELS : IMMUNITÉ AVANCÉE · PERFORMANCE · LONGÉVITÉ",
+      "description": "Collection Élixirs Naturels. Racines, champignons adaptogènes, fruits et épices : des élixirs inspirés des traditions du monde pour accompagner l'immunité, l'énergie et la vitalité au fil des années.",
+      "amazonUrl": "https://www.amazon.fr/dp/B0G1N6KDBJ",
+      "cover": "assets/images/books/elixirs-naturels-immunite.webp",
+      "enabled": true
+    },
+    {
+      "id": "elixirs-naturels-12-recettes",
+      "title": "ÉLIXIRS NATURELS 12 RECETTES : MINCEUR · ANTI-STRESS · BEAUTÉ",
+      "description": "Collection Élixirs Naturels. 12 recettes complètes (ingrédients, dosages, préparation, conseils) à base de plantes, d'épices et de super-aliments, autour de trois axes bien-être : minceur, sérénité et beauté.",
+      "amazonUrl": "https://www.amazon.fr/dp/B0G1MXKSTL",
+      "cover": "assets/images/books/elixirs-naturels-12-recettes.webp",
+      "enabled": true
     }
   ]
 }
