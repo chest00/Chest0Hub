@@ -666,34 +666,6 @@
       }
     },
     {
-      "project_id": "chest0-avatar-studio",
-      "name": "Chest0 Avatar Studio",
-      "short_name": "Avatar Studio",
-      "description": "Application macOS de présentateurs animés : personnages articulés, narration française, synchronisation labiale et export vertical.",
-      "category": "Création",
-      "state": "stable",
-      "stable_version": "v1.7.0",
-      "stable_commit": null,
-      "type": "application",
-      "platforms": [
-        "macOS",
-        "Web local"
-      ],
-      "admin_visible": true,
-      "public_visible": false,
-      "commercial_status": "gratuit",
-      "integration_levels": [
-        "A"
-      ],
-      "launch_id": null,
-      "repository": null,
-      "documentation": [],
-      "public_links": [],
-      "capabilities": [],
-      "dependencies": [],
-      "notes": "Bundle macOS installé 1.7.0, acceptation 32/32 documentée le 25 octobre 2026 ; non lancé depuis le Hub."
-    },
-    {
       "project_id": "chest0-accompagnement",
       "name": "Chest0 Accompagnement",
       "short_name": "Chest0 Accompagnement",
