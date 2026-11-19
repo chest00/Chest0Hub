@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 HERE = Path(__file__).parent
 OUT = Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "dist"
 BASE = "https://chest0.fr/outils/pass-annuel/"
-ANALYTICS_TOKEN = ""  # jeton Cloudflare Web Analytics, à renseigner
+ANALYTICS_TOKEN = "da47366b38854facbcf7a561aade9a47"  # Cloudflare Web Analytics (chest0.fr)
 
 PAGES = {
     "disney": dict(slug="disneyland", tab="Disneyland Paris",
@@ -88,8 +88,8 @@ def tabs(active):
 def analytics():
     if not ANALYTICS_TOKEN:
         return ""
-    return ("<script defer src=\"https://static.cloudflareinsights.com/beacon.min.js\" "
-            f"data-cf-beacon='{{\"token\": \"{ANALYTICS_TOKEN}\"}}'></script>")
+    return ("<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' "
+            f"data-cf-beacon='{{\"token\": \"{ANALYTICS_TOKEN}\"}}'></script><!-- End Cloudflare Web Analytics -->")
 
 
 def page(key):
@@ -137,7 +137,6 @@ def hub():
 <meta property="og:title" content="Pass annuels : rentable ou pas ?"><meta property="og:description" content="{desc}">
 <meta property="og:url" content="{BASE}"><meta property="og:image" content="{BASE}apercu.png">
 <meta name="twitter:card" content="summary_large_image">
-{analytics()}
 <script>{{const m={{"#disney":"disneyland","#asterix":"parc-asterix","#beauval":"beauval","#musees":"paris-museum-pass"}}[location.hash];if(m)location.replace(m+"/"+location.search);}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
@@ -157,6 +156,7 @@ header p{{color:#cfc9b8;max-width:60ch;margin:0}}main{{padding:clamp(24px,4vw,56
 <p>Choisissez votre sortie : le calculateur compare billets et pass selon votre nombre de visites, la période, le parking et les transports.</p></header>
 <main><div class="grid">{cards}</div></main>
 <footer><p><a href="../">← Tous les outils gratuits Chest0</a></p><p>Outil gratuit et indépendant, édité par Chest0. Prix 2026 relevés le 19 novembre 2026 : vérifiez toujours le prix exact sur le site officiel avant d'acheter.</p></footer>
+{analytics()}
 </body></html>"""
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "index.html").write_text(s, encoding="utf-8")
