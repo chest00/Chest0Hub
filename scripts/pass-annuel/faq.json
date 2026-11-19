@@ -1,0 +1,58 @@
+{
+ "disney": [
+  [
+   "À partir de combien de visites le pass annuel Disneyland est-il rentable ?",
+   "Tout dépend de la période et du nombre de parcs. Avec des billets 2 parcs en période verte (environ 92 € adulte) et le parking à 30 €, le Bronze Max (399 €) est rentable dès la 4<sup>e</sup> visite pour un adulte seul en voiture. En haute saison, il l'est dès la 3<sup>e</sup>. Les sites qui donnent un seuil unique se contredisent car ils ne partent pas des mêmes hypothèses : mettez vos propres chiffres plus haut."
+  ],
+  [
+   "Le parking est-il inclus dans les pass Disneyland ?",
+   "Oui, toutes les formules (Bronze One, Bronze Max, Silver, Gold) incluent le parking Disney. Venir en voiture rend donc le pass rentable plus vite."
+  ],
+  [
+   "Faut-il réserver ses visites avec un pass ?",
+   "Oui. Même avec un pass annuel, la date de visite doit être réservée, et certaines dates sont bloquées selon la formule (environ 195 jours pour le Bronze One, aucun pour le Gold)."
+  ]
+ ],
+ "asterix": [
+  [
+   "Le Pass Découverte du Parc Astérix est-il rentable dès la 3e visite ?",
+   "Pas tout à fait. Avec le Billet Futé à 56 €, trois visites coûtent 168 €, moins que le pass à 174 €. Pour un adulte sans voiture, il devient rentable à la 4<sup>e</sup> visite. En voiture, le parking inclus change tout : dès la 3<sup>e</sup> visite (3 × 56 € + 3 × 25 € = 243 €)."
+  ],
+  [
+   "Le parking est-il inclus avec le Pass Saison ?",
+   "Oui, pour les pass achetés en ligne, le parking est offert dès la première visite. Sans pass, il se paie sur place : 20 € jusqu'à l'automne 2026, puis augmenté en octobre 2026."
+  ],
+  [
+   "Quand acheter son Pass Saison ?",
+   "Le Pass Saison 2026 n'est valable que jusqu'au 3 janvier 2027. Pour la saison 2027, attendez la publication des nouveaux tarifs ; le parc propose souvent des promotions (−30 % l'été 2026 par exemple)."
+  ]
+ ],
+ "beauval": [
+  [
+   "Le ZooPass de Beauval est-il rentable dès la 2e visite ?",
+   "Non : pour un adulte, il faut 3 visites. Deux visites avec des billets datés (2 × 37 € = 74 €, ou 2 × 39 € = 78 €) et même avec des billets achetés sur place (2 × 43 € = 86 €) restent sous les 99 € du ZooPass. À la 3<sup>e</sup> visite, les billets coûtent 111 à 129 € : le ZooPass devient rentable."
+  ],
+  [
+   "Faut-il venir plusieurs fois dans l'année pour en profiter ?",
+   "Beauval est à environ 2 h 30 de Paris : le ZooPass vaut surtout pour les familles qui y retournent ou qui logent dans la région. Pensez aussi au billet 2 jours si vous venez une seule fois pour un week-end."
+  ],
+  [
+   "Peut-on acheter le ZooPass sur place ?",
+   "Oui. Selon les guides tarifaires, un ZooPass acheté sur place le jour de votre visite, avec un billet 1 jour, bénéficie d'une réduction : utile si vous hésitez encore en arrivant."
+  ]
+ ],
+ "musees": [
+  [
+   "Le Paris Museum Pass est-il rentable ?",
+   "En général à partir de 4 grands musées ou monuments sur 2 jours. Avec le Louvre, Orsay, la Sainte-Chapelle et l'Arc de Triomphe (70 € pour un résident de l'UE), le pass 2 jours à 85 € n'est pas rentable : il faut au moins un 5<sup>e</sup> lieu à 15 € ou plus. Pour un visiteur hors UE, ces 4 lieux coûtent 86 € : le pass devient rentable."
+  ],
+  [
+   "Les enfants ont-ils besoin du pass ?",
+   "Non : l'entrée est gratuite pour les moins de 18 ans, et pour les moins de 26 ans résidents de l'Union européenne, avec un justificatif. Seuls les adultes payants ont besoin du pass."
+  ],
+  [
+   "Le pass inclut-il les expositions temporaires ?",
+   "Non, seulement les collections permanentes, avec une entrée par lieu. Plusieurs sites (Louvre, Versailles, Sainte-Chapelle, Orangerie, Orsay) demandent aussi de réserver un créneau, même avec le pass."
+  ]
+ ]
+}
