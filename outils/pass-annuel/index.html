@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pass annuel : ça vaut le coup ?</title>
-<meta name="description" content="Calculateur gratuit : le pass annuel Disneyland Paris ou le Pass Saison Parc Astérix est-il rentable pour votre famille ? Nombre de visites, billets, parking : la réponse en chiffres.">
+<meta name="description" content="Calculateurs gratuits : pass annuel Disneyland Paris, Pass Saison Parc Astérix, ZooPass Beauval, Paris Museum Pass. Rentable ou pas pour votre famille ? Voiture ou transports ? La réponse en chiffres.">
 <link rel="canonical" href="https://chest0.fr/outils/pass-annuel/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
@@ -13,8 +13,8 @@
    IDEA: un billet d'entrée détachable — le verdict s'imprime sur le talon
    PICTURE: le billet-verdict en grand, à côté des réglages, qui change en direct
    COLOUR: noir Chest0, or #d4a72c pour le verdict, blanc ; nuit = même billet sur noir
-   TYPE/LAYOUT: Manrope ; onglets parcs, réglages à gauche, billet à droite, tableau puis FAQ */
-:root{color-scheme:light dark;--bg:light-dark(#fbfaf6,#0e0e0e);--ink:light-dark(#141414,#f2efe6);--mute:light-dark(#5d5a52,#a9a497);--card:light-dark(#fff,#1a1a1a);--line:light-dark(#e3dfd3,#2e2c27);--gold:#d4a72c;--goldink:#141414;--good:light-dark(#1d6b3a,#7fd39b)}
+   TYPE/LAYOUT: Manrope ; onglets lieux, réglages à gauche, billet à droite, tableau, transports, FAQ */
+:root{color-scheme:light dark;--bg:light-dark(#fbfaf6,#0e0e0e);--ink:light-dark(#141414,#f2efe6);--mute:light-dark(#5d5a52,#a9a497);--card:light-dark(#fff,#1a1a1a);--line:light-dark(#e3dfd3,#2e2c27);--gold:#d4a72c;--goldink:#141414}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
 [hidden]{display:none!important}
@@ -25,24 +25,27 @@ header.band{background:#111;color:#f2efe6;padding-bottom:0}
 h1{font-size:clamp(30px,4.6vw,48px);line-height:1.05;margin:0 0 10px;text-wrap:balance;font-weight:800}
 .lead{color:#cfc9b8;max-width:62ch;margin:0 0 22px}
 .tabs{display:flex;gap:6px;flex-wrap:wrap}
-.tabs a{flex:none;padding:12px 18px;min-height:44px;border-radius:10px 10px 0 0;color:#cfc9b8;text-decoration:none;font-weight:600;background:#1e1e1e}
+.tabs a{flex:none;padding:12px 16px;min-height:44px;border-radius:10px 10px 0 0;color:#cfc9b8;text-decoration:none;font-weight:600;background:#1e1e1e}
 .tabs a[aria-current=page]{background:var(--bg);color:var(--ink)}
 .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:28px;align-items:start}
-@media(max-width:820px){.grid{grid-template-columns:minmax(0,1fr)}.grid .ticket{order:-1;position:relative;top:0}}
-.row.wide{grid-template-columns:minmax(0,1fr)}
 fieldset{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 14px;background:var(--card)}
 legend{font-weight:800;padding:0 6px}
 .row{display:grid;grid-template-columns:minmax(0,1fr) 128px;gap:10px;align-items:center;padding:6px 0}
+.row.wide{grid-template-columns:minmax(0,1fr)}
 label{font-weight:600}
 .hint{display:block;font-weight:400;color:var(--mute);font-size:13px}
 input[type=number],select{font:inherit;font-size:16px;width:100%;min-height:44px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);text-align:right}
 select{text-align:left}
 input:focus-visible,select:focus-visible,a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .chk{display:flex;gap:10px;align-items:center;min-height:44px}
-.chk input{width:22px;height:22px;accent-color:var(--gold)}
+.chk input{width:22px;height:22px;accent-color:var(--gold);flex:none}
+.sites{display:grid;gap:2px}
+.site{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:10px;align-items:center}
+.site input[type=number]{min-height:40px}
 .ticket{position:sticky;top:16px;background:var(--gold);color:var(--goldink);border-radius:18px;padding:26px 26px 22px;box-shadow:0 14px 30px -14px rgba(0,0,0,.45)}
 .ticket::before,.ticket::after{content:"";position:absolute;left:-14px;top:62%;width:28px;height:28px;border-radius:50%;background:var(--bg)}
 .ticket::after{left:auto;right:-14px}
+@media(max-width:820px){.grid{grid-template-columns:minmax(0,1fr)}.grid .ticket{order:-1;position:relative;top:0}}
 .stub{border-top:2px dashed rgba(20,20,20,.45);margin-top:18px;padding-top:16px}
 .small{font-size:13px;font-weight:600;opacity:.8;margin:0}
 .verdict{font-size:clamp(28px,4vw,40px);line-height:1.08;font-weight:800;margin:6px 0 10px;text-wrap:balance}
@@ -52,12 +55,20 @@ input:focus-visible,select:focus-visible,a:focus-visible,button:focus-visible{ou
 .bar i{display:block;height:14px;border-radius:7px;background:rgba(20,20,20,.25)}
 .bar.best i{background:#141414}
 .bar b{text-align:right;white-space:nowrap}
-.buy{display:inline-block;margin-top:14px;background:#141414;color:#f2efe6;padding:12px 18px;min-height:44px;border-radius:10px;font-weight:800;text-decoration:none}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.buy,.share{display:inline-flex;align-items:center;background:#141414;color:#f2efe6;padding:12px 18px;min-height:44px;border-radius:10px;font:inherit;font-weight:800;text-decoration:none;border:0;cursor:pointer}
+.share{background:transparent;color:#141414;border:2px solid #141414}
+.copied{font-size:13px;font-weight:700;margin:8px 0 0;min-height:1.2em}
 table{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden}
 th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left}
 td.n,th.n{text-align:right;white-space:nowrap}
 tr.best td{font-weight:800}
 h2{font-size:26px;line-height:1.15;margin:0 0 14px}
+.tgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+@media(max-width:820px){.tgrid{grid-template-columns:minmax(0,1fr)}}
+.result{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.result p{margin:6px 0}
+.result strong{font-size:22px}
 details{border-top:1px solid var(--line);padding:12px 0}
 summary{font-weight:700;cursor:pointer;min-height:32px}
 .note{color:var(--mute);font-size:13px}
@@ -70,51 +81,85 @@ footer{color:var(--mute);font-size:13px}
 <body>
 <header class="band"><div class="wrap">
   <h1 id="title">Pass annuel : est-ce rentable pour votre famille ?</h1>
-  <p class="lead">Indiquez combien vous êtes, combien de fois vous comptez venir et comment vous venez. Le calcul compare billets à la journée et pass annuels, parking compris.</p>
-  <nav class="tabs" aria-label="Choix du parc">
+  <p class="lead" id="lead">Indiquez combien vous êtes et combien de fois vous comptez venir. Le calcul compare billets et pass, parking compris.</p>
+  <nav class="tabs" aria-label="Choix du lieu">
     <a href="#disney" id="tab-disney">Disneyland Paris</a>
     <a href="#asterix" id="tab-asterix">Parc Astérix</a>
+    <a href="#beauval" id="tab-beauval">ZooParc de Beauval</a>
+    <a href="#musees" id="tab-musees">Paris Museum Pass</a>
   </nav>
 </div></header>
 
 <main class="band"><div class="wrap grid">
-  <form id="f" autocomplete="off">
-    <fieldset><legend>Votre groupe</legend>
-      <div class="row"><label for="adults">Adultes<span class="hint">12 ans et plus</span></label><input id="adults" type="number" min="0" max="12" value="2"></div>
-      <div class="row"><label for="kids">Enfants<span class="hint">3 à 11 ans (gratuit avant 3 ans)</span></label><input id="kids" type="number" min="0" max="12" value="2"></div>
-      <div class="row"><label for="visits">Visites prévues sur l'année</label><input id="visits" type="number" min="1" max="60" value="3"></div>
-    </fieldset>
-    <fieldset><legend>Billets à la journée</legend>
-      <div class="row" id="parksRow"><label for="parks">Parcs par visite</label><select id="parks"><option value="1">1 parc</option><option value="2" selected>2 parcs</option></select></div>
-      <div class="row wide"><label for="preset">Période de vos visites</label><select id="preset"></select></div>
-      <div class="row"><label for="tA">Prix adulte par visite (€)</label><input id="tA" type="number" min="0" step="0.5"></div>
-      <div class="row"><label for="tK">Prix enfant par visite (€)</label><input id="tK" type="number" min="0" step="0.5"></div>
-    </fieldset>
-    <fieldset><legend>Venue en voiture</legend>
-      <label class="chk"><input id="car" type="checkbox" checked> Nous venons en voiture</label>
-      <div class="row"><label for="park">Parking par visite (€)<span class="hint" id="parkHint"></span></label><input id="park" type="number" min="0" step="0.5"></div>
-    </fieldset>
-    <fieldset id="renewBox"><legend>Renouvellement</legend>
-      <label class="chk"><input id="renew" type="checkbox"> J'ai déjà un pass qui expire (−15 %)</label>
-    </fieldset>
+  <form id="f" autocomplete="off" onsubmit="return false">
+    <div id="annualForm">
+      <fieldset><legend>Votre groupe</legend>
+        <div class="row"><label for="adults">Adultes<span class="hint" id="adultHint">12 ans et plus</span></label><input id="adults" type="number" min="0" max="12" value="2"></div>
+        <div class="row"><label for="kids">Enfants<span class="hint" id="kidHint">3 à 11 ans (gratuit avant 3 ans)</span></label><input id="kids" type="number" min="0" max="12" value="2"></div>
+        <div class="row"><label for="visits">Visites prévues sur l'année</label><input id="visits" type="number" min="1" max="60" value="3"></div>
+      </fieldset>
+      <fieldset><legend>Billets à la journée</legend>
+        <div class="row" id="parksRow"><label for="parks">Parcs par visite</label><select id="parks"><option value="1">1 parc</option><option value="2" selected>2 parcs</option></select></div>
+        <div class="row wide"><label for="preset">Période de vos visites</label><select id="preset"></select></div>
+        <div class="row"><label for="tA">Prix adulte par visite (€)</label><input id="tA" type="number" min="0" step="0.5"></div>
+        <div class="row"><label for="tK">Prix enfant par visite (€)</label><input id="tK" type="number" min="0" step="0.5"></div>
+      </fieldset>
+      <fieldset><legend>Venue en voiture</legend>
+        <label class="chk"><input id="car" type="checkbox" checked> Nous venons en voiture</label>
+        <div class="row"><label for="park">Parking par visite (€)<span class="hint" id="parkHint"></span></label><input id="park" type="number" min="0" step="0.5"></div>
+      </fieldset>
+      <fieldset id="renewBox"><legend>Renouvellement</legend>
+        <label class="chk"><input id="renew" type="checkbox"> J'ai déjà un pass qui expire (−15 %)</label>
+      </fieldset>
+    </div>
+    <div id="museumForm" hidden>
+      <fieldset><legend>Votre groupe</legend>
+        <div class="row"><label for="mAdults">Adultes payants<span class="hint">18 ans et plus (26 ans et plus si résident de l'UE)</span></label><input id="mAdults" type="number" min="0" max="12" value="2"></div>
+        <div class="row"><label for="mYoung">Jeunes gratuits<span class="hint">Moins de 18 ans, ou moins de 26 ans résidents de l'UE</span></label><input id="mYoung" type="number" min="0" max="12" value="0"></div>
+        <div class="row wide"><label for="res">Lieu de résidence</label><select id="res"><option value="eee">Union européenne (et Norvège, Islande, Liechtenstein)</option><option value="non">Hors Union européenne</option></select></div>
+        <div class="row wide"><label for="dur">Durée de vos visites</label><select id="dur"><option value="2">2 jours</option><option value="4">4 jours</option><option value="6">6 jours</option></select></div>
+      </fieldset>
+      <fieldset><legend>Lieux que vous comptez visiter</legend>
+        <p class="note" style="margin-top:0">Prix d'entrée adulte par personne, modifiables. ≈ : prix indicatif à vérifier.</p>
+        <div class="sites" id="sites"></div>
+      </fieldset>
+    </div>
   </form>
 
   <section class="ticket" aria-live="polite">
     <p class="small" id="tParc"></p>
     <p class="verdict" id="verdict"></p>
-    <p class="small">Coût total sur l'année</p>
+    <p class="small" id="costLabel">Coût total sur l'année</p>
     <div class="big" id="bigCost"></div>
     <div class="stub">
       <div class="bars" id="bars"></div>
-      <a class="buy" id="buy" href="#" rel="nofollow sponsored">Voir les billets</a>
+      <div class="actions">
+        <a class="buy" id="buy" href="#" rel="nofollow sponsored">Voir les billets</a>
+        <button class="share" id="share" type="button">Partager mon calcul</button>
+      </div>
+      <p class="copied" id="copied" role="status"></p>
     </div>
   </section>
 </div></main>
 
 <section class="band" style="padding-top:0"><div class="wrap">
   <h2 id="tableTitle">Le détail, formule par formule</h2>
-  <table class="stack"><thead><tr><th>Formule</th><th class="n">Coût sur l'année</th><th class="n">Rentable dès</th><th>À savoir</th></tr></thead><tbody id="tbody"></tbody></table>
+  <table class="stack"><thead><tr><th>Formule</th><th class="n">Coût total</th><th class="n" id="thBE">Rentable dès</th><th>À savoir</th></tr></thead><tbody id="tbody"></tbody></table>
   <p class="note" id="dataNote"></p>
+</div></section>
+
+<section class="band" style="padding-top:0" id="transportSection"><div class="wrap">
+  <h2>Voiture ou transports en commun ?</h2>
+  <div class="tgrid">
+    <fieldset style="margin:0"><legend>Votre trajet</legend>
+      <div class="row"><label for="km">Distance aller-retour (km)<span class="hint">Depuis chez vous</span></label><input id="km" type="number" min="0" step="1"></div>
+      <div class="row"><label for="conso">Consommation (L/100 km)</label><input id="conso" type="number" min="0" step="0.1" value="6.5"></div>
+      <div class="row"><label for="fuel">Prix du carburant (€/L)<span class="hint">À ajuster selon votre station</span></label><input id="fuel" type="number" min="0" step="0.01" value="1.80"></div>
+      <div class="row"><label for="toll">Péages aller-retour (€)</label><input id="toll" type="number" min="0" step="0.1" value="0"></div>
+      <label class="chk"><input id="navigo" type="checkbox"> Nous avons déjà un passe Navigo mensuel ou annuel</label>
+    </fieldset>
+    <div class="result" id="tResult" aria-live="polite"></div>
+  </div>
 </div></section>
 
 <section class="band" style="padding-top:0"><div class="wrap">
@@ -130,7 +175,8 @@ footer{color:var(--mute);font-size:13px}
 <script id="core">
 const PARKS = {
   disney: {
-    name: "Disneyland Paris", buy: "https://www.tiqets.com/fr/billets-disneyland-paris-l133192/", official: "https://www.disneylandparis.com",
+    type: "annual", name: "Disneyland Paris", buy: "https://www.tiqets.com/fr/billets-disneyland-paris-l133192/", official: "https://www.disneylandparis.com",
+    adultHint: "12 ans et plus", kidHint: "3 à 11 ans (gratuit avant 3 ans)",
     parking: 30, parkingHint: "valeur indicative, à vérifier", twoParks: true, renew: 0.15,
     presets: {
       1: [["Petits prix (période verte)", 57, 53], ["Prix moyens (période jaune)", 86, 80], ["Haute saison, vacances", 120, 112]],
@@ -142,27 +188,58 @@ const PARKS = {
       { name: "Silver", adult: 569, child: 426, note: "300 jours d'accès, 2 parcs, −10 % boutiques et restaurants. Parking inclus." },
       { name: "Gold", adult: 799, child: 601, note: "365 jours, 2 parcs, −15 % boutiques et restaurants, entrée anticipée. Parking inclus." }
     ],
+    transport: { km: 70, fareA: 5.10, fareK: 2.60, navigoA: 0, navigoK: 0, how: "RER A jusqu'à Marne-la-Vallée – Chessy : ticket Métro-Train-RER à 2,55 € (1,30 € tarif réduit enfant), aller et retour." },
     data: "Pass : 289 à 799 € adulte, 223 à 601 € enfant (formules en vigueur depuis le 12 février 2026). Billets datés : prix variables selon la date, de 52 à 185 € adulte selon la période et le nombre de parcs. Réservation de la date obligatoire, y compris avec un pass."
   },
   asterix: {
-    name: "Parc Astérix", buy: "https://www.tiqets.com/fr/billets-parc-asterix-l145935/", official: "https://www.parcasterix.fr",
+    type: "annual", name: "Parc Astérix", buy: "https://www.tiqets.com/fr/billets-parc-asterix-l145935/", official: "https://www.parcasterix.fr",
+    adultHint: "12 ans et plus", kidHint: "3 à 11 ans (gratuit avant 3 ans)",
     parking: 25, parkingHint: "augmenté en octobre 2026, à vérifier", twoParks: false, renew: 0,
-    presets: {
-      1: [["Billet Futé (acheté 7 jours avant)", 56, 53], ["Billet Liberté Flex (date modifiable)", 68, 59]]
-    },
+    presets: { 1: [["Billet Futé (acheté 7 jours avant)", 56, 53], ["Billet Liberté Flex (date modifiable)", 68, 59]] },
     passes: [
       { name: "Pass Découverte", adult: 174, child: 159, note: "Certains samedis et dates bloqués. Parking inclus (pass acheté en ligne)." },
       { name: "Pass Gaulois", adult: 199, child: 184, note: "Accès illimité hors nocturnes. Parking inclus (pass acheté en ligne)." },
       { name: "Pass Premium", adult: 269, child: 254, note: "Illimité + 1 nocturne + 1 coupe-file Filotomatix Or. Parking inclus (pass acheté en ligne)." }
     ],
+    transport: { km: 70, fareA: 39, fareK: 25, navigoA: 11, navigoK: 11, how: "RER B jusqu'à l'aéroport Charles-de-Gaulle (ticket Aéroports à 14 €, 7 € tarif réduit, aller et retour), puis navette du parc (≈ 11 € aller-retour, à vérifier)." },
     data: "Pass Saison 2026 : 174 à 269 € adulte, 159 à 254 € enfant, valables jusqu'au 3 janvier 2027. Les tarifs 2027 ne sont pas encore publiés : si vous achetez maintenant pour l'an prochain, attendez leur sortie."
+  },
+  beauval: {
+    type: "annual", name: "ZooParc de Beauval", buy: "https://www.zoobeauval.com", official: "https://www.zoobeauval.com",
+    adultHint: "11 ans et plus", kidHint: "3 à 10 ans (gratuit avant 3 ans)",
+    parking: 0, parkingHint: "gratuit d'après nos sources, à vérifier", twoParks: false, renew: 0,
+    presets: { 1: [["Billet daté, petits prix", 37, 30], ["Billet daté, prix courant", 39, 32], ["Billet acheté sur place", 43, 36]] },
+    passes: [
+      { name: "ZooPass Classique", adult: 99, child: 82, note: "Accès illimité pendant 1 an, coupe-file télécabine, −5 % en boutique, parking gratuit." }
+    ],
+    transport: null,
+    data: "ZooPass Classique 2026 : 99 € adulte (11 ans et plus), 82 € enfant (3 à 10 ans). Billet 1 jour daté en ligne à partir de 37 € adulte et 30 € enfant, plus cher sur place. Astuce du parc : le ZooPass acheté sur place le jour de la visite avec un billet 1 jour bénéficie d'une réduction."
+  },
+  musees: {
+    type: "museum", name: "Paris Museum Pass", buy: "https://www.parismuseumpass.fr", official: "https://www.parismuseumpass.fr",
+    pass: { 2: 85, 4: 105, 6: 125 },
+    sites: [
+      { id: "louvre", name: "Musée du Louvre", eee: 22, non: 32 },
+      { id: "orsay", name: "Musée d'Orsay", eee: 16, non: 16 },
+      { id: "versailles", name: "Château de Versailles", eee: 21, non: 28 },
+      { id: "chapelle", name: "Sainte-Chapelle", eee: 16, non: 22 },
+      { id: "orangerie", name: "Musée de l'Orangerie", eee: 12.5, non: 12.5 },
+      { id: "arc", name: "Arc de Triomphe ≈", eee: 16, non: 16 },
+      { id: "pantheon", name: "Panthéon ≈", eee: 13, non: 13 },
+      { id: "conciergerie", name: "Conciergerie ≈", eee: 13, non: 13 },
+      { id: "rodin", name: "Musée Rodin ≈", eee: 15, non: 15 },
+      { id: "armee", name: "Musée de l'Armée (Invalides) ≈", eee: 15, non: 15 },
+      { id: "branly", name: "Musée du quai Branly ≈", eee: 14, non: 14 }
+    ],
+    defaults: ["louvre", "orsay", "chapelle", "arc"],
+    data: "Paris Museum Pass 2026 : 85 € (2 jours), 105 € (4 jours), 125 € (6 jours), selon l'office de tourisme Paris Région. Certains sites annoncent 90, 109 et 139 € : vérifiez sur parismuseumpass.fr avant d'acheter. Le pass n'inclut pas les expositions temporaires, et plusieurs sites (Louvre, Versailles, Sainte-Chapelle, Orangerie, Orsay) demandent de réserver un créneau même avec le pass."
   }
 };
 
-function compute(p, s) {
+function computeAnnual(p, s) {
   const A = Math.max(0, +s.adults || 0), K = Math.max(0, +s.kids || 0), V = Math.max(1, +s.visits || 1);
   const perVisit = A * (+s.tA || 0) + K * (+s.tK || 0) + (s.car ? (+s.park || 0) : 0);
-  const rows = [{ name: "Billets à la journée", cost: V * perVisit, breakEven: null, note: "Prix " + (s.car ? "billets + parking" : "billets") + " × " + V + " visite" + (V > 1 ? "s" : ""), tickets: true }];
+  const rows = [{ name: "Billets à la journée", cost: V * perVisit, breakEven: null, note: "Prix " + (s.car && +s.park ? "billets + parking" : "billets") + " × " + V + " visite" + (V > 1 ? "s" : ""), tickets: true }];
   const factor = s.renew ? 1 - (p.renew || 0) : 1;
   for (const ps of p.passes) {
     if (ps.onePark && s.parks == 2) continue;
@@ -173,22 +250,42 @@ function compute(p, s) {
   const best = rows.reduce((a, b) => (b.cost < a.cost ? b : a));
   return { rows, best, perVisit, saving: rows[0].cost - best.cost, people: A + K };
 }
-if (typeof module !== "undefined") module.exports = { PARKS, compute };
+
+function computeMuseum(p, s) {
+  const A = Math.max(0, +s.adults || 0), dur = [2, 4, 6].includes(+s.dur) ? +s.dur : 2;
+  const chosen = p.sites.filter(x => s.sel && s.sel.includes(x.id));
+  const price = x => (s.prices && s.prices[x.id] !== undefined && s.prices[x.id] !== "") ? +s.prices[x.id] : x[s.res === "non" ? "non" : "eee"];
+  const perAdult = chosen.reduce((t, x) => t + price(x), 0);
+  const tickets = { name: "Billets à l'unité", cost: Math.round(A * perAdult * 100) / 100, tickets: true, note: chosen.length + " lieu" + (chosen.length > 1 ? "x" : "") + " × " + A + " adulte" + (A > 1 ? "s" : "") };
+  const pass = { name: "Pass " + dur + " jours", cost: A * p.pass[dur], note: "Valable " + (dur * 24) + " h à partir de la première visite, 1 entrée par lieu." };
+  const rows = [tickets, pass];
+  const best = pass.cost < tickets.cost ? pass : tickets;
+  const avg = chosen.length ? perAdult / chosen.length : 0;
+  const breakEvenSites = avg > 0 ? Math.ceil(p.pass[dur] / avg - 1e-9) : null;
+  pass.breakEven = breakEvenSites;
+  return { rows, best, saving: tickets.cost - best.cost, sites: chosen.length, perAdult, adults: A };
+}
+
+function computeTransport(t, s) {
+  if (!t) return null;
+  const A = Math.max(0, +s.adults || 0), K = Math.max(0, +s.kids || 0), V = Math.max(1, +s.visits || 1);
+  const car = (+s.km || 0) * (+s.conso || 0) / 100 * (+s.fuel || 0) + (+s.toll || 0) + (+s.park || 0);
+  const pt = s.navigo ? A * t.navigoA + K * t.navigoK : A * t.fareA + K * t.fareK;
+  return { car: Math.round(car * 100) / 100, pt: Math.round(pt * 100) / 100, V, carYear: Math.round(car * V * 100) / 100, ptYear: Math.round(pt * V * 100) / 100 };
+}
+if (typeof module !== "undefined") module.exports = { PARKS, computeAnnual, computeMuseum, computeTransport };
 </script>
 <script>
 {
   const $ = id => document.getElementById(id);
   const eur = n => n.toLocaleString("fr-FR", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }) + " €";
-  const ids = ["adults", "kids", "visits", "parks", "preset", "tA", "tK", "car", "park", "renew"];
   let key = "disney";
+  const store = (k, v) => { try { localStorage.setItem("chest0-pass-" + k, JSON.stringify(v)); } catch (e) {} };
+  const load = k => { try { return JSON.parse(localStorage.getItem("chest0-pass-" + k)); } catch (e) { return null; } };
 
-  function store(k, v) { try { localStorage.setItem("chest0-pass-" + k, JSON.stringify(v)); } catch (e) {} }
-  function load(k) { try { return JSON.parse(localStorage.getItem("chest0-pass-" + k)); } catch (e) { return null; } }
-
-  function fillPresets(keepPrices) {
+  function fillPresets() {
     const p = PARKS[key], list = p.presets[p.twoParks ? $("parks").value : 1];
     $("preset").innerHTML = list.map((x, i) => `<option value="${i}">${x[0]}</option>`).join("") + '<option value="custom">Mes propres prix</option>';
-    if (!keepPrices) { $("preset").value = "0"; applyPreset(); }
   }
   function applyPreset() {
     const p = PARKS[key], v = $("preset").value;
@@ -196,67 +293,155 @@ if (typeof module !== "undefined") module.exports = { PARKS, compute };
     const x = p.presets[p.twoParks ? $("parks").value : 1][+v];
     $("tA").value = x[1]; $("tK").value = x[2];
   }
-  function state() {
+  function annualState() {
     return { adults: $("adults").value, kids: $("kids").value, visits: $("visits").value, parks: +$("parks").value, preset: $("preset").value,
-      tA: $("tA").value, tK: $("tK").value, car: $("car").checked, park: $("park").value, renew: $("renew").checked };
+      tA: $("tA").value, tK: $("tK").value, car: $("car").checked, park: $("park").value, renew: $("renew").checked,
+      km: $("km").value, conso: $("conso").value, fuel: $("fuel").value, toll: $("toll").value, navigo: $("navigo").checked };
   }
-  function render() {
-    const p = PARKS[key], s = state(), r = compute(p, s);
-    store(key, s);
-    $("tParc").textContent = p.name + " · " + r.people + " personne" + (r.people > 1 ? "s" : "") + " · " + (+s.visits || 1) + " visite" + ((+s.visits || 1) > 1 ? "s" : "");
-    if (r.people === 0) { $("verdict").textContent = "Indiquez au moins une personne."; $("bigCost").textContent = "—"; $("bars").innerHTML = ""; $("tbody").innerHTML = ""; return; }
-    $("verdict").textContent = r.best.tickets
-      ? "Pas de pass : les billets à la journée reviennent moins cher."
-      : "Prenez le " + r.best.name.replace(/^Pass /, "pass ") + " : vous économisez " + eur(r.saving) + ".";
-    $("bigCost").textContent = eur(r.best.cost);
+  function museumState() {
+    const sel = [], prices = {};
+    for (const x of PARKS.musees.sites) { if ($("s-" + x.id).checked) sel.push(x.id); prices[x.id] = $("p-" + x.id).value; }
+    return { adults: $("mAdults").value, young: $("mYoung").value, res: $("res").value, dur: $("dur").value, sel, prices };
+  }
+  function drawBars(r) {
     const max = Math.max(...r.rows.map(x => x.cost)) || 1;
     $("bars").innerHTML = r.rows.map(x => `<div class="bar${x === r.best ? " best" : ""}"><span>${x.name}</span><i style="width:${Math.max(4, x.cost / max * 100)}%"></i><b>${eur(x.cost)}</b></div>`).join("");
-    $("tbody").innerHTML = r.rows.map(x => `<tr class="${x === r.best ? "best" : ""}"><td>${x.name}</td><td class="n">${eur(x.cost)}</td><td class="n">${x.tickets ? "—" : x.breakEven ? x.breakEven + "<sup>e</sup> visite" : "—"}</td><td>${x.note}</td></tr>`).join("");
+  }
+  function render() {
+    const p = PARKS[key];
+    $("copied").textContent = "";
+    if (p.type === "museum") return renderMuseum(p);
+    const s = annualState(), r = computeAnnual(p, s);
+    store(key, s);
+    $("tParc").textContent = p.name + " · " + r.people + " personne" + (r.people > 1 ? "s" : "") + " · " + (+s.visits || 1) + " visite" + ((+s.visits || 1) > 1 ? "s" : "");
     $("park").disabled = !s.car;
+    if (r.people === 0) { $("verdict").textContent = "Indiquez au moins une personne."; $("bigCost").textContent = "—"; $("bars").innerHTML = ""; $("tbody").innerHTML = ""; $("tResult").innerHTML = ""; return; }
+    $("verdict").textContent = r.best.tickets ? "Pas de pass : les billets à la journée reviennent moins cher."
+      : "Prenez le " + r.best.name.replace(/^Pass /, "pass ") + " : vous économisez " + eur(r.saving) + ".";
+    $("bigCost").textContent = eur(r.best.cost);
+    drawBars(r);
+    $("tbody").innerHTML = r.rows.map(x => `<tr class="${x === r.best ? "best" : ""}"><td>${x.name}</td><td class="n">${eur(x.cost)}</td><td class="n">${x.tickets ? "—" : x.breakEven ? x.breakEven + "<sup>e</sup> visite" : "—"}</td><td>${x.note}</td></tr>`).join("");
+    renderTransport(p, s);
+  }
+  function renderTransport(p, s) {
+    const t = computeTransport(p.transport, s);
+    if (!t) return;
+    const cheaper = t.pt < t.car ? "transports" : t.car < t.pt ? "voiture" : "egal";
+    const diff = Math.abs(t.carYear - t.ptYear);
+    $("tResult").innerHTML = `<p class="small" style="opacity:1">Par visite, pour votre groupe</p>
+      <p>Voiture (carburant + péages + parking) : <strong>${eur(t.car)}</strong></p>
+      <p>Transports en commun : <strong>${eur(t.pt)}</strong></p>
+      <p><b>${cheaper === "egal" ? "Les deux reviennent au même." : (cheaper === "transports" ? "Les transports" : "La voiture") + " vous font économiser " + eur(diff) + " sur " + t.V + " visite" + (t.V > 1 ? "s" : "") + "."}</b></p>
+      <p class="note">${p.transport.how} ${s.navigo ? "Avec un passe Navigo, seuls les frais non couverts restent à payer." : ""}</p>
+      ${cheaper === "transports" && s.car ? '<p class="note">Si vous venez en transports, décochez « Nous venons en voiture » plus haut : le parking inclus dans les pass ne compte plus dans le calcul.</p>' : ""}`;
+  }
+  function renderMuseum(p) {
+    const s = museumState(), r = computeMuseum(p, s);
+    store(key, s);
+    const young = Math.max(0, +s.young || 0);
+    $("tParc").textContent = p.name + " · " + r.adults + " adulte" + (r.adults > 1 ? "s" : "") + (young ? " + " + young + " jeune" + (young > 1 ? "s" : "") + " gratuit" + (young > 1 ? "s" : "") : "") + " · " + r.sites + " lieu" + (r.sites > 1 ? "x" : "");
+    if (r.adults === 0) { $("verdict").textContent = "Moins de 18 ans, ou moins de 26 ans résidents de l'UE : l'entrée est gratuite, pas besoin de pass."; $("bigCost").textContent = "0 €"; $("bars").innerHTML = ""; $("tbody").innerHTML = ""; return; }
+    if (r.sites === 0) { $("verdict").textContent = "Cochez les lieux que vous comptez visiter."; $("bigCost").textContent = "—"; $("bars").innerHTML = ""; $("tbody").innerHTML = ""; return; }
+    $("verdict").textContent = r.best.tickets ? "Pas de pass : les billets à l'unité reviennent moins cher." : "Prenez le pass " + s.dur + " jours : vous économisez " + eur(r.saving) + ".";
+    $("bigCost").textContent = eur(r.best.cost);
+    drawBars(r);
+    $("tbody").innerHTML = r.rows.map(x => `<tr class="${x === r.best ? "best" : ""}"><td>${x.name}</td><td class="n">${eur(x.cost)}</td><td class="n">${x.tickets ? "—" : x.breakEven ? x.breakEven + " lieux" : "—"}</td><td>${x.note}</td></tr>`).join("");
+  }
+  function buildSites() {
+    const p = PARKS.musees;
+    $("sites").innerHTML = p.sites.map(x => `<div class="site"><label class="chk"><input type="checkbox" id="s-${x.id}"> ${x.name}</label><input type="number" id="p-${x.id}" min="0" step="0.5" aria-label="Prix ${x.name}"></div>`).join("");
+    for (const x of p.sites) { $("s-" + x.id).addEventListener("change", render); $("p-" + x.id).addEventListener("input", render); }
+  }
+  function setSitePrices(res, saved) {
+    for (const x of PARKS.musees.sites) $("p-" + x.id).value = saved && saved[x.id] !== undefined && saved[x.id] !== "" ? saved[x.id] : x[res === "non" ? "non" : "eee"];
   }
   function faq() {
-    const p = PARKS[key];
-    const items = key === "disney" ? [
-      ["À partir de combien de visites le pass annuel Disneyland est-il rentable ?", "Tout dépend de la période et du nombre de parcs. Avec des billets 2 parcs en période verte (environ 92 € adulte) et le parking à 30 €, le Bronze Max (399 €) est rentable dès la 4<sup>e</sup> visite pour un adulte seul en voiture. En haute saison, il l'est dès la 3<sup>e</sup>. Mettez vos propres chiffres plus haut : les sites qui donnent un seuil unique se contredisent car ils ne partent pas des mêmes hypothèses."],
-      ["Le parking est-il inclus dans les pass Disneyland ?", "Oui, toutes les formules (Bronze One, Bronze Max, Silver, Gold) incluent le parking Disney. C'est pourquoi venir en voiture rend le pass rentable plus vite."],
-      ["Faut-il réserver ses visites avec un pass ?", "Oui. Même avec un pass annuel, la date de visite doit être réservée, et certaines dates sont bloquées selon la formule (environ 195 jours pour le Bronze One, aucun pour le Gold)."]
-    ] : [
-      ["Le Pass Découverte du Parc Astérix est-il rentable dès la 3e visite ?", "Pas tout à fait. Avec le Billet Futé à 56 €, trois visites coûtent 168 €, moins que le pass à 174 €. Pour un adulte sans voiture, il devient rentable à la 4<sup>e</sup> visite. En voiture, le parking inclus change tout : dès la 3<sup>e</sup> visite (3 × 56 € + 3 × 25 € = 243 €)."],
-      ["Le parking est-il inclus avec le Pass Saison ?", "Oui, pour les pass achetés en ligne, le parking est offert dès la première visite. Sans pass, il se paie sur place : 20 € jusqu'à l'automne 2026, puis augmenté en octobre 2026."],
-      ["Quand acheter son Pass Saison ?", "Le Pass Saison 2026 n'est valable que jusqu'au 3 janvier 2027. Pour la saison 2027, attendez la publication des nouveaux tarifs ; le parc propose souvent des promotions (−30 % l'été 2026 par exemple)."]
-    ];
+    const items = {
+      disney: [
+        ["À partir de combien de visites le pass annuel Disneyland est-il rentable ?", "Tout dépend de la période et du nombre de parcs. Avec des billets 2 parcs en période verte (environ 92 € adulte) et le parking à 30 €, le Bronze Max (399 €) est rentable dès la 4<sup>e</sup> visite pour un adulte seul en voiture. En haute saison, il l'est dès la 3<sup>e</sup>. Les sites qui donnent un seuil unique se contredisent car ils ne partent pas des mêmes hypothèses : mettez vos propres chiffres plus haut."],
+        ["Le parking est-il inclus dans les pass Disneyland ?", "Oui, toutes les formules (Bronze One, Bronze Max, Silver, Gold) incluent le parking Disney. Venir en voiture rend donc le pass rentable plus vite."],
+        ["Faut-il réserver ses visites avec un pass ?", "Oui. Même avec un pass annuel, la date de visite doit être réservée, et certaines dates sont bloquées selon la formule (environ 195 jours pour le Bronze One, aucun pour le Gold)."]
+      ],
+      asterix: [
+        ["Le Pass Découverte du Parc Astérix est-il rentable dès la 3e visite ?", "Pas tout à fait. Avec le Billet Futé à 56 €, trois visites coûtent 168 €, moins que le pass à 174 €. Pour un adulte sans voiture, il devient rentable à la 4<sup>e</sup> visite. En voiture, le parking inclus change tout : dès la 3<sup>e</sup> visite (3 × 56 € + 3 × 25 € = 243 €)."],
+        ["Le parking est-il inclus avec le Pass Saison ?", "Oui, pour les pass achetés en ligne, le parking est offert dès la première visite. Sans pass, il se paie sur place : 20 € jusqu'à l'automne 2026, puis augmenté en octobre 2026."],
+        ["Quand acheter son Pass Saison ?", "Le Pass Saison 2026 n'est valable que jusqu'au 3 janvier 2027. Pour la saison 2027, attendez la publication des nouveaux tarifs ; le parc propose souvent des promotions (−30 % l'été 2026 par exemple)."]
+      ],
+      beauval: [
+        ["Le ZooPass de Beauval est-il rentable dès la 2e visite ?", "Non : pour un adulte, il faut 3 visites. Deux visites avec des billets datés (2 × 37 € = 74 €, ou 2 × 39 € = 78 €) et même avec des billets achetés sur place (2 × 43 € = 86 €) restent sous les 99 € du ZooPass. À la 3<sup>e</sup> visite, les billets coûtent 111 à 129 € : le ZooPass devient rentable."],
+        ["Faut-il venir plusieurs fois dans l'année pour en profiter ?", "Beauval est à environ 2 h 30 de Paris : le ZooPass vaut surtout pour les familles qui y retournent ou qui logent dans la région. Pensez aussi au billet 2 jours si vous venez une seule fois pour un week-end."],
+        ["Peut-on acheter le ZooPass sur place ?", "Oui. Selon les guides tarifaires, un ZooPass acheté sur place le jour de votre visite, avec un billet 1 jour, bénéficie d'une réduction : utile si vous hésitez encore en arrivant."]
+      ],
+      musees: [
+        ["Le Paris Museum Pass est-il rentable ?", "En général à partir de 4 grands musées ou monuments sur 2 jours. Avec le Louvre, Orsay, la Sainte-Chapelle et l'Arc de Triomphe (70 € pour un résident de l'UE), le pass 2 jours à 85 € n'est pas rentable : il faut au moins un 5<sup>e</sup> lieu à 15 € ou plus. Pour un visiteur hors UE, ces 4 lieux coûtent 86 € : le pass devient rentable."],
+        ["Les enfants ont-ils besoin du pass ?", "Non : l'entrée est gratuite pour les moins de 18 ans, et pour les moins de 26 ans résidents de l'Union européenne, avec un justificatif. Seuls les adultes payants ont besoin du pass."],
+        ["Le pass inclut-il les expositions temporaires ?", "Non, seulement les collections permanentes, avec une entrée par lieu. Plusieurs sites (Louvre, Versailles, Sainte-Chapelle, Orangerie, Orsay) demandent aussi de réserver un créneau, même avec le pass."]
+      ]
+    }[key];
     $("faq").innerHTML = items.map(x => `<details><summary>${x[0]}</summary><p>${x[1]}</p></details>`).join("");
   }
+  function fromUrl() {
+    try { const q = new URLSearchParams(location.search); return q.has("v") || q.has("sel") ? Object.fromEntries(q) : null; } catch (e) { return null; }
+  }
+  let urlState = fromUrl();
   function show() {
-    key = location.hash === "#asterix" ? "asterix" : "disney";
+    key = { "#asterix": "asterix", "#beauval": "beauval", "#musees": "musees" }[location.hash] || "disney";
     const p = PARKS[key];
-    for (const k of ["disney", "asterix"]) $("tab-" + k).toggleAttribute("aria-current", k === key), k === key && $("tab-" + k).setAttribute("aria-current", "page");
-    $("title").textContent = key === "disney" ? "Pass annuel Disneyland Paris : est-ce rentable pour vous ?" : "Pass Saison Parc Astérix : est-ce rentable pour vous ?";
-    document.title = key === "disney" ? "Pass Disneyland rentable ?" : "Pass Astérix rentable ?";
-    $("parksRow").hidden = !p.twoParks;
-    $("renewBox").hidden = !p.renew;
-    $("parkHint").textContent = p.parkingHint;
-    $("buy").href = p.buy;
-    $("buy").textContent = "Voir les billets " + p.name;
-    $("dataNote").textContent = p.data + " Site officiel : " + p.official.replace("https://", "") + ".";
-    const saved = load(key);
-    if (!p.twoParks) $("parks").value = "1"; else if (!saved) $("parks").value = "2";
-    fillPresets(false);
-    $("park").value = p.parking;
-    if (saved) {
-      for (const k of ["adults", "kids", "visits", "tA", "tK", "park"]) if (saved[k] !== undefined && saved[k] !== "") $(k).value = saved[k];
-      $("car").checked = !!saved.car; $("renew").checked = !!saved.renew && !!p.renew;
-      if (p.twoParks && saved.parks) { $("parks").value = String(saved.parks); fillPresets(true); }
-      $("preset").value = saved.preset ?? "0";
-      if (!$("preset").value) $("preset").value = "custom";
+    for (const k of Object.keys(PARKS)) { const t = $("tab-" + k); if (k === key) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current"); }
+    const titles = { disney: "Pass annuel Disneyland Paris : est-ce rentable pour vous ?", asterix: "Pass Saison Parc Astérix : est-ce rentable pour vous ?", beauval: "ZooPass Beauval : est-ce rentable pour vous ?", musees: "Paris Museum Pass : est-ce rentable pour vous ?" };
+    $("title").textContent = titles[key];
+    document.title = { disney: "Pass Disneyland rentable ?", asterix: "Pass Astérix rentable ?", beauval: "ZooPass Beauval rentable ?", musees: "Paris Museum Pass rentable ?" }[key];
+    $("lead").textContent = p.type === "museum" ? "Cochez les lieux que vous comptez visiter : le calcul compare billets à l'unité et Paris Museum Pass, enfants gratuits compris." : "Indiquez combien vous êtes et combien de fois vous comptez venir. Le calcul compare billets et pass, parking compris.";
+    $("annualForm").hidden = p.type === "museum";
+    $("museumForm").hidden = p.type !== "museum";
+    $("transportSection").hidden = !p.transport;
+    $("costLabel").textContent = p.type === "museum" ? "Coût total de vos visites" : "Coût total sur l'année";
+    $("thBE").textContent = p.type === "museum" ? "Rentable dès" : "Rentable dès";
+    $("buy").href = p.buy; $("buy").textContent = (p.buy.includes("tiqets") ? "Voir les billets " : "Site officiel ") + p.name;
+    $("dataNote").textContent = p.data + " Site officiel : " + p.official.replace("https://", "").replace("www.", "") + ".";
+    const saved = urlState && (urlState.p || "disney") === key ? urlState : load(key);
+    if (urlState && (urlState.p || "disney") === key) urlState = null;
+    if (p.type === "museum") {
+      $("mAdults").value = saved?.adults ?? 2; $("mYoung").value = saved?.young ?? 0; $("res").value = saved?.res === "non" ? "non" : "eee"; $("dur").value = ["2", "4", "6"].includes(String(saved?.dur)) ? String(saved.dur) : "2";
+      const sel = saved?.sel ? (Array.isArray(saved.sel) ? saved.sel : String(saved.sel).split(",")) : p.defaults;
+      for (const x of p.sites) $("s-" + x.id).checked = sel.includes(x.id);
+      setSitePrices($("res").value, saved?.prices);
+    } else {
+      $("adultHint").textContent = p.adultHint; $("kidHint").textContent = p.kidHint;
+      $("parksRow").hidden = !p.twoParks; $("renewBox").hidden = !p.renew; $("parkHint").textContent = p.parkingHint;
+      $("parks").value = p.twoParks ? String(saved?.parks || 2) : "1";
+      fillPresets();
+      $("preset").value = saved?.preset ?? "0"; if (!$("preset").value) $("preset").value = "0";
+      applyPreset();
+      $("park").value = p.parking;
+      if (p.transport) $("km").value = p.transport.km;
+      if (saved) {
+        for (const k of ["adults", "kids", "visits", "tA", "tK", "park", "km", "conso", "fuel", "toll"]) if (saved[k] !== undefined && saved[k] !== "") $(k).value = saved[k];
+        const b = v => v === true || v === "1" || v === "true";
+        $("car").checked = saved.car === undefined ? true : b(saved.car);
+        $("renew").checked = b(saved.renew) && !!p.renew; $("navigo").checked = b(saved.navigo);
+      }
     }
     faq(); render();
   }
-  $("parks").addEventListener("change", () => { fillPresets(false); render(); });
+  function shareUrl() {
+    const p = PARKS[key], q = new URLSearchParams({ p: key });
+    if (p.type === "museum") { const s = museumState(); q.set("adults", s.adults); q.set("young", s.young); q.set("res", s.res); q.set("dur", s.dur); q.set("sel", s.sel.join(",")); }
+    else { const s = annualState(); for (const k of ["adults", "kids", "visits", "parks", "preset", "tA", "tK", "park", "km", "conso", "fuel", "toll"]) q.set(k, s[k]); for (const k of ["car", "renew", "navigo"]) q.set(k, s[k] ? "1" : "0"); q.set("v", s.visits); }
+    return "https://chest0.fr/outils/pass-annuel/?" + q.toString() + "#" + key;
+  }
+  $("share").addEventListener("click", async () => {
+    const url = shareUrl();
+    try { await navigator.clipboard.writeText(url); $("copied").textContent = "Lien copié : collez-le dans un message pour partager ce calcul."; }
+    catch (e) { $("copied").textContent = "Copiez ce lien : " + url; }
+  });
+  $("parks").addEventListener("change", () => { fillPresets(); $("preset").value = "0"; applyPreset(); render(); });
   $("preset").addEventListener("change", () => { applyPreset(); render(); });
   for (const id of ["tA", "tK"]) $(id).addEventListener("input", () => { $("preset").value = "custom"; render(); });
-  for (const id of ["adults", "kids", "visits", "park", "car", "renew"]) $(id).addEventListener("input", render);
+  for (const id of ["adults", "kids", "visits", "park", "car", "renew", "km", "conso", "fuel", "toll", "navigo", "mAdults", "mYoung", "dur"]) $(id).addEventListener("input", render);
+  $("res").addEventListener("change", () => { setSitePrices($("res").value, null); render(); });
   window.addEventListener("hashchange", show);
+  buildSites();
   show();
 }
 </script>
