@@ -1,5 +1,15 @@
 [
   {
+    "id": "planner-2027",
+    "name": "Planner Équilibre 2027",
+    "platform": "Gumroad",
+    "description": "Un agenda 2027 complet pour avancer sur ce qui compte sans s'oublier : intentions et roue de l'équilibre, pages mensuelles, 53 semaines, suivi d'habitudes et bilans. PDF à imprimer + version tablette avec liens (87 pages).",
+    "url": "https://fitfrenzy00.gumroad.com/l/planner-2027",
+    "image": "assets/images/products/planner-2027-cover.jpg",
+    "featured": true,
+    "enabled": true
+  },
+  {
     "id": "Pack Vitalité",
     "name": "Pack Vitalité Totale · 7 jours pour retrouver votre énergie",
     "platform": "Gumroad",
