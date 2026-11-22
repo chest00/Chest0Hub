@@ -67,6 +67,8 @@ input:focus-visible,select:focus-visible,a:focus-visible,button:focus-visible{ou
 .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
 .buy,.share{display:inline-flex;align-items:center;background:#141414;color:#f2efe6;padding:12px 18px;min-height:44px;border-radius:10px;font:inherit;font-weight:800;text-decoration:none;border:0;cursor:pointer}
 .share{background:transparent;color:#141414;border:2px solid #141414}
+.buy.quiet{order:2;background:transparent;color:#141414;padding:12px 4px;text-decoration:underline;text-underline-offset:3px;font-weight:700}
+.affnote{font-size:12.5px;font-weight:600;line-height:1.4;margin:8px 0 0;opacity:.85}
 .copied{font-size:13px;font-weight:700;margin:8px 0 0;min-height:1.2em}
 table{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden}
 th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left}
@@ -138,9 +140,11 @@ footer{color:var(--mute);font-size:13px}
     <div class="stub">
       <div class="bars" id="bars"></div>
       <div class="actions">
-        <a class="buy" id="buy" href="#" rel="nofollow sponsored">Voir les billets</a>
+        <a class="buy" id="buy" href="#" target="_blank" rel="sponsored noopener">Acheter mon billet</a>
         <button class="share" id="share" type="button">Partager mon calcul</button>
       </div>
+      <p class="affnote" id="buyNote" hidden></p>
+      <p class="affnote">Lien partenaire : Chest0 peut percevoir une commission, sans surcoût pour vous.</p>
       <p class="copied" id="copied" role="status"></p>
     </div>
   </section>
@@ -179,7 +183,7 @@ footer{color:var(--mute);font-size:13px}
 <script id="core">
 const PARKS = {
   disney: {
-    type: "annual", name: "Disneyland Paris", buy: "https://www.tiqets.com/fr/billets-disneyland-paris-l133192/", official: "https://www.disneylandparis.com",
+    type: "annual", name: "Disneyland Paris", buy: "https://www.tiqets.com/fr/activites-attractions-marne-la-vallee-c702/billets-pour-disneyland-r-paris-billet-d-entree-p1111509/?partner=chest0-191958&tq_campaign=pass-annuel-disney", buyNote: "", official: "https://www.disneylandparis.com",
     adultHint: "12 ans et plus", kidHint: "3 à 11 ans (gratuit avant 3 ans)",
     parking: 30, parkingHint: "valeur indicative, à vérifier", twoParks: true, renew: 0.15,
     presets: {
@@ -196,7 +200,7 @@ const PARKS = {
     data: "Pass : 289 à 799 € adulte, 223 à 601 € enfant (formules en vigueur depuis le 12 février 2026). Billets datés : prix variables selon la date, de 52 à 185 € adulte selon la période et le nombre de parcs. Réservation de la date obligatoire, y compris avec un pass."
   },
   asterix: {
-    type: "annual", name: "Parc Astérix", buy: "https://www.tiqets.com/fr/billets-parc-asterix-l145935/", official: "https://www.parcasterix.fr",
+    type: "annual", name: "Parc Astérix", buy: "https://www.tiqets.com/fr/activites-attractions-plailly-c178892/billets-pour-parc-asterix-billet-d-entree-p974657/?partner=chest0-191958&tq_campaign=pass-annuel-asterix", buyNote: "Parc ouvert d'avril à début janvier : vérifiez les dates sur la page du billet.", official: "https://www.parcasterix.fr",
     adultHint: "12 ans et plus", kidHint: "3 à 11 ans (gratuit avant 3 ans)",
     parking: 25, parkingHint: "augmenté en octobre 2026, à vérifier", twoParks: false, renew: 0,
     presets: { 1: [["Billet Futé (acheté 7 jours avant)", 56, 53], ["Billet Liberté Flex (date modifiable)", 68, 59]] },
@@ -209,7 +213,7 @@ const PARKS = {
     data: "Pass Saison 2026 : 174 à 269 € adulte, 159 à 254 € enfant, valables jusqu'au 3 janvier 2027. Les tarifs 2027 ne sont pas encore publiés : si vous achetez maintenant pour l'an prochain, attendez leur sortie."
   },
   beauval: {
-    type: "annual", name: "ZooParc de Beauval", buy: "https://www.zoobeauval.com", official: "https://www.zoobeauval.com",
+    type: "annual", name: "ZooParc de Beauval", buy: "https://www.tiqets.com/fr/activites-attractions-saint-aignan-c178194/billets-pour-zooparc-de-beauval-billet-d-entree-p974727/?partner=chest0-191958&tq_campaign=pass-annuel-beauval", buyNote: "", official: "https://www.zoobeauval.com",
     adultHint: "11 ans et plus", kidHint: "3 à 10 ans (gratuit avant 3 ans)",
     parking: 0, parkingHint: "gratuit d'après nos sources, à vérifier", twoParks: false, renew: 0,
     presets: { 1: [["Billet daté, petits prix", 37, 30], ["Billet daté, prix courant", 39, 32], ["Billet acheté sur place", 43, 36]] },
@@ -220,7 +224,7 @@ const PARKS = {
     data: "ZooPass Classique 2026 : 99 € adulte (11 ans et plus), 82 € enfant (3 à 10 ans). Billet 1 jour daté en ligne à partir de 37 € adulte et 30 € enfant, plus cher sur place. Astuce du parc : le ZooPass acheté sur place le jour de la visite avec un billet 1 jour bénéficie d'une réduction."
   },
   musees: {
-    type: "museum", name: "Paris Museum Pass", buy: "https://www.parismuseumpass.fr", official: "https://www.parismuseumpass.fr",
+    type: "museum", name: "Paris Museum Pass", buy: "https://www.tiqets.com/fr/activites-attractions-paris-c66746/billets-pour-paris-museum-pass-p1090622/?partner=chest0-191958&tq_campaign=pass-annuel-museum", buyNote: "", official: "https://www.parismuseumpass.fr",
     pass: { 2: 85, 4: 105, 6: 125 },
     sites: [
       { id: "louvre", name: "Musée du Louvre", eee: 22, non: 32 },
@@ -307,6 +311,12 @@ if (typeof module !== "undefined") module.exports = { PARKS, computeAnnual, comp
     for (const x of PARKS.musees.sites) { if ($("s-" + x.id).checked) sel.push(x.id); prices[x.id] = $("p-" + x.id).value; }
     return { adults: $("mAdults").value, young: $("mYoung").value, res: $("res").value, dur: $("dur").value, sel, prices };
   }
+  function setBuy(strong) {
+    const p = PARKS[key], b = $("buy");
+    b.classList.toggle("quiet", !strong);
+    b.textContent = p.type === "museum" ? "Acheter le Paris Museum Pass"
+      : strong ? "Acheter mon billet " + p.name : "Billet à la journée " + p.name;
+  }
   function drawBars(r) {
     const max = Math.max(...r.rows.map(x => x.cost)) || 1;
     $("bars").innerHTML = r.rows.map(x => `<div class="bar${x === r.best ? " best" : ""}"><span>${x.name}</span><i style="width:${Math.max(4, x.cost / max * 100)}%"></i><b>${eur(x.cost)}</b></div>`).join("");
@@ -319,9 +329,10 @@ if (typeof module !== "undefined") module.exports = { PARKS, computeAnnual, comp
     store(key, s);
     $("tParc").textContent = p.name + " · " + r.people + " personne" + (r.people > 1 ? "s" : "") + " · " + (+s.visits || 1) + " visite" + ((+s.visits || 1) > 1 ? "s" : "");
     $("park").disabled = !s.car;
-    if (r.people === 0) { $("verdict").textContent = "Indiquez au moins une personne."; $("bigCost").textContent = "—"; $("bars").innerHTML = ""; $("tbody").innerHTML = ""; $("tResult").innerHTML = ""; return; }
+    if (r.people === 0) { setBuy(true); $("verdict").textContent = "Indiquez au moins une personne."; $("bigCost").textContent = "—"; $("bars").innerHTML = ""; $("tbody").innerHTML = ""; $("tResult").innerHTML = ""; return; }
     $("verdict").textContent = r.best.tickets ? "Pas de pass : les billets à la journée reviennent moins cher."
       : "Prenez le " + r.best.name.replace(/^Pass /, "pass ") + " : vous économisez " + eur(r.saving) + ".";
+    setBuy(!!r.best.tickets);
     $("bigCost").textContent = eur(r.best.cost);
     drawBars(r);
     $("tbody").innerHTML = r.rows.map(x => `<tr class="${x === r.best ? "best" : ""}"><td>${x.name}</td><td class="n">${eur(x.cost)}</td><td class="n">${x.tickets ? "—" : x.breakEven ? x.breakEven + "<sup>e</sup> visite" : "—"}</td><td>${x.note}</td></tr>`).join("");
@@ -344,9 +355,10 @@ if (typeof module !== "undefined") module.exports = { PARKS, computeAnnual, comp
     store(key, s);
     const young = Math.max(0, +s.young || 0);
     $("tParc").textContent = p.name + " · " + r.adults + " adulte" + (r.adults > 1 ? "s" : "") + (young ? " + " + young + " jeune" + (young > 1 ? "s" : "") + " gratuit" + (young > 1 ? "s" : "") : "") + " · " + r.sites + " lieu" + (r.sites > 1 ? "x" : "");
-    if (r.adults === 0) { $("verdict").textContent = "Moins de 18 ans, ou moins de 26 ans résidents de l'UE : l'entrée est gratuite, pas besoin de pass."; $("bigCost").textContent = "0 €"; $("bars").innerHTML = ""; $("tbody").innerHTML = ""; return; }
-    if (r.sites === 0) { $("verdict").textContent = "Cochez les lieux que vous comptez visiter."; $("bigCost").textContent = "—"; $("bars").innerHTML = ""; $("tbody").innerHTML = ""; return; }
+    if (r.adults === 0) { setBuy(false); $("verdict").textContent = "Moins de 18 ans, ou moins de 26 ans résidents de l'UE : l'entrée est gratuite, pas besoin de pass."; $("bigCost").textContent = "0 €"; $("bars").innerHTML = ""; $("tbody").innerHTML = ""; return; }
+    if (r.sites === 0) { setBuy(false); $("verdict").textContent = "Cochez les lieux que vous comptez visiter."; $("bigCost").textContent = "—"; $("bars").innerHTML = ""; $("tbody").innerHTML = ""; return; }
     $("verdict").textContent = r.best.tickets ? "Pas de pass : les billets à l'unité reviennent moins cher." : "Prenez le pass " + s.dur + " jours : vous économisez " + eur(r.saving) + ".";
+    setBuy(!r.best.tickets);
     $("bigCost").textContent = eur(r.best.cost);
     drawBars(r);
     $("tbody").innerHTML = r.rows.map(x => `<tr class="${x === r.best ? "best" : ""}"><td>${x.name}</td><td class="n">${eur(x.cost)}</td><td class="n">${x.tickets ? "—" : x.breakEven ? x.breakEven + " lieux" : "—"}</td><td>${x.note}</td></tr>`).join("");
@@ -401,7 +413,7 @@ if (typeof module !== "undefined") module.exports = { PARKS, computeAnnual, comp
     $("transportSection").hidden = !p.transport;
     $("costLabel").textContent = p.type === "museum" ? "Coût total de vos visites" : "Coût total sur l'année";
     $("thBE").textContent = p.type === "museum" ? "Rentable dès" : "Rentable dès";
-    $("buy").href = p.buy; $("buy").textContent = (p.buy.includes("tiqets") ? "Voir les billets " : "Site officiel ") + p.name;
+    $("buy").href = p.buy; $("buyNote").textContent = p.buyNote || ""; $("buyNote").hidden = !p.buyNote;
     $("dataNote").textContent = p.data + " Site officiel : " + p.official.replace("https://", "").replace("www.", "") + ".";
     const saved = urlState && (urlState.p || "disney") === key ? urlState : load(key);
     if (urlState && (urlState.p || "disney") === key) urlState = null;
