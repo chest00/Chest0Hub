@@ -1,0 +1,29 @@
+/* ARTICLES_V1 — pages articles Chest0 */
+.crumbs{font-size:.85rem;opacity:.7;margin:1.5rem 0 0}
+.crumbs a{color:inherit}
+.post{max-width:46rem;margin:0 auto;padding:1rem 0 3rem}
+.post-head h1{font-size:clamp(1.9rem,4.5vw,2.8rem);line-height:1.12;margin:.4rem 0 .6rem}
+.post-meta{opacity:.65;font-size:.9rem;margin:0 0 1.5rem}
+.post-body{font-size:1.06rem;line-height:1.75}
+.post-body h2{font-size:1.5rem;margin:2.4rem 0 .8rem;line-height:1.25}
+.post-body h3{font-size:1.15rem;margin:1.6rem 0 .4rem}
+.post-body p,.post-body li{opacity:.92}
+.post-body ul,.post-body ol{padding-left:1.3rem}
+.post-body li{margin:.35rem 0}
+.post-body a{color:#d4a72c}
+.post-body .lead{font-size:1.18rem;line-height:1.7;opacity:1}
+.post-body .note{font-size:.92rem;border-left:3px solid #d4a72c;padding:.7rem 1rem;background:rgba(212,167,44,.08);border-radius:8px}
+.phrases{display:grid;gap:.7rem;margin:1rem 0 1.4rem}
+.phrases p{margin:0;padding:.9rem 1.1rem;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(212,167,44,.25);font-style:italic}
+.phrases span{display:block;font-style:normal;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#d4a72c;font-weight:700;margin-bottom:.25rem}
+.post-more{margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.12)}
+.post-more h2{font-size:1.2rem}
+.post-more a{color:#d4a72c}
+.post-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem}
+.post-card{display:flex;flex-direction:column;gap:.5rem;padding:1.5rem;border-radius:18px;border:1px solid rgba(212,167,44,.3);background:rgba(255,255,255,.03);color:inherit;text-decoration:none;transition:transform .2s,border-color .2s}
+.post-card:hover,.post-card:focus-visible{transform:translateY(-2px);border-color:#d4a72c}
+.post-card h2{font-size:1.25rem;line-height:1.25;margin:0}
+.post-card p{opacity:.75;margin:0;font-size:.95rem;line-height:1.55}
+.post-card i{font-style:normal;font-weight:700;color:#d4a72c;margin-top:auto;padding-top:.5rem}
+.post-blog{margin-top:2rem;opacity:.8}
+.post-blog a{color:#d4a72c}

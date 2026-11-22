@@ -708,7 +708,8 @@ const Chest0Data = {
                             `${this.getRootPath()}${item.image}`;
 
                         const productImageDimensions = {
-                            "assets/images/products/image-principale-hero-d60f3b0b.png": [1448, 1086],
+                            "assets/images/products/classeur-equilibre-cover.jpg": [1280, 960],
+                            "assets/images/products/planner-2027-cover.jpg": [1280, 720],
                             "assets/images/products/template-gumroad-bedc3ce6.png": [445, 634],
                             "assets/images/products/pack-vitalite-totale-cover.jpg": [1280, 720],
                         };
@@ -719,6 +720,12 @@ const Chest0Data = {
                             image.width = dimensions[0];
                             image.height = dimensions[1];
                         }
+
+
+                        if (container.children.length > 0) {
+                            image.loading = "lazy";
+                        }
+                        image.decoding = "async";
 
 
                         image.alt =
