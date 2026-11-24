@@ -6,7 +6,7 @@ const CACHE_PREFIX =
 
 
 const CACHE_VERSION =
-    `${CACHE_PREFIX}v1.3.0` + "-planner-2027";
+    `${CACHE_PREFIX}v1.3.0` + "-mots-justes";
 
 
 const APP_SHELL = [

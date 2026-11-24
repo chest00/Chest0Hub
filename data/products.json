@@ -10,6 +10,16 @@
     "enabled": true
   },
   {
+    "id": "mots-justes",
+    "name": "Les mots justes · 60 cartes pour dire non et poser ses limites",
+    "platform": "Gumroad",
+    "description": "Les phrases exactes à dire quand on vous pousse, vous presse ou vous culpabilise : 60 cartes imprimables (une version douce, une version ferme et la phrase à éviter), 6 familles de situations et 6 fonds d'écran pour téléphone.",
+    "url": "https://fitfrenzy00.gumroad.com/l/mots-justes",
+    "image": "assets/images/products/mots-justes-cover.jpg",
+    "featured": true,
+    "enabled": true
+  },
+  {
     "id": "Pack Vitalité",
     "name": "Pack Vitalité Totale · 7 jours pour retrouver votre énergie",
     "platform": "Gumroad",
