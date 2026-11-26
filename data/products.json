@@ -10,6 +10,16 @@
     "enabled": true
   },
   {
+    "id": "reset-sommeil",
+    "name": "Reset Sommeil 21 jours · le programme guidé pour retrouver des nuits plus calmes",
+    "platform": "Gumroad",
+    "description": "21 jours, 21 actions simples tirées des recommandations d'hygiène du sommeil : rythme, chambre, écrans, routine du soir, gestion des réveils nocturnes. PDF de 32 pages avec mini-journal de sommeil, bilan final et fiche « Ma routine du soir ».",
+    "url": "https://fitfrenzy00.gumroad.com/l/reset-sommeil",
+    "image": "assets/images/products/reset-sommeil-cover.jpg",
+    "featured": true,
+    "enabled": true
+  },
+  {
     "id": "mots-justes",
     "name": "Les mots justes · 60 cartes pour dire non et poser ses limites",
     "platform": "Gumroad",

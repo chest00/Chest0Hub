@@ -6,7 +6,7 @@ const CACHE_PREFIX =
 
 
 const CACHE_VERSION =
-    `${CACHE_PREFIX}v1.3.0` + "-mots-justes";
+    `${CACHE_PREFIX}v1.3.0` + "-reset-sommeil";
 
 
 const APP_SHELL = [
