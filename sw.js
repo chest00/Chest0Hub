@@ -6,7 +6,7 @@ const CACHE_PREFIX =
 
 
 const CACHE_VERSION =
-    `${CACHE_PREFIX}v1.3.0` + "-menu-8";
+    `${CACHE_PREFIX}v1.3.0` + "-logo";
 
 
 const APP_SHELL = [
