@@ -6,7 +6,7 @@ const CACHE_PREFIX =
 
 
 const CACHE_VERSION =
-    `${CACHE_PREFIX}v1.3.0` + "-logo";
+    `${CACHE_PREFIX}v1.3.0` + "-blog-migre";
 
 
 const APP_SHELL = [
@@ -15,7 +15,7 @@ const APP_SHELL = [
     "./index.html",
 
     "./pages/livres.html",
-    "./pages/blog.html",
+    "./pages/articles.html",
     "./pages/produits.html",
     "./pages/projets.html",
     "./outils/",
