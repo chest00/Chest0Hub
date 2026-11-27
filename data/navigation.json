@@ -8,16 +8,20 @@
         "url": "pages/livres.html"
     },
     {
+        "label": "Podcast",
+        "url": "pages/podcast.html"
+    },
+    {
         "label": "Blog",
-        "url": "pages/blog.html"
+        "url": "pages/articles.html"
     },
     {
         "label": "Produits",
         "url": "pages/produits.html"
     },
     {
-        "label": "Projets",
-        "url": "pages/projets.html"
+        "label": "Outils gratuits",
+        "url": "outils/"
     },
     {
         "label": "Jeux gratuits",
@@ -26,9 +30,5 @@
     {
         "label": "À propos",
         "url": "pages/apropos.html"
-    },
-    {
-        "label": "Contact",
-        "url": "pages/contact.html"
     }
 ]
