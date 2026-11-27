@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Chest0 — Le podcast : des épisodes courts et gratuits pour mieux répondre, poser ses limites et reconnaître la manipulation. Extraits de la série Intelligence relationnelle, sur Spotify."
+    >
+
+    <title>Podcast gratuit : répartie, limites et manipulation — Chest0</title>
+    <link rel="canonical" href="https://chest0.fr/pages/podcast.html">
+    <meta property="og:title" content="Chest0 — Le podcast">
+    <meta property="og:description" content="Des épisodes courts et gratuits pour mieux répondre, poser ses limites et reconnaître la manipulation.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chest0.fr/pages/podcast.html">
+    <meta property="og:site_name" content="Chest0 Hub">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:image" content="https://chest0.fr/assets/images/podcast/podcast-cover.jpg">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Chest0 — Le podcast">
+    <meta name="twitter:description" content="Des épisodes courts et gratuits pour mieux répondre, poser ses limites et reconnaître la manipulation.">
+    <meta name="twitter:image" content="https://chest0.fr/assets/images/podcast/podcast-cover.jpg">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "PodcastSeries",
+  "name": "Chest0 — Le podcast",
+  "url": "https://chest0.fr/pages/podcast.html",
+  "description": "Des épisodes courts et gratuits pour mieux répondre, poser ses limites et reconnaître la manipulation, tirés de la série Intelligence relationnelle.",
+  "inLanguage": "fr-FR",
+  "image": "https://chest0.fr/assets/images/podcast/podcast-cover.jpg",
+  "author": { "@type": "Person", "name": "Chest0 .jmS" },
+  "sameAs": ["https://open.spotify.com/show/4ZH3oj4I47RAkK3A6ZZMuY"],
+  "isPartOf": { "@type": "WebSite", "name": "Chest0 Hub", "url": "https://chest0.fr/" }
+}
+    </script>
+
+    <link
+        rel="icon"
+        href="../assets/icons/chest0-mark.svg"
+        type="image/svg+xml"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/style.css"
+    >
+
+    <style>
+        .podcast-head { display: grid; grid-template-columns: 160px 1fr; gap: 28px; align-items: center; }
+        .podcast-head img { width: 160px; height: 160px; border-radius: var(--radius-medium); box-shadow: var(--shadow-soft); }
+        .podcast-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+        .episode-list { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 14px; }
+        .episode { display: grid; grid-template-columns: 56px 1fr auto; gap: 18px; align-items: center;
+            padding: 18px 22px; border: 1px solid var(--border); border-radius: var(--radius-medium); background: var(--surface); }
+        .episode-num { font-size: 1.5rem; font-weight: 700; color: var(--accent); text-align: center; }
+        .episode h2 { font-size: 1.05rem; margin: 0 0 4px; line-height: 1.35; }
+        .episode p { margin: 0; color: var(--text-secondary); font-size: .93rem; line-height: 1.5; }
+        .episode-meta { font-size: .85rem; margin-top: 6px !important; }
+        .episode-meta a { color: var(--accent-light); }
+        .episode-cta { white-space: nowrap; padding: 10px 16px; border-radius: 999px; font-weight: 600; font-size: .92rem;
+            text-decoration: none; border: 1px solid var(--accent); color: var(--background); background: var(--accent); }
+        .episode-cta:hover { background: var(--accent-light); }
+        .episode-cta.is-soon { background: transparent; color: var(--text-secondary); border-color: var(--border); }
+        @media (max-width: 640px) {
+            .podcast-head { grid-template-columns: 1fr; }
+            .episode { grid-template-columns: 40px 1fr; }
+            .episode-cta { grid-column: 1 / -1; text-align: center; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+
+    <nav class="main-navigation">
+
+        <a
+            class="nav-brand"
+            data-profile="brand"
+            href="../index.html"
+        >
+            Chest0
+        </a>
+
+        <div class="nav-links desktop-navigation">
+
+            <a href="../index.html">Accueil</a>
+            <a href="livres.html">Livres</a>
+            <a href="podcast.html" aria-current="page">Podcast</a>
+            <a href="blog.html">Blog</a>
+            <a href="produits.html">Produits</a>
+            <a href="projets.html">Projets</a>
+            <a href="../outils/">Outils gratuits</a>
+            <a href="../jeux/games-studio/">Jeux gratuits</a>
+            <a href="apropos.html">À propos</a>
+            <a href="contact.html">Contact</a>
+
+        </div>
+
+        <button
+            class="mobile-menu-button"
+            type="button"
+            aria-label="Ouvrir le menu"
+            aria-expanded="false"
+        >
+            <img
+                src="../assets/icons/menu.svg"
+                alt=""
+             width="24" height="24">
+        </button>
+
+    </nav>
+
+</header>
+
+<div
+    class="mobile-menu-overlay"
+    aria-hidden="true"
+>
+</div>
+
+<aside
+    class="mobile-menu"
+    aria-label="Navigation mobile"
+>
+
+    <div class="mobile-menu-header">
+
+        <strong data-profile="brand">
+            Chest0
+        </strong>
+
+        <button
+            class="mobile-menu-close"
+            type="button"
+            aria-label="Fermer le menu"
+        >
+            <img
+                src="../assets/icons/close.svg"
+                alt=""
+             width="24" height="24">
+        </button>
+
+    </div>
+
+    <nav class="mobile-menu-links">
+
+        <a href="../index.html">Accueil</a>
+        <a href="livres.html">Livres</a>
+        <a href="podcast.html" aria-current="page">Podcast</a>
+        <a href="blog.html">Blog</a>
+        <a href="produits.html">Produits</a>
+        <a href="projets.html">Projets</a>
+            <a href="../outils/">Outils gratuits</a>
+            <a href="../jeux/games-studio/">Jeux gratuits</a>
+        <a href="apropos.html">À propos</a>
+        <a href="contact.html">Contact</a>
+
+    </nav>
+
+</aside>
+
+
+    <main class="container page-main">
+
+        <section class="page-hero podcast-head">
+
+            <img
+                src="../assets/images/podcast/podcast-cover.jpg"
+                alt="Couverture de Chest0 — Le podcast"
+                width="160" height="160"
+            >
+
+            <div>
+                <p class="section-label">Podcast gratuit</p>
+
+                <h1>Chest0 — Le podcast</h1>
+
+                <p class="page-intro">
+                    Des épisodes courts pour mieux répondre, poser tes limites
+                    et reconnaître la manipulation. Chaque épisode est un extrait
+                    de la série <a href="livres.html">Intelligence relationnelle</a>.
+                </p>
+
+                <div class="podcast-actions">
+                    <a
+                        class="primary-cta"
+                        href="https://open.spotify.com/show/4ZH3oj4I47RAkK3A6ZZMuY"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        S'abonner sur Spotify
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+        <section aria-labelledby="episodes-title">
+
+            <p class="section-label" id="episodes-title">Les épisodes</p>
+
+            <ol class="episode-list">
+
+                <li class="episode">
+                    <span class="episode-num">1</span>
+                    <div>
+                        <h2>Trouver ses mots quand ça compte</h2>
+                        <p>Écouter avant de répondre et trouver des mots justes, même sous pression.</p>
+                        <p class="episode-meta">6 min · extrait de <a href="https://www.amazon.fr/dp/B0HQ1GSLNT" target="_blank" rel="noopener">L'Art de la Répartie</a></p>
+                    </div>
+                    <a class="episode-cta" href="https://open.spotify.com/episode/4RcXP2p6vjNfAKRGEUw0Wp" target="_blank" rel="noopener">Écouter</a>
+                </li>
+
+                <li class="episode">
+                    <span class="episode-num">2</span>
+                    <div>
+                        <h2>On vous coupe la parole : retrouver le fil</h2>
+                        <p>Garder son rythme et reprendre la parole calmement quand on est interrompu.</p>
+                        <p class="episode-meta">6 min · extrait de <a href="https://www.amazon.fr/dp/B0HQ1GSLNT" target="_blank" rel="noopener">L'Art de la Répartie</a></p>
+                    </div>
+                    <a class="episode-cta" href="https://open.spotify.com/episode/4yzoQME6dUcbtrHSGn40DI" target="_blank" rel="noopener">Écouter</a>
+                </li>
+
+                <li class="episode" data-release="2026-12-01">
+                    <span class="episode-num">3</span>
+                    <div>
+                        <h2>Le respect dans les faits</h2>
+                        <p>Passer des grands principes aux accords concrets du quotidien.</p>
+                        <p class="episode-meta">7 min · extrait de <a href="https://www.amazon.fr/dp/B0HQNVJ4J2" target="_blank" rel="noopener">Les Limites du Respect</a></p>
+                    </div>
+                    <a class="episode-cta is-soon" href="https://open.spotify.com/show/4ZH3oj4I47RAkK3A6ZZMuY" target="_blank" rel="noopener">Dès le 1er décembre</a>
+                </li>
+
+                <li class="episode" data-release="2026-12-08">
+                    <span class="episode-num">4</span>
+                    <div>
+                        <h2>Dire non sans créer une dette</h2>
+                        <p>Refuser clairement sans culpabiliser ni devoir quelque chose en retour.</p>
+                        <p class="episode-meta">9 min · extrait de <a href="https://www.amazon.fr/dp/B0HQNVJ4J2" target="_blank" rel="noopener">Les Limites du Respect</a></p>
+                    </div>
+                    <a class="episode-cta is-soon" href="https://open.spotify.com/show/4ZH3oj4I47RAkK3A6ZZMuY" target="_blank" rel="noopener">Dès le 8 décembre</a>
+                </li>
+
+                <li class="episode" data-release="2026-12-15">
+                    <span class="episode-num">5</span>
+                    <div>
+                        <h2>Comprendre sans lire dans les pensées</h2>
+                        <p>Séparer les faits des suppositions avant de conclure.</p>
+                        <p class="episode-meta">7 min · extrait de <a href="https://www.amazon.fr/dp/B0HR1GZYQR" target="_blank" rel="noopener">Décrypter les Jeux Psychologiques</a></p>
+                    </div>
+                    <a class="episode-cta is-soon" href="https://open.spotify.com/show/4ZH3oj4I47RAkK3A6ZZMuY" target="_blank" rel="noopener">Dès le 15 décembre</a>
+                </li>
+
+                <li class="episode" data-release="2027-01-05">
+                    <span class="episode-num">6</span>
+                    <div>
+                        <h2>Pression et culpabilisation : comment les reconnaître</h2>
+                        <p>Repérer les phrases qui poussent à céder, et protéger ses décisions.</p>
+                        <p class="episode-meta">14 min · extrait de <a href="https://www.amazon.fr/dp/B0HR1GZYQR" target="_blank" rel="noopener">Décrypter les Jeux Psychologiques</a></p>
+                    </div>
+                    <a class="episode-cta is-soon" href="https://open.spotify.com/show/4ZH3oj4I47RAkK3A6ZZMuY" target="_blank" rel="noopener">Dès le 5 janvier</a>
+                </li>
+
+            </ol>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <div class="footer-content">
+
+            <strong data-profile="brand">Chest0</strong>
+
+            <p>
+                © <span id="current-year"></span>
+                <span data-profile="copyright">Chest0 JM.S.</span>
+            </p>
+
+            <p class="footer-partner">
+                <a href="produits.html#partenaires">Devenir partenaire (30&nbsp;% de commission)</a>
+            </p>
+
+            <a href="../index.html">
+                Retour à l'accueil
+            </a>
+
+        </div>
+
+    </footer>
+
+    <script>
+        // Les épisodes programmés passent automatiquement en « Écouter » à leur date de sortie.
+        (function () {
+            var today = new Date().toISOString().slice(0, 10);
+            document.querySelectorAll(".episode[data-release]").forEach(function (li) {
+                if (li.dataset.release <= today) {
+                    var cta = li.querySelector(".episode-cta");
+                    cta.textContent = "Écouter";
+                    cta.classList.remove("is-soon");
+                }
+            });
+        })();
+    </script>
+
+    <script
+        src="../assets/js/data-engine.js"
+        defer
+    ></script>
+
+    <script
+        src="../assets/js/app.js"
+        defer
+    ></script>
+
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "da47366b38854facbcf7a561aade9a47"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+
+</html>

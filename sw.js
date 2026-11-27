@@ -6,7 +6,7 @@ const CACHE_PREFIX =
 
 
 const CACHE_VERSION =
-    `${CACHE_PREFIX}v1.3.0` + "-reset-sommeil";
+    `${CACHE_PREFIX}v1.3.0` + "-podcast";
 
 
 const APP_SHELL = [
@@ -34,6 +34,8 @@ const APP_SHELL = [
     "./assets/js/tools-fx.js",
     "./assets/js/equilibre-quotidien.js",
     "./assets/js/journal-sommeil.js",
+    "./pages/podcast.html",
+    "./assets/images/podcast/podcast-cover.jpg",
     "./pages/apropos.html",
     "./pages/contact.html",
 
